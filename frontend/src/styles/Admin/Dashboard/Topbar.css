@@ -1,0 +1,506 @@
+/* =========================================================
+   TOPBAR COMPONENT STYLES
+   Note: Main .admin-topbar-container styles are in Dashboard.css
+   ========================================================= */
+
+/* Icon button hover effects */
+.admin-topbar-icon-btn1 {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: none;
+  background: #f8fafc;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.admin-topbar-icon-btn1:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+}
+
+/* ===== NOTIFICATION BADGE (replaces old dot) */
+.notification-dot {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+
+  min-width: 10px;
+  height: 10px;
+  padding: 6px 6px;
+
+  background: linear-gradient(135deg, #ff4d6d, #ff6b6b);
+  color: white;
+
+  border-radius: 999px;
+  border: 3px solid #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 8px;
+  font-weight: 800;
+
+  box-shadow: 0 6px 14px rgba(255, 77, 109, 0.5);
+
+  transition: all 0.25s ease;
+}
+
+
+
+
+/* ===== NOTIFICATION PANEL */
+.admin-notif-panel {
+  position: absolute;
+  right: 0;
+  top: 48px;
+  width: 320px;
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  z-index: 4000;
+  animation: notifSlideIn 0.25s ease-out;
+}
+
+@keyframes notifSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.admin-notif-header {
+  padding: 16px 18px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.admin-notif-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.admin-notif-title span {
+  font-size: 13px;
+  font-weight: 400;
+  color: #64748b;
+  margin-left: 6px;
+}
+
+.admin-notif-mark-all {
+  font-size: 12px;
+  font-weight: 600;
+  color: #667eea;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s ease;
+}
+
+.admin-notif-mark-all:hover {
+  opacity: 0.75;
+}
+
+/* Notification list */
+.admin-notif-list {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.admin-notif-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.admin-notif-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-notif-list::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 4px;
+}
+
+/* Single notification item */
+.admin-notif-item {
+  padding: 14px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border-bottom: 1px solid #f8fafc;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.admin-notif-item:hover {
+  background: #f8fafc;
+}
+
+.admin-notif-item:last-child {
+  border-bottom: none;
+}
+
+/* Icon circle */
+.admin-notif-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #eef2ff;
+  color: #667eea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+/* Item text */
+.admin-notif-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-notif-emp {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-notif-desc {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0 0 4px;
+}
+
+.admin-notif-time {
+  font-size: 11px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+/* Unread dot */
+.admin-notif-unread-dot {
+  width: 7px;
+  height: 7px;
+  background: #667eea;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+/* Empty state */
+.admin-notif-empty {
+  padding: 36px 18px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+/* Footer */
+.admin-notif-footer {
+  padding: 12px 18px;
+  border-top: 1px solid #f1f5f9;
+  text-align: center;
+}
+
+.admin-notif-view-all {
+  font-size: 13px;
+  font-weight: 600;
+  color: #667eea;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s ease;
+}
+
+.admin-notif-view-all:hover {
+  opacity: 0.75;
+}
+
+/* Avatar styles */
+.admin-topbar-avatar {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.admin-topbar-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+}
+
+.admin-topbar-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =========================================================
+   PROFILE MENU / DROPDOWN - MODERN DESIGN
+   ========================================================= */
+.admin-topbar-profile-menu {
+  position: absolute;
+  right: 30px;
+  top: 80px;
+  min-width: 280px;
+  max-width: 100%;
+  width: max-content;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  animation: profileMenuSlideIn 0.3s ease-out;
+  border: 1px solid #f1f5f9;
+  z-index: 4000;
+}
+
+@keyframes profileMenuSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   PROFILE INFO - MODERN DESIGN
+   ========================================================= */
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f1f5f9;
+  margin-bottom: 8px;
+}
+
+.profile-avatar-large {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.profile-avatar-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* TEXT CONTAINER */
+.profile-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+/* NAME */
+.profile-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* EMAIL */
+.topbar-profile-email {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ROLE BADGE */
+.profile-role {
+  display: inline-block;
+  padding: 4px 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 20px;
+  margin-top: 6px;
+  width: fit-content;
+}
+
+/* =========================================================
+   SEPARATOR
+   ========================================================= */
+.admin-topbar-profile-menu hr {
+  margin: 12px 0;
+  border: none;
+  border-top: 2px solid #f1f5f9;
+}
+
+/* =========================================================
+   MENU ITEMS - MODERN DESIGN
+   ========================================================= */
+.profile-menu-item1 {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  margin-bottom: 4px;
+}
+
+.profile-menu-item1:hover {
+  background: linear-gradient(135deg, #f8faff 0%, #f1f5f9 100%);
+  color: #667eea;
+}
+
+.profile-menu-item1-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.profile-menu-item1:hover .profile-menu-item1-icon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+/* Logout */
+.logout {
+  color: #f5576c;
+  font-weight: 700;
+  background: rgba(245, 87, 108, 0.1);
+}
+
+.logout:hover {
+  background: linear-gradient(135deg, #f5576c 0%, #fb93bb 100%);
+  color: white;
+}
+
+.logout:hover .profile-menu-item1-icon {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* =========================================================
+   MOBILE HAMBURGER BUTTON
+   ========================================================= */
+.admin-mobile-hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.admin-mobile-hamburger:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+@media (max-width: 992px) {
+  .admin-mobile-hamburger {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-topbar-profile-menu {
+    right: 10px;
+    top: 70px;
+    min-width: 260px;
+    padding: 20px;
+  }
+
+  .admin-notif-panel {
+    right: -60px;
+    width: 290px;
+  }
+
+  .profile-info {
+    gap: 12px;
+    padding-bottom: 12px;
+  }
+
+  .profile-avatar-large {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+  }
+
+  .profile-name {
+    font-size: 14px;
+  }
+
+  .topbar-profile-email {
+    font-size: 12px;
+  }
+}

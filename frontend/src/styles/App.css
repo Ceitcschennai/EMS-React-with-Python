@@ -1,0 +1,19 @@
+/* ============================================================
+   App.css — ONLY global resets, NO backgrounds
+============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  /* ❌ NO background here — each page sets its own */
+}
+
+body {
+  overflow-y: auto;
+}

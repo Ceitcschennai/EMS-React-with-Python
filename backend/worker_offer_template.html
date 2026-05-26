@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CeiTCS Worker Offer Letter</title>
+    <link rel="stylesheet" href="template.css">
+</head>
+<body>
+
+<div class="header-title">CeiTCS - Offer Letter</div>
+
+<p><b>Date:</b> {{ current_date }}</p>
+
+<p>
+<b>To,</b><br>
+{{ First_name }} {{ Last_name }} {{ Initial_name }}<br>
+Phone: {{ phone_number }}<br>
+Email: {{ email }}
+</p>
+
+<p><b>Subject: Offer of Employment</b></p>
+
+<p>Dear {{ First_name }},</p>
+
+<p>
+We are pleased to offer you the position of <b>{{ sub_category }}</b> under the <b>{{ category }}</b> Department at our organization. 
+Based on your skills, experience, and qualifications, we believe you will be a valuable addition to our team.
+
+In this role, you will be responsible for performing duties related to your trade, maintaining quality and safety standards, 
+and contributing effectively to project execution and team objectives. You are expected to carry out your responsibilities 
+with professionalism, dedication, and adherence to company policies and industry standards.
+
+Your role is crucial to the successful completion of our ongoing and future projects, and we look forward to your active 
+participation and commitment toward achieving organizational goals.
+</p>
+
+<h3>📍 Work Details:</h3>
+<ul>
+    <li><b>Work Location:</b> {{ work_location }}</li>
+    <li><b>Employment Type:</b> {{ employment_type }}</li>
+    <li><b>Date of Joining:</b> {{ date_of_join }}</li>
+    <li><b>Status:</b> {{ status }}</li>
+</ul>
+
+<h3>💰 Compensation:</h3>
+<p>Your salary structure will be as follows:</p>
+<ul>
+    <li><b>Basic Salary:</b> ₹{{ basic_salary }}</li>
+    <li><b>Overtime:</b> ₹{{ overtime }}</li>
+    <li><b>Bonus:</b> ₹{{ bonus }}</li>
+    <li><b>Allowance:</b> ₹{{ allowance }}</li>
+</ul>
+
+<p><b>👉 Total Salary:</b> ₹{{ total_salary }} per month</p>
+
+<h3>🏢 Benefits:</h3>
+<ul>
+    <li>Accommodation provided by company</li>
+    <li>Cooking utensils & gas provided</li>
+    <li>Group insurance coverage</li>
+    <li>Transportation facility</li>
+    <li>Other benefits as per Indian labor laws</li>
+</ul>
+
+<h3>📄 Terms & Conditions:</h3>
+<ul>
+    <li>You are required to submit all necessary documents in a single PDF before joining.</li>
+    <li>Your employment is subject to company policies and performance.</li>
+    <li>Any misconduct may lead to termination as per company rules.</li>
+</ul>
+
+<p>We believe your skills and experience will be a valuable addition to our team.</p>
+
+<p>Kindly confirm your acceptance of this offer.</p>
+
+<p>We look forward to working with you.</p>
+
+<p><b>Best Regards,</b><br>
+<b>HR Department</b><br>
+CeiTCS</p>
+
+<p>Contact: ceitcschennai@gmail.com<br>
+Mobile: +91-9841905323 / 99628 19529</p>
+
+<div class="signature-section">
+    <h3>Acknowledgement and Acceptance</h3>
+    
+    <p>
+        I, <b>{{ First_name }}  {{ Last_name }} {{ Initial_name }}</b>, accept the terms and conditions mentioned in this offer letter.
+    </p>
+
+    <p class="signature-line">
+        Signature: ___________________________
+    </p>
+
+    <p class="signature-line">
+        Date: ________________________________
+    </p>
+</div>
+
+</body>
+</html>
+
+
+
+File name:worker_offer_template.html

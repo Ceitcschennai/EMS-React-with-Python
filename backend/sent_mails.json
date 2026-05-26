@@ -1,0 +1,29 @@
+[
+    {
+        "mail_id": "MAIL0001",
+        "to_email": "kk3080065@gmail.com",
+        "employee_id": "Kavinkumar@362",
+        "employee_name": "Kavinkumar",
+        "subject": "HELLO BRO",
+        "message": "THIS FOR THE PROJECT UPDATE TEST",
+        "timestamp": "2025-12-03 13:54:26"
+    },
+    {
+        "mail_id": "MAIL0002",
+        "to_email": "dadsqueen9988@gmail.com",
+        "employee_id": "Abi34234",
+        "employee_name": "abi",
+        "subject": "hey there",
+        "message": "how are you ",
+        "timestamp": "2025-12-08 12:39:49"
+    },
+    {
+        "mail_id": "MAIL0003",
+        "to_email": "dadsqueen9988@gmail.com",
+        "employee_id": "Abi34234",
+        "employee_name": "abi",
+        "subject": "hey there",
+        "message": "how are you ",
+        "timestamp": "2025-12-08 12:40:19"
+    }
+]

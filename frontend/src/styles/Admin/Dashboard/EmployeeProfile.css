@@ -1,0 +1,934 @@
+/* ======================================================
+   MAIN PAGE WRAPPER - MODERN DESIGN
+   ====================================================== */
+.ad-emp-pro-page {
+  width: 100%;
+  padding: 30px 40px 30px 40px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+  min-height: 100vh;
+  margin-left: 0;
+}
+
+.ad-emp-pro-loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #64748b;
+}
+
+/* ======================================================
+   TOP SECTION — BACK BUTTON + TITLE - MODERN DESIGN
+   ====================================================== */
+.ad-emp-pro-top-back-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.ad-emp-pro-back-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  padding: 12px 24px;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ad-emp-pro-back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+}
+
+.ad-emp-pro-profile-title-box h2 {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+  position: relative;
+  display: inline-block;
+}
+
+.ad-emp-pro-profile-title-box h2::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 50px;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+}
+
+.ad-emp-pro-last-updated {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* ======================================================
+   PROFILE HEADER CARD - MODERN DESIGN
+   ====================================================== */
+.profile-header-card {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  background: white;
+  padding: 32px 40px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+
+.profile-header-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.profile-header-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Avatar ── */
+.profile-left {
+  flex-shrink: 0;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #eaeaea;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35);
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid #eaeaea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35);
+}
+
+/* ── Right Details ── */
+.profile-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+/* ── Single row with all info ── */
+.profile-all-info-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ── Name ── */
+.profile-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.profile-name-emoji {
+  font-size: 22px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ── Email ── */
+.profile-email {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* ── ID ── */
+.profile-id {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.profile-id strong {
+  color: #334155;
+  font-weight: 600;
+}
+
+/* ── Status Badge ── */
+.profile-status {
+  padding: 6px 16px;
+  border-radius: 24px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Separator dot ── */
+.profile-separator {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  flex-shrink: 0;
+}
+
+.profile-status.active { 
+  background: linear-gradient(135deg, #d4f6e6 0%, #b8f0d4 100%);
+  color: #0c8a48;
+  box-shadow: 0 2px 8px rgba(12, 138, 72, 0.15);
+}
+
+.profile-status.inactive { 
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #be123c;
+  box-shadow: 0 2px 8px rgba(190, 18, 60, 0.15);
+}
+
+/* ======================================================
+   MAIN GRID — 2 columns - MODERN DESIGN
+   ====================================================== */
+.ad-emp-pro-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+/* ======================================================
+   SECTION CARDS - MODERN DESIGN
+   ====================================================== */
+.ad-emp-pro-profile-section {
+  background: white;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.ad-emp-pro-profile-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+}
+
+.ad-emp-pro-profile-section:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+.ad-emp-pro-profile-section:hover::before {
+  transform: scaleX(1);
+}
+
+/* ── Section heading with emoji ── */
+.ad-emp-pro-profile-section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  color: #1a1a2e;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.4;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.ad-emp-pro-profile-section h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 3px;
+}
+
+.ad-emp-pro-profile-section h4 {
+  margin-top: 20px;
+  color: #0f172a;
+  font-size: 15px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+/* ======================================================
+   DETAIL ROWS - MODERN DESIGN
+   ====================================================== */
+.ad-emp-pro-detail-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ad-emp-pro-detail-grid p {
+  margin: 0;
+  font-size: 14px;
+  color: #334155;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  line-height: 1.6;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+.ad-emp-pro-detail-grid p:hover {
+  background: #f1f5f9;
+}
+
+.ad-emp-pro-detail-grid p strong {
+  min-width: 140px;
+  flex-shrink: 0;
+  color: #1a1a2e;
+  font-weight: 700;
+}
+
+.ad-emp-pro-detail-grid hr {
+  border: none;
+  border-top: 2px solid #e2e8f0;
+  margin: 16px 0;
+}
+
+.ad-emp-pro-highlight {
+  color: #0c8a48 !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  margin-top: 6px;
+  background: linear-gradient(135deg, #d4f6e6 0%, #b8f0d4 100%) !important;
+}
+
+/* Full width span for documents section */
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* ======================================================
+   DOCUMENTS TABLE - MODERN DESIGN
+   ====================================================== */
+.ad-doc-table1-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.12);
+  margin-top: 16px;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px;
+}
+
+.ad-doc-table1-container::-webkit-scrollbar {
+  height: 12px !important;
+  width: 12px !important;
+  display: block !important;
+}
+
+.ad-doc-table1-container::-webkit-scrollbar-track {
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%) !important;
+  border-radius: 6px !important;
+  border: 2px solid #e0e7ff !important;
+}
+
+.ad-doc-table1-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4) !important;
+  border: 2px solid #667eea !important;
+}
+
+.ad-doc-table1-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #5568d6 0%, #6a4190 100%) !important;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6) !important;
+}
+
+.ad-doc-table1 {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  min-width: 550px;
+}
+
+.ad-doc-table1 th,
+.ad-doc-table1 td {
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 13px;
+  border-bottom: 1px solid #f1f5f9;
+  white-space: nowrap;
+}
+
+.ad-doc-table1 th {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 11px;
+}
+
+.ad-doc-table1 tbody tr:hover td {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+}
+
+.ad-doc-table1 tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── Badges ── */
+.ad-doc-badge {
+  padding: 6px 14px;
+  border-radius: 24px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ad-doc-badge.verified { 
+  background: linear-gradient(135deg, #d4f6e6 0%, #b8f0d4 100%);
+  color: #0c8a48;
+  box-shadow: 0 2px 8px rgba(12, 138, 72, 0.15);
+}
+
+.ad-doc-badge.pending  { 
+  background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
+  color: #b45309;
+  box-shadow: 0 2px 8px rgba(180, 83, 9, 0.15);
+}
+
+.ad-doc-badge.rejected { 
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #be123c;
+  box-shadow: 0 2px 8px rgba(190, 18, 60, 0.15);
+}
+
+.ad-doc-badge.done     { 
+  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+  color: #4338ca;
+  box-shadow: 0 2px 8px rgba(67, 56, 202, 0.15);
+}
+
+/* ── Buttons ── */
+.ad-doc-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-right: 8px;
+}
+
+.ad-doc-btn.view { 
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+}
+
+.ad-doc-btn.approve { 
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(56, 239, 125, 0.35);
+}
+
+.ad-doc-btn.reject { 
+  background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.35);
+}
+
+.ad-doc-btn.view:hover { 
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+}
+
+.ad-doc-btn.approve:hover { 
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(56, 239, 125, 0.45);
+}
+
+.ad-doc-btn.reject:hover { 
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 39, 67, 0.719);
+}
+
+/* ======================================================
+    RESPONSIVE - MODERN BREAKPOINTS
+    ====================================================== */
+@media (max-width: 992px) {
+  .ad-emp-pro-page {
+    padding: 12px;
+  }
+
+  .ad-emp-pro-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .profile-header-card {
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-header-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 14px 10px;
+    gap: 10px;
+    border-radius: 12px;
+  }
+
+  .ad-emp-pro-page { 
+    padding: 8px; 
+  }
+
+  .ad-emp-pro-top-back-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .ad-emp-pro-back-btn {
+    padding: 8px 12px;
+    font-size: 11px;
+    width: 100%;
+    justify-content: center;
+    border-radius: 8px;
+    gap: 6px;
+  }
+
+  .ad-emp-pro-profile-title-box h2 {
+    font-size: 16px;
+  }
+
+  .profile-image,
+  .profile-avatar {
+    width: 70px;
+    height: 70px;
+  }
+
+  .profile-avatar {
+    font-size: 24px;
+  }
+
+  .profile-name {
+    font-size: 15px;
+  }
+
+  .profile-name-row {
+    font-size: 16px;
+  }
+
+  .profile-all-info-row {
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .profile-type-badge,
+  .profile-status-badge {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+
+  .ad-doc-table1-container {
+    overflow-x: auto;
+    overflow-y: visible;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #667eea #eef2ff;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.15);
+  }
+
+  .ad-doc-table1-container::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .ad-doc-table1-container::-webkit-scrollbar-track {
+    background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    border-radius: 4px;
+  }
+
+  .ad-doc-table1-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+  }
+
+  .ad-doc-table1 {
+    display: block;
+    min-width: 550px;
+    font-size: 11px; 
+  }
+
+  .ad-doc-table1 th,
+  .ad-doc-table1 td {
+    padding: 6px 8px;
+    white-space: nowrap;
+  }
+
+  .ad-doc-table1 th {
+    font-size: 10px;
+  }
+
+  .ad-emp-pro-profile-section {
+    padding: 14px 10px;
+    border-radius: 12px;
+    margin-bottom: 0;
+  }
+
+  .ad-emp-pro-profile-section h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+  }
+
+  .ad-emp-pro-profile-section h4 {
+    margin-top: 12px;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .ad-emp-pro-detail-grid {
+    gap: 8px;
+  }
+
+  .ad-emp-pro-detail-grid p {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 6px 8px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+  .ad-emp-pro-detail-grid p strong {
+    min-width: unset;
+    font-size: 10px;
+  }
+
+  .ad-doc-btn {
+    padding: 4px 8px;
+    font-size: 10px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+    border-radius: 6px;
+  }
+
+  .profile-email,
+  .profile-id {
+    font-size: 12px;
+  }
+
+  .profile-separator {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .ad-emp-pro-page {
+    padding: 4px 2px;
+  }
+
+  .profile-header-card {
+    padding: 8px 6px;
+    margin-bottom: 10px;
+  }
+
+  .profile-name {
+    font-size: 12px;
+  }
+
+  .ad-emp-pro-profile-title-box h2 {
+    font-size: 12px;
+  }
+
+  .profile-image,
+  .profile-avatar {
+    width: 48px;
+    height: 48px;
+  }
+
+  .profile-avatar {
+    font-size: 16px;
+  }
+
+  .ad-emp-pro-grid {
+    gap: 4px;
+  }
+
+  .ad-emp-pro-profile-section {
+    padding: 8px 6px;
+    border-radius: 8px;
+  }
+
+  .ad-emp-pro-profile-section h3 {
+    font-size: 12px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+  }
+
+  .ad-emp-pro-profile-section h4 {
+    font-size: 11px;
+  }
+
+  .ad-emp-pro-detail-grid p {
+    font-size: 10px;
+    padding: 4px 0;
+  }
+
+  .ad-emp-pro-detail-grid p strong {
+    font-size: 10px;
+  }
+
+  .ad-doc-table1 {
+    font-size: 8px;
+  }
+
+  .ad-doc-table1 th,
+  .ad-doc-table1 td {
+    padding: 4px 4px;
+  }
+}
+
+/* ======================================================
+   FLOATING EDIT REQUEST PANEL - MODERN DESIGN
+   ====================================================== */
+.ad-edit-request-panel {
+  position: fixed;
+  right: 24px;
+  top: 100px;
+  width: 340px;
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(102, 126, 234, 0.1);
+  z-index: 9999;
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.ad-edit-request-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px 16px 0 0;
+}
+
+.ad-edit-request-panel h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  color: #1a1a2e;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ad-edit-request-panel h4::before {
+  content: "📋";
+  font-size: 20px;
+}
+
+.ad-edit-request-details {
+   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+   border-radius: 12px;
+   padding: 16px;
+   margin-bottom: 20px;
+   border: 1px solid #e2e8f0;
+}
+
+.request-change-box {
+   background: #f8f9ff;
+   border: 1px solid #dfe6ff;
+   border-radius: 10px;
+   padding: 12px;
+   margin-bottom: 12px;
+}
+
+.old-value {
+   color: #d11a2a;
+   font-weight: 500;
+}
+
+.new-value {
+   color: #0b8f4d;
+   font-weight: 600;
+}
+
+.ad-edit-request-details p {
+  font-size: 14px;
+  color: #334155;
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ad-edit-request-details p:last-child {
+  margin-bottom: 0;
+}
+
+.ad-edit-request-details p strong {
+  min-width: 60px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.ad-edit-request-details p span {
+  color: #1a1a2e;
+  font-weight: 600;
+}
+
+.ad-edit-request-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.ad-edit-request-btn {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.ad-edit-request-btn.approve {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.ad-edit-request-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.ad-edit-request-btn.approve:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+}
+
+.ad-edit-request-btn.reject {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+}
+
+.ad-edit-request-btn.reject:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
+}
+
+@media (max-width: 480px) {
+  .ad-edit-request-panel {
+    right: 12px;
+    left: 12px;
+    width: auto;
+    top: 80px;
+    padding: 16px;
+  }
+
+  .ad-edit-request-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ad-edit-request-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+}

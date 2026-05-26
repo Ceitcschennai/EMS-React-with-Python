@@ -1,0 +1,219 @@
+/* ======================================================
+   EMPLOYEE CHART SECTION - MODERN DESIGN
+   ====================================================== */
+.employee-chart-section {
+  background: white;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  font-family: "Inter", sans-serif;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.employee-chart-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.employee-chart-section:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* TITLE - MODERN DESIGN */
+.employee-chart-section .ec-title {    
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+
+/* SUBTITLE */
+.employee-chart-section .ec-subtitle {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* LEGEND - MODERN DESIGN */
+.employee-chart-section .ec-legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.employee-chart-section .ec-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.employee-chart-section .ec-legend-color {
+  height: 12px;
+  width: 12px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ICON */
+.employee-chart-section .ec-chart-icon {
+  margin-bottom: 20px;
+  font-size: 32px;
+  color: white;
+  padding: 16px;
+  border-radius: 14px;
+  display: inline-flex;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+}
+
+/* BARS - MODERN DESIGN */
+.employee-chart-section .ec-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.employee-chart-section .ec-bar-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.employee-chart-section .ec-bar-label {
+  width: 110px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a2e;
+  flex-shrink: 0;
+}
+
+.employee-chart-section .ec-bar {
+  height: 12px;
+  flex: 1;
+  background: #f1f5f9;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.employee-chart-section .ec-bar-fill {
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.5s ease;
+}
+
+.employee-chart-section .ec-bar-percent {
+  width: 45px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #334155;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .employee-chart-section {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .employee-chart-section .ec-title {
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .employee-chart-section .ec-subtitle {
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+
+  .employee-chart-section .ec-legend {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+
+  .employee-chart-section .ec-legend-item {
+    font-size: 11px;
+  }
+
+  .employee-chart-section .ec-legend-color {
+    height: 10px;
+    width: 10px;
+  }
+
+  .employee-chart-section .ec-bar-label {
+    width: 70px;
+    font-size: 11px;
+  }
+
+  .employee-chart-section .ec-bar-percent {
+    width: 32px;
+    font-size: 11px;
+  }
+
+  .employee-chart-section .ec-chart-icon {
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+  }
+
+  .employee-chart-section .ec-bars {
+    gap: 14px;
+  }
+
+  .employee-chart-section .ec-bar-item {
+    gap: 10px;
+  }
+
+  .employee-chart-section .ec-bar {
+    height: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .employee-chart-section {
+    padding: 14px;
+  }
+
+  .employee-chart-section .ec-title {
+    font-size: 15px;
+  }
+
+  .employee-chart-section .ec-subtitle {
+    font-size: 11px;
+  }
+
+  .employee-chart-section .ec-bar-label {
+    width: 60px;
+    font-size: 10px;
+  }
+
+  .employee-chart-section .ec-bar {
+    height: 8px;
+  }
+
+  .employee-chart-section .ec-bar-percent {
+    width: 28px;
+    font-size: 10px;
+  }
+}

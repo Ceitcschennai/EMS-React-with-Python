@@ -1,0 +1,311 @@
+.add-worker-container {
+  max-width: 600px;
+  margin: auto;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.add-worker-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.add-worker-container h3 {
+  margin-top: 20px;
+  color: #667eea;
+}
+
+.form-group {
+  margin-bottom: 5px;
+}
+
+.add-worker-container label {
+  display: block;
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.add-worker-container input,
+.add-worker-container select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-worker-container input:focus,
+.add-worker-container select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.add-worker-container input.input-error,
+.add-worker-container select.input-error {
+  border-color: #dc3545;
+  background-color: #fff8f8;
+}
+
+.add-worker-container input.input-error:focus,
+.add-worker-container select.input-error:focus {
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.error-message {
+  display: block;
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 5px;
+  padding-left: 5px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-banner {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-icon {
+  font-size: 18px;
+}
+
+.add-worker-container button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+.add-worker-container button:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.add-worker-container button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.total-salary {
+  margin-top: 15px;
+  font-weight: bold;
+  color: green;
+  padding: 10px;
+  background-color: #d4edda;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* Placeholder styling */
+.add-worker-container input::placeholder {
+  color: #999;
+}
+
+/* Required field indicator */
+.add-worker-container input[placeholder*="*"]::after {
+  content: " *";
+  color: #dc3545;
+}
+
+/* Confirmation Modal */
+.confirmation-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.confirmation-modal {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 90%;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.confirmation-modal h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.confirmation-modal p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.confirmation-details {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.confirmation-details p {
+  margin: 8px 0;
+  color: #333;
+}
+
+.confirmation-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.confirm-btn {
+  background: linear-gradient(135deg, #28a745, #218838) !important;
+  color: white !important;
+  padding: 10px 20px !important;
+  border: none !important;
+  border-radius: 6px !important;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.confirm-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.cancel-btn {
+  background: linear-gradient(135deg, #6c757d, #5a6268) !important;
+  color: white !important;
+  padding: 10px 20px !important;
+  border: none !important;
+  border-radius: 6px !important;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 992px) {
+  .add-worker-container {
+    max-width: 100%;
+    margin: 0;
+    padding: 24px;
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .add-worker-container {
+    padding: 20px 16px;
+    border-radius: 12px;
+  }
+
+  .add-worker-container h2 {
+    font-size: 22px;
+  }
+
+  .add-worker-container label {
+    font-size: 12px;
+  }
+
+  .add-worker-container input,
+  .add-worker-container select {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .add-worker-container button {
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  .confirmation-buttons {
+    flex-direction: column;
+  }
+
+  .confirmation-modal {
+    width: 95%;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-worker-container {
+    padding: 16px 12px;
+  }
+
+  .add-worker-container h2 {
+    font-size: 20px;
+  }
+
+  .total-salary {
+    font-size: 14px;
+  }
+}

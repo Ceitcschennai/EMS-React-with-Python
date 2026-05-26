@@ -1,0 +1,492 @@
+/* ======================================================
+   MAIN PAGE WRAPPER - MODERN DESIGN
+   ====================================================== */
+.employees-page-section {
+  width: 100%;
+  padding: 30px 40px 30px 40px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+  min-height: 100vh;
+  margin-left: 0;
+}
+
+/* ======================================================
+   PAGE HEADER - MODERN DESIGN
+   ====================================================== */
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+  position: relative;
+  display: inline-block;
+}
+
+.page-title::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+}
+
+.page-subtitle {
+  color: #64748b;
+  margin-bottom: 32px;
+  font-size: 15px;
+}
+
+
+/* ======================================================
+   FILTERS SECTION - MODERN DESIGN
+   ====================================================== */
+.eps-filters {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.eps-search-input {
+  flex: 1;
+  min-width: 220px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  font-size: 14px;
+  background: white;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.eps-search-input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.eps-search-input::placeholder {
+  color: #94a3b8;
+}
+
+.eps-filter-select {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+  min-width: 160px;
+}
+
+.eps-filter-select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* ======================================================
+   TABLE CONTAINER - MODERN DESIGN
+   ====================================================== */
+.eps-table-container {
+  margin-top: 20px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  overflow: visible;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.eps-table-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+}
+
+
+
+/* ======================================================
+   TABLE - MODERN DESIGN
+   ====================================================== */
+.eps-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+.eps-table th {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.eps-table td {
+  padding: 16px;
+  font-size: 13px;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.2s ease;
+}
+
+.eps-table tbody tr:hover td {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.06) 0%, rgba(118, 75, 162, 0.06) 100%);
+}
+
+.eps-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ======================================================
+   EMPLOYEE INFO - MODERN DESIGN
+   ====================================================== */
+.eps-emp-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.eps-avatar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  height: 44px;
+  width: 44px;
+  border-radius: 50%;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+  flex-shrink: 0;
+}
+
+.eps-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.eps-name {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.eps-email {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* ======================================================
+   TYPE BADGE - MODERN DESIGN
+   ====================================================== */
+.eps-type {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+.eps-type.permanent {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #1d4ed8;
+  box-shadow: 0 2px 6px rgba(29, 78, 216, 0.15);
+}
+
+.eps-type.contract {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #b45309;
+  box-shadow: 0 2px 6px rgba(180, 83, 9, 0.15);
+}
+
+.eps-type.internship {
+  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+  color: #7c3aed;
+  box-shadow: 0 2px 6px rgba(124, 58, 237, 0.15);
+}
+
+/* ======================================================
+   STATUS BADGE - MODERN DESIGN
+   ====================================================== */
+.eps-status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+.eps-status.active {
+  background: linear-gradient(135deg, #d4f6e6 0%, #b8f0d4 100%);
+  color: #0c8a48;
+  box-shadow: 0 2px 8px rgba(12, 138, 72, 0.15);
+}
+
+.eps-status.inactive {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #be123c;
+  box-shadow: 0 2px 8px rgba(190, 18, 60, 0.15);
+}
+
+/* ======================================================
+   ACTIONS DROPDOWN - MODERN DESIGN
+   ====================================================== */
+.eps-actions-column {
+  position: relative;
+}
+
+.eps-actions-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.eps-actions-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.eps-actions-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 40px;
+  z-index: 1000;
+  background: white;
+  padding: 8px 0;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(102, 126, 234, 0.1);
+  width: 180px;
+  border: 1px solid #e2e8f0;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.eps-actions-column.active .eps-actions-menu {
+  display: block;
+}
+
+.eps-actions-menu button {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 13px;
+  color: #334155;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.eps-actions-menu button:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  color: #667eea;
+}
+
+.eps-delete-btn {
+  color: #dc2626;
+}
+
+.eps-delete-btn:hover {
+  background: linear-gradient(135deg, rgba(254, 226, 226, 0.5) 0%, rgba(254, 202, 202, 0.5) 100%) !important;
+  color: #dc2626;
+}
+
+/* ======================================================
+   FOOTER - MODERN DESIGN
+   ====================================================== */
+.eps-footer {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.eps-refresh-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+}
+
+.eps-refresh-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+}
+
+/* ======================================================
+   RESPONSIVE - MODERN BREAKPOINTS
+   ====================================================== */
+@media (max-width: 992px) {
+  .employees-page-section {
+    padding: 12px;
+  }
+
+  .eps-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .eps-header h2 {
+    font-size: 22px;
+  }
+
+  .eps-filters {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .eps-search-input,
+  .eps-filter-select {
+    min-width: 140px;
+  }
+
+  .eps-table-container {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .employees-page-section {
+    padding: 8px;
+  }
+
+  .eps-header {
+    margin-bottom: 16px;
+  }
+
+  .eps-header h2 {
+    font-size: 18px;
+  }
+
+  .eps-filters {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .eps-search-input,
+  .eps-filter-select {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .eps-table-container {
+    border-radius: 12px;
+  }
+
+  .eps-table th,
+  .eps-table td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .eps-avatar {
+    width: 38px;
+    height: 38px;
+    font-size: 13px;
+  }
+
+  .eps-name {
+    font-size: 13px;
+  }
+
+  .eps-email {
+    font-size: 11px;
+  }
+
+  .eps-type,
+  .eps-status {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .employees-page-section {
+    padding: 4px 2px;
+  }
+
+  .eps-header h2 {
+    font-size: 16px;
+  }
+
+  .eps-table th,
+  .eps-table td {
+    padding: 8px;
+    font-size: 11px;
+  }
+
+  .eps-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .eps-name {
+    font-size: 12px;
+  }
+
+  .eps-email {
+    font-size: 10px;
+  }
+
+  .eps-refresh-btn {
+    padding: 10px 18px;
+    font-size: 13px;
+  }
+}

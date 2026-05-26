@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CeiTCS Offer Letter</title>
+    <link rel="stylesheet" href="template.css">
+</head>
+<body>
+
+<div class="header-title">CeiTCS - Offer Letter</div>
+
+<p>Dear <b>{{ full_name }}</b>,</p>
+
+<p>
+We are pleased to offer you the position of <b>{{ position }}</b> at CeiTCS. After
+reviewing your qualifications and your performance during the probation period,
+we are confident in your ability to contribute significantly to our team.
+</p>
+
+<p>
+Your expected start date will be <b>{{ date_of_join }}</b>, and you will report to our 
+Managing Director – <b>Mr. G. Mohanraj</b>. This position is based at our office in 
+Chennai, Tamil Nadu.
+</p>
+
+<h3>Key Details of the Offer:</h3>
+<ul>
+    <li><b>Position:</b> {{ position }}</li>
+    <li><b>Employment Type:</b> {{ employment_type }}</li>
+    <li><b>Salary:</b> ₹{{ total_ctc }} per month</li>
+    <li><b>Benefits:</b> P.F & E.S.I</li>
+    <li><b>Notice Period:</b> 3 months</li>
+</ul>
+
+<p>
+Please confirm your acceptance of this offer by signing and returning this letter 
+within <b>two weeks</b> of receiving this offer.
+</p>
+
+<p>
+This offer is contingent upon successful completion of any background verification and submission
+of required documents as requested by our HR department.
+</p>
+
+<br/>
+
+<p><b>Warm regards,</b><br>
+<b>G. Mohanraj</b><br>
+Managing Director<br>
+CeiTCS</p>
+
+<div class="signature-section">
+    <h3>Acknowledgement and Acceptance</h3>
+
+    <p>
+        I, <b>{{ full_name }}</b>, accept the terms and conditions mentioned in this offer letter.
+    </p>
+
+    <p class="signature-line">
+        Signature: ___________________________
+    </p>
+
+    <p class="signature-line">
+        Date: ________________________________
+    </p>
+</div>
+
+</body>
+</html>

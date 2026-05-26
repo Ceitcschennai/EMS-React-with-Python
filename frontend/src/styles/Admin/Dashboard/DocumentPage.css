@@ -1,0 +1,475 @@
+/* ======================================================
+   MAIN PAGE WRAPPER - MODERN DESIGN
+   ====================================================== */
+.ad-doc-container,
+.ad-doc-page {
+  width: 100%;
+  padding: 30px 40px 30px 40px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+  min-height: 100vh;
+  margin-left: 0;
+}
+
+/* ======================================================
+   PAGE HEADER - MODERN DESIGN
+   ====================================================== */
+.ad-doc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ad-doc-page-title,
+.ad-doc-page-title2 {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+  position: relative;
+  display: inline-block;
+}
+
+.ad-doc-page-title::after,
+.ad-doc-page-title2::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+}
+
+/* Employees screen - title without back button */
+.ad-doc-container .ad-doc-page-title {
+  margin-bottom: 32px;
+}
+
+/* ======================================================
+   STATS CARDS - MODERN DESIGN
+   ====================================================== */
+.ad-doc-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+.ad-doc-stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: left;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.ad-doc-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+}
+
+.ad-doc-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+.ad-doc-stat-card:hover::before {
+  transform: scaleX(1);
+}
+
+.ad-doc-stat-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 36px;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.ad-doc-stat-card p {
+  color: #64748b;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ======================================================
+   FILTERS - MODERN DESIGN
+   ====================================================== */
+.ad-doc-filters {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.ad-doc-search-input {
+  flex: 1;
+  min-width: 300px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  font-size: 14px;
+  background: white;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.ad-doc-search-input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.ad-doc-search-input::placeholder {
+  color: #94a3b8;
+}
+
+.ad-doc-status-select {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+  min-width: 160px;
+}
+
+.ad-doc-status-select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* ======================================================
+   TABLE CONTAINER - MODERN DESIGN
+   ====================================================== */
+.ad-doc-table-wrap,
+.ad-doc-table1-wrap {
+  width: 100%;
+  max-width: 1000px;
+  overflow: visible;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.ad-doc-table-wrap::before,
+.ad-doc-table1-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+}
+
+
+/* ======================================================
+   TABLE - MODERN DESIGN
+   ====================================================== */
+.ad-doc-table,
+.ad-doc-table1 {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.ad-doc-table th,
+.ad-doc-table1 th {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ad-doc-table td,
+.ad-doc-table1 td {
+  padding: 16px;
+  font-size: 13px;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.2s ease;
+}
+
+.ad-doc-table tbody tr:hover td,
+.ad-doc-table1 tbody tr:hover td {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.06) 0%, rgba(118, 75, 162, 0.06) 100%);
+}
+
+.ad-doc-table tbody tr:last-child td,
+.ad-doc-table1 tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ======================================================
+   BADGES - MODERN DESIGN
+   ====================================================== */
+.ad-doc-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+.ad-doc-badge.pending {
+  background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
+  color: #b45309;
+  box-shadow: 0 2px 8px rgba(180, 83, 9, 0.15);
+}
+
+.ad-doc-badge.verified {
+  background: linear-gradient(135deg, #d4f6e6 0%, #b8f0d4 100%);
+  color: #0c8a48;
+  box-shadow: 0 2px 8px rgba(12, 138, 72, 0.15);
+}
+
+.ad-doc-badge.rejected {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #be123c;
+  box-shadow: 0 2px 8px rgba(190, 18, 60, 0.15);
+}
+
+.ad-doc-badge.done {
+  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+  color: #4338ca;
+  box-shadow: 0 2px 8px rgba(67, 56, 202, 0.15);
+}
+
+/* ======================================================
+   BUTTONS - MODERN DESIGN
+   ====================================================== */
+.ad-doc-back-btn {
+  background: linear-gradient(135deg, #64748b, #475569);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3);
+  white-space: nowrap;
+}
+
+.ad-doc-back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(100, 116, 139, 0.4);
+}
+
+.ad-doc-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.ad-doc-btn.view {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+}
+
+.ad-doc-btn.view:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+}
+
+.ad-doc-btn.approve {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.ad-doc-btn.approve:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+}
+
+.ad-doc-btn.reject {
+  background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.35);
+}
+
+.ad-doc-btn.reject:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 87, 108, 0.45);
+}
+
+.ad-doc-view-btn {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+}
+
+.ad-doc-view-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+}
+
+/* ======================================================
+   RESPONSIVE - MODERN BREAKPOINTS
+   ====================================================== */
+@media (max-width: 992px) {
+  .ad-doc-container,
+  .ad-doc-page {
+    padding: 12px;
+  }
+
+  .ad-doc-page-title,
+  .ad-doc-page-title2 {
+    font-size: 22px;
+  }
+
+  .ad-doc-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .ad-doc-stat-card {
+    padding: 16px;
+  }
+
+  .ad-doc-stat-card h3 {
+    font-size: 24px;
+  }
+
+  .ad-doc-filters {
+    max-width: 100%;
+  }
+
+  .ad-doc-table-wrap,
+  .ad-doc-table1-wrap {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .ad-doc-container,
+  .ad-doc-page {
+    padding: 8px;
+  }
+
+  .ad-doc-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ad-doc-page-title,
+  .ad-doc-page-title2 {
+    font-size: 20px;
+  }
+
+  .ad-doc-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .ad-doc-stat-card {
+    padding: 14px;
+  }
+
+  .ad-doc-stat-card h3 {
+    font-size: 20px;
+  }
+
+  .ad-doc-filters {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ad-doc-search-input,
+  .ad-doc-status-select {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .ad-doc-table th,
+  .ad-doc-table td,
+  .ad-doc-table1 th,
+  .ad-doc-table1 td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ad-doc-container,
+  .ad-doc-page {
+    padding: 4px 2px;
+  }
+
+  .ad-doc-page-title,
+  .ad-doc-page-title2 {
+    font-size: 18px;
+  }
+
+  .ad-doc-stat-card h3 {
+    font-size: 18px;
+  }
+
+  .ad-doc-table th,
+  .ad-doc-table td,
+  .ad-doc-table1 th,
+  .ad-doc-table1 td {
+    padding: 8px;
+    font-size: 11px;
+  }
+
+  .ad-doc-btn,
+  .ad-doc-view-btn,
+  .ad-doc-back-btn {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+}

@@ -1,0 +1,298 @@
+/* ======================================================
+   Gmail-Style Mail Detail Page - MODERN DESIGN
+   ====================================================== */
+
+.mail-detail-page {
+  padding: 30px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Back Button - MODERN DESIGN */
+.mail-back-btn {
+  font-size: 18px;
+  margin-bottom: 24px;
+  cursor: pointer;
+  color: #334155;
+  background: white;
+  border: 2px solid #e2e8f0;
+  padding: 10px 20px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.mail-back-btn:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+  transform: translateY(-2px);
+}
+
+/* Main Card - MODERN DESIGN */
+.mail-card {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s ease;
+}
+
+.mail-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.mail-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Subject line - MODERN DESIGN */
+.mail-card-header {
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.mail-subject {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+
+/* Meta row (From, To, Date) - MODERN DESIGN */
+.mail-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+.mail-IDS {
+  flex: 1;
+}
+
+.mail-from-id {
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mail-date {
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  padding: 8px 16px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+/* Avatar + Sender block - MODERN DESIGN */
+.mail-meta-sender {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.mail-avatar-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+}
+
+
+/* Sections - MODERN DESIGN */
+.mail-card-section {
+  margin-top: 28px;
+}
+
+.mail-card-section h4 {
+  margin: 0 0 14px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+/* Message Box - MODERN DESIGN */
+.mail-message-box {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 14px;
+  padding: 20px 24px;
+  font-size: 15px;
+  line-height: 1.7;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+/* Employee card - MODERN DESIGN */
+.employee-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px 24px;
+  border: 1px solid #e2e8f0;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.employee-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.employee-card > div {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.employee-card > div:last-child {
+  margin-bottom: 0;
+}
+
+/* Error - MODERN DESIGN */
+.error-text {
+  color: #f5576c;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 16px;
+  background: rgba(245, 87, 108, 0.1);
+  border-radius: 10px;
+  display: inline-block;
+}
+
+/* ======================================================
+   RESPONSIVE - MODERN BREAKPOINTS
+   ====================================================== */
+@media (max-width: 992px) {
+  .mail-detail-page {
+    max-width: 100%;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mail-detail-page {
+    padding: 16px;
+  }
+
+  .mail-card {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .mail-meta-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .mail-subject {
+    font-size: 20px;
+  }
+
+  .mail-meta-sender {
+    gap: 12px;
+  }
+
+  .mail-avatar-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .mail-message-box {
+    padding: 16px;
+    font-size: 14px;
+  }
+
+  .mail-back-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .mail-detail-page {
+    padding: 12px 8px;
+  }
+
+  .mail-card {
+    padding: 16px 12px;
+  }
+
+  .mail-subject {
+    font-size: 18px;
+  }
+
+  .mail-from-id {
+    font-size: 13px;
+  }
+
+  .mail-date {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .mail-card-section h4 {
+    font-size: 14px;
+  }
+
+  .employee-card {
+    padding: 16px;
+    font-size: 13px;
+  }
+
+  .employee-card > div {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}

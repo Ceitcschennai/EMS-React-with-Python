@@ -1,0 +1,59 @@
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    margin: 40px;
+    background: #f7f7f7;
+    color: #333;
+    line-height: 1.6;
+}
+
+.header-title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    color: #222;
+    letter-spacing: 1px;
+}
+
+h3 {
+    margin-top: 25px;
+    color: #444;
+    border-left: 4px solid #0a84ff;
+    padding-left: 10px;
+}
+
+ul {
+    margin: 15px 0;
+    padding-left: 25px;
+}
+
+ul li {
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.signature-section {
+    margin-top: 40px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 6px;
+}
+
+.signature-section h3 {
+    margin-top: 0;
+}
+
+.signature-line {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+p {
+    font-size: 16px;
+}
+
+b {
+    color: #000;
+}

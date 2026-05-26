@@ -1,0 +1,215 @@
+/* =========================================================
+    MAIN DASHBOARD WRAPPER - MODERN DESIGN
+    Expands full width + aligns properly with sidebar
+========================================================= */
+.dashboard-home-page {
+  width: 100%;
+  padding: 0px 0px;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  min-height: 100vh;
+}
+
+/* =========================================================
+   PAGE TITLE - MODERN DESIGN
+========================================================= */
+.dashboard-home-page .page-header {
+  margin-bottom: 24px;
+}
+
+.dashboard-home-page .page-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.5px;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.dashboard-home-page .page-title::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 50px;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+}
+
+.dashboard-home-page .page-subtitle {
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* =========================================================
+   TOP INFO CARDS — MATRIX STYLE (4 in a row)
+========================================================= */
+.admin-info-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* =========================================================
+   CHARTS + RECENT EMPLOYEES (MATRIX STYLE)
+========================================================= */
+.admin-dashboard-charts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+/* Card Appearance - Modern Design */
+.admin-dashboard-charts > div,
+.admin-info-cards > div {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-dashboard-charts > div::before,
+.admin-info-cards > div::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+}
+
+.admin-dashboard-charts > div:hover,
+.admin-info-cards > div:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.admin-dashboard-charts > div:hover::before,
+.admin-info-cards > div:hover::before {
+  transform: scaleX(1);
+}
+
+.ic-card:hover,
+.re-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================================
+    RESPONSIVE DESIGN - MODERN BREAKPOINTS
+========================================================= */
+
+/* Laptop / Tablet Large */
+@media (max-width: 1200px) {
+  .admin-info-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .admin-dashboard-charts {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+  .admin-info-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .admin-dashboard-charts {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .dashboard-home-page {
+    padding: 12px;
+  }
+
+  .dashboard-home-page .page-title {
+    font-size: 22px;
+  }
+}
+
+/* Mobile - Matrix style keeps 2 columns */
+@media (max-width: 768px) {
+  .admin-info-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .admin-dashboard-charts {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .dashboard-home-page {
+    padding: 8px;
+  }
+
+  .dashboard-home-page .page-title {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .dashboard-home-page .page-subtitle {
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+
+  .dashboard-home-page .page-header {
+    margin-bottom: 10px;
+  }
+
+  .admin-dashboard-charts > div,
+  .admin-info-cards > div {
+    padding: 12px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-info-cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+
+  .admin-dashboard-charts {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .dashboard-home-page {
+    padding: 4px 2px;
+  }
+
+  .dashboard-home-page .page-title {
+    font-size: 14px;
+  }
+
+  .dashboard-home-page .page-subtitle {
+    font-size: 9px;
+  }
+
+  .admin-dashboard-charts > div,
+  .admin-info-cards > div {
+    padding: 6px 4px;
+    border-radius: 6px;
+  }
+}

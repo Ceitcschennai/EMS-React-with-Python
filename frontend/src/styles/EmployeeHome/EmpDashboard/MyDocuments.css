@@ -1,0 +1,412 @@
+/* ============================================================
+   MyDocuments.css - PURPLE THEME
+   Theme: Purple gradient matching the sidebar design
+ ============================================================ */
+
+/* CSS Variables */
+:root {
+  --doc-primary: #667eea;
+  --doc-secondary: #764ba2;
+  --doc-bg-dark: #1a1a2e;
+  --doc-glow: rgba(102, 126, 234, 0.5);
+}
+
+/* ===== WRAPPER + CONTAINER ===== */
+.emp-doc-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf3 100%);
+}
+
+.emp-doc-container {
+  width: 100%;
+  max-width: 1300px;
+  padding: 40px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(102, 126, 234, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--doc-primary), var(--doc-secondary));
+  border-radius: 8px;
+}
+
+/* ===== PAGE TITLE ===== */
+.emp-doc-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-align: center;
+  color: var(--doc-bg-dark);
+  letter-spacing: -0.5px;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.emp-doc-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--doc-primary), var(--doc-secondary));
+  border-radius: 4px;
+}
+
+/* ===== DROPDOWN SECTION HEADER ===== */
+.emp-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+  cursor: pointer;
+  padding: 8px 4px;
+  position: relative;
+}
+
+.emp-section h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--doc-bg-dark);
+}
+
+.emp-section::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--doc-primary), var(--doc-secondary));
+  border-radius: 6px;
+}
+
+.arrow {
+  font-size: 20px;
+  color: var(--doc-primary);
+  transition: transform 0.3s ease;
+}
+
+.emp-section:hover .arrow {
+  transform: scale(1.2);
+}
+
+/* ===== GRID LAYOUT ===== */
+.emp-doc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .emp-doc-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .emp-doc-container {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .emp-doc-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .emp-doc-container {
+    padding: 12px;
+  }
+
+  .emp-doc-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .emp-doc-card {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .emp-doc-left-row {
+    gap: 8px;
+  }
+
+  .emp-doc-icon {
+    font-size: 18px;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .emp-doc-name {
+    font-size: 14px;
+  }
+
+  .emp-doc-status-text {
+    font-size: 12px;
+  }
+
+  .emp-section h3 {
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+
+  .emp-section {
+    margin-top: 24px;
+  }
+
+  .emp-doc-upload-btn,
+  .emp-doc-reupload-btn,
+  .emp-doc-approved-btn {
+    padding: 9px 14px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+  .salary-add-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .emp-doc-container {
+    padding: 10px 6px;
+  }
+
+  .emp-doc-title {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .emp-doc-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .emp-doc-icon {
+    font-size: 16px;
+    padding: 6px;
+  }
+
+  .emp-doc-name {
+    font-size: 13px;
+  }
+
+  .emp-doc-status-text {
+    font-size: 11px;
+  }
+
+  .emp-doc-upload-btn,
+  .emp-doc-reupload-btn,
+  .emp-doc-approved-btn {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+}
+
+/* ===== CARD DESIGN ===== */
+.emp-doc-card {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.emp-doc-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--doc-primary), var(--doc-secondary));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.emp-doc-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(102, 126, 234, 0.15);
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+.emp-doc-card:hover::before {
+  opacity: 1;
+}
+
+/* ===== CARD LEFT SIDE ===== */
+.emp-doc-left {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.emp-doc-left-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.emp-doc-icon {
+  font-size: 24px;
+  color: var(--doc-primary);
+  background: rgba(102, 126, 234, 0.1);
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emp-doc-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1c1c1c;
+}
+
+/* ===== STATUS COLORS ===== */
+.emp-doc-status-text {
+  font-size: 14px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.status-green {
+  color: #22c55e !important;
+  font-weight: 600;
+}
+
+.status-red {
+  color: #ef4444 !important;
+  font-weight: 600;
+}
+
+.status-blue {
+  color: var(--doc-primary) !important;
+  font-weight: 600;
+}
+
+.status-gray {
+  color: #6b7280 !important;
+}
+
+/* ===== BUTTONS ===== */
+.emp-doc-right {
+  margin-top: 16px;
+}
+
+.emp-doc-upload-btn,
+.emp-doc-reupload-btn,
+.emp-doc-approved-btn {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Upload button */
+.emp-doc-upload-btn {
+  background: linear-gradient(135deg, var(--doc-primary), var(--doc-secondary));
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.emp-doc-upload-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Reupload button */
+.emp-doc-reupload-btn {
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+}
+
+.emp-doc-reupload-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+}
+
+/* Uploaded button (grey) */
+.emp-doc-uploaded-btn {
+  background: linear-gradient(135deg, #9ca3af, #6b7280);
+  color: #fff;
+  cursor: default;
+  box-shadow: 0 4px 15px rgba(156, 163, 175, 0.3);
+}
+
+/* Approved button */
+.emp-doc-approved-btn {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  cursor: default;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+}
+
+/* ===== SALARY SLIPS SECTION ===== */
+.emp-doc-salary-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.salary-add-btn {
+  width: 200px;
+  margin-top: 12px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--doc-primary), var(--doc-secondary));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.salary-add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}

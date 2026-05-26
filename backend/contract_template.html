@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CeiTCS Contract Letter</title>
+    <link rel="stylesheet" href="template.css">
+</head>
+<body>
+
+<div class="header-title">CeiTCS - Contract Offer Letter</div>
+
+<p>Dear <b>{{ first_name }} {{ last_name }} {{ initial_name }} </b>,</p>
+
+<p>
+Congratulations <b>{{ first_name }} {{ last_name }} {{ initial_name }}</b>! We are pleased to offer you a 
+<b>Contract</b> position as <b>{{ position }}</b> at CeiTCS.  
+Your skills, dedication, and performance have impressed our team, 
+and we believe you will be a valuable addition to our organization.
+</p>
+
+<h3>Contract Details:</h3>
+<ul>
+    <li><b>First Name:</b> {{ first_name }}</li>
+    <li><b>Last Name:</b> {{ last_name }}</li>
+    <li><b>Middle Initial:</b> {{ initial_name }}</li>
+    <li><b>Position:</b> {{ position }}</li>
+    <li><b>Employment Type:</b> Contract</li>
+    <li><b>Contract Duration:</b> 6 Months (extendable)</li>
+    <li><b>Salary:</b> ₹{{ total_ctc }} per month</li>
+    <li><b>Working Location:</b> Chennai</li>
+</ul>
+
+<p>
+Kindly confirm your acceptance by replying to this email.
+</p>
+
+<br/>
+<p><b>Warm regards,</b><br>
+<b>G. Mohanraj</b><br>
+Managing Director<br>
+CeiTCS</p>
+
+<div class="signature-section">
+    <h3>Acknowledgement and Acceptance</h3>
+
+    <p>
+        I, <b>{{ first_name }} {{ last_name }} {{ initial_name }}</b>, accept the terms and conditions mentioned in this offer letter.
+    </p>
+
+    <p class="signature-line">
+        Signature: ___________________________
+    </p>
+
+    <p class="signature-line">
+        Date: ________________________________
+    </p>
+</div>
+
+</body>
+</html>

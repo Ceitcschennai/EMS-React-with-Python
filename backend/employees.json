@@ -1,0 +1,730 @@
+[
+    {
+        "full_name": "Kavinkumar",
+        "email": "kk3080065@gmail.com",
+        "employment_type": "Permanent",
+        "department": "Engineering",
+        "position": "Engineer ",
+        "date_of_join": "2006-05-31",
+        "basic_salary": 8000.0,
+        "house_rent_allowance": 2000.0,
+        "dearness_allowance": 5000.0,
+        "travel_allowance": 800.0,
+        "other_allowance": 200.0,
+        "total_ctc": 16000.0,
+        "emp_id": "Kavinkumar@362",
+        "status": "Active",
+        "temporary_password": null,
+        "created_at": "2025-11-20T09:14:34.072929",
+        "permanent_password": "Kavin@123$",
+        "profile_completed": true,
+        "profile_updated_at": "2025-11-20 14:49:54",
+        "personal_info": {
+            "gender": "Male",
+            "dob": "2025-11-24",
+            "contact_number": "9361315514",
+            "Nationality": "Indian",
+            "Martial_status": "Single",
+            "temporary_address": {
+                "street": "",
+                "city_or_town": "",
+                "district": "",
+                "state": "",
+                "country": "",
+                "pincode": ""
+            },
+            "permanent_address": {
+                "street": "304/2/41 krishnampatti",
+                "city_or_town": "Sivaganga",
+                "district": "thiruppathur",
+                "state": "TN",
+                "country": "India",
+                "pincode": "630211"
+            },
+            "emergency_contact": {
+                "contact_name": "Kavinkumar S",
+                "relationship": "Friend",
+                "contact_number": "09361315514",
+                "contact_Address": "304/2/41 krishnampatti, thiruppathur"
+            },
+            "education": {
+                "undergraduate": {
+                    "degree_name": "B.Tech,  AI",
+                    "university": "Anna University",
+                    "year_of_completion": "2025",
+                    "percentage_or_cgpa": "87"
+                },
+                "postgraduate": {
+                    "degree_name": "",
+                    "university": "",
+                    "year_of_completion": "",
+                    "percentage_or_cgpa": ""
+                },
+                "school": {
+                    "level": "12th",
+                    "school_name": "Baba Amir badhusha Hr.Sec.School",
+                    "board_name": "State Board",
+                    "year_of_completion": "2021",
+                    "percentage": "78"
+                }
+            },
+            "bank_details": {
+                "account_holder_name": "Kavin",
+                "bank_name": "SBI",
+                "branch_name": "TRP",
+                "ifsc": "9878545612300255",
+                "account_number": "78945623102"
+            }
+        },
+        "offer_letter_status": "Sent",
+        "documents": {
+            "profile_photo": {
+                "profile_photo": {
+                    "document_name": "profile.jpg",
+                    "document_url": "uploads/Kavinkumar@362\\profile.jpg",
+                    "document_status": "verified",
+                    "remarks": ""
+                }
+            },
+            "identity_proofs": {
+                "passport": {
+                    "document_name": "Screenshot 2025-09-05 185700.png",
+                    "document_url": "uploads/Kavinkumar@362\\Screenshot 2025-09-05 185700.png",
+                    "document_status": "verified",
+                    "remarks": ""
+                },
+                "aadhar_card": {
+                    "document_name": "Screenshot 2025-09-05 185700.png",
+                    "document_url": "uploads/Kavinkumar@362\\Screenshot 2025-09-05 185700.png",
+                    "document_status": "verified",
+                    "remarks": ""
+                },
+                "pan_card": {
+                    "document_name": "Screenshot 2025-12-09 125509.png",
+                    "document_url": "http://localhost:8000/uploads/Kavinkumar@362/Screenshot 2025-12-09 125509.png",
+                    "document_status": "rejected",
+                    "remarks": "Incorrect document"
+                }
+            },
+            "educational_certificates": {
+                "diploma_certificate": {
+                    "document_name": "0_yGZ5EF4hsMe2JSOu.jpg",
+                    "document_url": "http://localhost:8000/uploads/Kavinkumar@362/0_yGZ5EF4hsMe2JSOu.jpg",
+                    "document_status": "rejected",
+                    "remarks": "Incorrect document"
+                }
+            },
+            "additional_certificates": {},
+            "experience_documents": {}
+        }
+    },
+    {
+        "full_name": "abi",
+        "email": "dadsqueen9988@gmail.com",
+        "employment_type": "Permanent",
+        "department": "Engineering",
+        "position": "Engineering",
+        "date_of_join": "2025-11-21",
+        "basic_salary": 5000.0,
+        "house_rent_allowance": 4000.0,
+        "dearness_allowance": 2000.0,
+        "travel_allowance": 3000.0,
+        "other_allowance": 1000.0,
+        "total_ctc": 15000.0,
+        "emp_id": "Abi34234",
+        "status": "Inactive",
+        "temporary_password": null,
+        "created_at": "2025-11-20T11:01:54.337702",
+        "permanent_password": "Abi@123$",
+        "profile_completed": true,
+        "profile_updated_at": "2025-11-20 21:51:57",
+        "personal_info": {
+            "gender": "Male",
+            "dob": "2025-11-11",
+            "contact_number": "9876542310",
+            "Nationality": "Indian",
+            "Martial_status": "Single",
+            "temporary_address": {
+                "street": "304/2/41 krishnampatti, thiruppathur",
+                "city_or_town": "Sivaganga",
+                "district": "svg",
+                "state": "TN",
+                "country": "India",
+                "pincode": "630211"
+            },
+            "permanent_address": {
+                "street": "304/2/41 krishnampatti, thiruppathur",
+                "city_or_town": "Sivaganga",
+                "district": "",
+                "state": "TN",
+                "country": "India",
+                "pincode": "630211"
+            },
+            "emergency_contact": {
+                "contact_name": "",
+                "relationship": "Friend",
+                "contact_number": "",
+                "contact_Address": ""
+            },
+            "education": {
+                "undergraduate": null,
+                "postgraduate": null,
+                "school": null
+            },
+            "bank_details": {
+                "account_holder_name": "",
+                "bank_name": "",
+                "branch_name": "",
+                "ifsc": "",
+                "account_number": ""
+            }
+        },
+        "salary": "",
+        "joining_date": "",
+        "offer_letter_status": "Sent",
+        "deactivated_at": "2026-03-02 12:27:16"
+    },
+    {
+        "full_name": "kavin",
+        "email": "kavinkumar.s@gmail.com",
+        "employment_type": "Permanent",
+        "department": "Engineering",
+        "position": "engineering ",
+        "date_of_join": "2025-12-13",
+        "basic_salary": 5000.0,
+        "house_rent_allowance": 2000.0,
+        "dearness_allowance": 3000.0,
+        "travel_allowance": 300.0,
+        "other_allowance": 200.0,
+        "total_ctc": 10500.0,
+        "emp_id": "Kav63573",
+        "status": "Active",
+        "temporary_password": null,
+        "created_at": "2025-11-21T06:46:28.752983",
+        "documents": {
+            "profile_photo": {
+                "emp_id": null,
+                "document_type": null,
+                "document_status": null,
+                "comment": ""
+            },
+            "identity_proofs": {
+                "aadhar_card": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "pan_card": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "passport": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "driving_license": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "educational_certificates": {
+                "diploma_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "degree_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "postgraduate_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "consolidated_marksheet": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "provisional_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "transfer_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "additional_certificates": {
+                "language_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "other_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "experience_documents": {
+                "experience_certificate_1": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "experience_certificate_2": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "experience_certificate_3": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "relieving_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "salary_slips": []
+            }
+        },
+        "permanent_password": "Kavin@123$",
+        "profile_completed": true,
+        "profile_updated_at": "2025-11-23 13:21:29",
+        "personal_info": {
+            "gender": "Male",
+            "dob": "2025-11-24",
+            "contact_number": "9361315514",
+            "Nationality": "Indian",
+            "Martial_status": "Single",
+            "temporary_address": {
+                "street": "",
+                "city_or_town": "",
+                "district": "",
+                "state": "",
+                "country": "",
+                "pincode": ""
+            },
+            "permanent_address": {
+                "street": "304/2/41 krishnampatti",
+                "city_or_town": "Sivaganga",
+                "district": "thiruppathur",
+                "state": "TN",
+                "country": "India",
+                "pincode": "630211"
+            },
+            "emergency_contact": {
+                "contact_name": "Kavinkumar S",
+                "relationship": "Friend",
+                "contact_number": "09361315514",
+                "contact_Address": "304/2/41 krishnampatti, thiruppathur"
+            },
+            "education": {
+                "undergraduate": {
+                    "degree_name": "B.Tech,  AI",
+                    "university": "Anna University",
+                    "year_of_completion": "2025",
+                    "percentage_or_cgpa": "87"
+                },
+                "postgraduate": {
+                    "degree_name": "",
+                    "university": "",
+                    "year_of_completion": "",
+                    "percentage_or_cgpa": ""
+                },
+                "school": {
+                    "level": "12th",
+                    "school_name": "Baba",
+                    "board_name": "State Board",
+                    "year_of_completion": "2021",
+                    "percentage": "78"
+                }
+            },
+            "bank_details": {
+                "account_holder_name": "Kavin",
+                "bank_name": "SBI",
+                "branch_name": "TRP",
+                "ifsc": "9878545612300255",
+                "account_number": "78945623102"
+            }
+        },
+        "offer_letter_status": "Sent"
+    },
+    {
+        "full_name": "kavin",
+        "email": "kavinkumar.s.9361@gmail.com",
+        "employment_type": "Permanent",
+        "department": "Engineering",
+        "position": "engineering ",
+        "date_of_join": "2025-12-13",
+        "basic_salary": 5000.0,
+        "house_rent_allowance": 2000.0,
+        "dearness_allowance": 3000.0,
+        "travel_allowance": 300.0,
+        "other_allowance": 200.0,
+        "total_ctc": 10500.0,
+        "emp_id": "Kav18735",
+        "status": "Active",
+        "temporary_password": null,
+        "created_at": "2025-11-21T06:49:19.883598",
+        "documents": {
+            "profile_photo": {
+                "emp_id": null,
+                "document_type": null,
+                "document_status": null,
+                "comment": ""
+            },
+            "identity_proofs": {
+                "aadhar_card": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "pan_card": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "passport": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "driving_license": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "educational_certificates": {
+                "diploma_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "degree_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "postgraduate_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "consolidated_marksheet": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "provisional_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "transfer_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "additional_certificates": {
+                "language_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "other_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "experience_documents": {
+                "experience_certificate_1": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "experience_certificate_2": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "experience_certificate_3": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "relieving_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "salary_slips": []
+            }
+        },
+        "permanent_password": "Kavin@123",
+        "profile_completed": true,
+        "profile_updated_at": "2025-11-23 14:02:05",
+        "personal_info": {
+            "gender": "Male",
+            "dob": "2025-11-24",
+            "contact_number": "9361315514",
+            "Nationality": "Indian",
+            "Martial_status": "Single",
+            "temporary_address": {
+                "street": "",
+                "city_or_town": "",
+                "district": "",
+                "state": "",
+                "country": "",
+                "pincode": ""
+            },
+            "permanent_address": {
+                "street": "304/2/41 krishnampatti",
+                "city_or_town": "Sivaganga",
+                "district": ", thiruppathur",
+                "state": "TN",
+                "country": "India",
+                "pincode": "630211"
+            },
+            "emergency_contact": {
+                "contact_name": "Kavinkumar S",
+                "relationship": "Friend",
+                "contact_number": "09361315514",
+                "contact_Address": "304/2/41 krishnampatti, thiruppathur"
+            },
+            "education": {
+                "undergraduate": {
+                    "degree_name": "B.tech, AI",
+                    "university": "Anna University ",
+                    "year_of_completion": "2025",
+                    "percentage_or_cgpa": "87"
+                },
+                "postgraduate": {
+                    "degree_name": "",
+                    "university": "",
+                    "year_of_completion": "",
+                    "percentage_or_cgpa": ""
+                },
+                "school": {
+                    "level": "12th",
+                    "school_name": "baba ",
+                    "board_name": "State Board",
+                    "year_of_completion": "2021",
+                    "percentage": "78"
+                }
+            },
+            "bank_details": {
+                "account_holder_name": "Kavinkumar ",
+                "bank_name": "SBI",
+                "branch_name": "Trp",
+                "ifsc": "78945612302545",
+                "account_number": "98754612302"
+            }
+        }
+    },
+    {
+        "full_name": "kavin",
+        "email": "kavink@gmail.com",
+        "employment_type": "Permanent",
+        "department": "Engineering",
+        "position": "engineering ",
+        "date_of_join": "2025-12-13",
+        "basic_salary": 5000.0,
+        "house_rent_allowance": 2000.0,
+        "dearness_allowance": 3000.0,
+        "travel_allowance": 300.0,
+        "other_allowance": 200.0,
+        "total_ctc": 10500.0,
+        "emp_id": "Kav80736",
+        "status": "Inactive",
+        "temporary_password": null,
+        "created_at": "2025-11-21T06:52:53.385831",
+        "documents": {
+            "profile_photo": {
+                "emp_id": null,
+                "document_type": null,
+                "document_status": null,
+                "comment": ""
+            },
+            "identity_proofs": {
+                "aadhar_card": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "pan_card": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "passport": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "driving_license": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "educational_certificates": {
+                "diploma_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "degree_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "postgraduate_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "consolidated_marksheet": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "provisional_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "transfer_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "additional_certificates": {
+                "language_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "other_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "experience_documents": {
+                "experience_certificate_1": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "experience_certificate_2": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "experience_certificate_3": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "relieving_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "salary_slips": []
+            }
+        },
+        "permanent_password": "Kavin@123$",
+        "deactivated_at": "2025-12-06 13:03:25"
+    },
+    {
+        "full_name": "kkkcom",
+        "email": "kavinkumar.santhanakrishnan@gmail.com",
+        "employment_type": "Contract",
+        "department": "Engineering",
+        "position": "Java",
+        "date_of_join": "2025-12-26",
+        "basic_salary": 1000.0,
+        "house_rent_allowance": 1000.0,
+        "dearness_allowance": 1000.0,
+        "travel_allowance": 1000.0,
+        "other_allowance": 998.0,
+        "total_ctc": 4998.0,
+        "emp_id": "Kkk45483",
+        "status": "Active",
+        "temporary_password": "Kkk4%Dy35kk",
+        "created_at": "2025-12-08T07:04:28.411426",
+        "documents": {
+            "profile_photo": {},
+            "identity_proofs": {},
+            "educational_certificates": {},
+            "additional_certificates": {},
+            "experience_documents": {}
+        },
+        "salary": "",
+        "joining_date": ""          
+    }
+]

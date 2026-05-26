@@ -1,0 +1,436 @@
+/* ============================================================
+   EMPLOYEE LAYOUT - SIDEBAR STYLES
+   ============================================================ */
+
+/* CSS Variables for Theme Consistency */
+:root {
+  --emp-sidebar-primary: #667eea;
+  --emp-sidebar-secondary: #764ba2;
+  --emp-sidebar-bg-dark: #1a1a2e;
+  --emp-sidebar-bg-mid: #2d1f4a;
+  --emp-sidebar-bg-light: #3d2f6b;
+  --emp-sidebar-text: rgba(255, 255, 255, 0.85);
+  --emp-sidebar-text-muted: rgba(255, 255, 255, 0.6);
+  --emp-sidebar-glow: rgba(102, 126, 234, 0.5);
+}
+
+/* SIDEBAR MAIN WRAPPER */
+.emp-sidebar-container {
+  width: 280px;
+  background: linear-gradient(180deg, var(--emp-sidebar-bg-dark) 0%, var(--emp-sidebar-bg-mid) 50%, var(--emp-sidebar-bg-light) 100%);
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 0;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2000;
+  overflow: visible;
+  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Decorative gradient overlay */
+.emp-sidebar-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: radial-gradient(ellipse at top, rgba(102, 126, 234, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* COLLAPSED SIDEBAR */
+.emp-sidebar-collapsed {
+  width: 90px !important;
+}
+
+/* =========================================================
+   HEADER SECTION
+   ========================================================= */
+.emp-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 20px;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  min-height: 100px;
+}
+
+.emp-sidebar-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+  margin-left: 5%;
+}
+
+.emp-sidebar-logo-container-hr{
+  margin-left: 0 !important;
+}
+/* Animated Logo Icon */
+.emp-sidebar-logo-icon {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  text-shadow: 0 2px 15px rgba(102, 126, 234, 0.6);
+  white-space: nowrap;
+  background-clip: text;
+}
+
+.emp-sidebar-subtitle {
+  font-size: 11px;
+  margin: 4px 0 0 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* COLLAPSE BUTTON - SMALL CIRCULAR GLOW */
+.emp-sidebar-collapse-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(102, 126, 234, 0.4);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 12px rgba(102, 126, 234, 0.4), 0 0 24px rgba(102, 126, 234, 0.2);
+  animation: emp-btn-pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: 5px;
+  position: relative;
+  z-index: 2001;
+  pointer-events: auto;
+}
+
+@keyframes emp-btn-pulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(102, 126, 234, 0.4), 0 0 24px rgba(102, 126, 234, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.6), 0 0 40px rgba(102, 126, 234, 0.3);
+  }
+}
+
+.emp-sidebar-collapse-btn:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: #667eea;
+  box-shadow: 0 0 25px rgba(102, 126, 234, 0.8), 0 0 50px rgba(102, 126, 234, 0.4);
+  transform: scale(1.15);
+  animation: none;
+}
+
+.emp-sidebar-collapse-btn:active {
+  transform: scale(0.95);
+}
+
+/* When sidebar is collapsed, center the button */
+.emp-sidebar-collapsed .emp-sidebar-collapse-btn {
+  margin-left: 0;
+  margin-right: 0;
+  margin: 0 auto;
+}
+
+/* MENU LIST */
+.emp-sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}
+
+/* MENU LINKS - SLEEK & MODERN */
+.emp-sidebar-menu-link {
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  margin: 6px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 14px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+  background: transparent;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+}
+
+.emp-sidebar-menu-link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0 14px 14px 0;
+}
+
+.emp-sidebar-menu-link:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(102, 126, 234, 0.3);
+  transform: translateX(4px);
+}
+
+.emp-sidebar-menu-link:hover::before {
+  width: 4px;
+}
+
+.emp-sidebar-menu-link .menu-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.emp-sidebar-menu-link:hover .menu-icon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
+  transform: scale(1.05);
+}
+
+/* ACTIVE PAGE - SLEEK DESIGN */
+.emp-sidebar-active {
+  color: white !important;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%) !important;
+  font-weight: 600 !important;
+  border: 1px solid rgba(102, 126, 234, 0.4);
+}
+
+.emp-sidebar-active::before {
+  width: 4px !important;
+}
+
+.emp-sidebar-active .menu-icon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
+  transform: scale(1.05);
+}
+
+/* MENU LABEL */
+.emp-sidebar-menu-link span {
+  flex: 1;
+  letter-spacing: 0.3px;
+}
+
+/* LOGOUT BUTTON - SLEEK DESIGN */
+.emp-sidebar-logout-btn {
+  margin-top: auto;
+  margin-bottom: 24px;
+  background: rgba(245, 87, 108, 0.08);
+  border: 1px solid rgba(245, 87, 108, 0.2);
+  color: #f5576c;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 14px 20px;
+  margin: 6px 14px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-radius: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.emp-sidebar-logout-btn:hover {
+  background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+  transform: translateX(4px);
+  border-color: transparent;
+}
+
+.emp-sidebar-logout-btn .menu-icon {
+  background: rgba(245, 87, 108, 0.15);
+  border: 1px solid rgba(245, 87, 108, 0.2);
+}
+
+.emp-sidebar-logout-btn:hover .menu-icon {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: transparent;
+}
+
+/* WHEN COLLAPSED: HIDE TEXT LABELS */
+.emp-sidebar-collapsed .emp-sidebar-menu-link span,
+.emp-sidebar-collapsed .emp-sidebar-subtitle {
+  display: none !important;
+}
+
+/* HIDE LOGO IN COLLAPSED STATE */
+.emp-sidebar-collapsed .emp-sidebar-logo-container {
+  display: none !important;
+}
+
+/* ICONS CENTERED WHEN COLLAPSED */
+.emp-sidebar-collapsed .emp-sidebar-menu-link {
+  justify-content: center;
+  padding: 14px 0;
+  margin: 6px 14px;
+  border-radius: 14px;
+}
+
+.emp-sidebar-collapsed .emp-sidebar-logout-btn {
+  justify-content: center;
+  padding: 14px 0;
+  margin: 6px 14px;
+}
+
+/* COLLAPSED HEADER */
+.emp-sidebar-collapsed .emp-sidebar-header {
+  justify-content: center;
+  padding: 0 10px;
+}
+
+/* COLLAPSED LOGO */
+.emp-sidebar-collapsed .emp-sidebar-logo-icon {
+  width: 48px;
+  height: 48px;
+}
+
+/* =========================================================
+   CONTENT AREA
+   ========================================================= */
+.emp-layout-content {
+  margin-left: 280px;
+  width: calc(100% - 280px);
+  min-height: 100vh;
+  padding: 30px;
+  background: linear-gradient(135deg, #f5f7fa, #e8ecf3);
+  display: flex;
+  justify-content: center;
+  transition: 0.4s;
+}
+
+.emp-layout-content-collapsed {
+  margin-left: 90px;
+  width: calc(100% - 90px);
+}
+
+/* =========================================================
+   RESPONSIVE - SLEEK BREAKPOINTS
+   ========================================================= */
+@media (max-width: 992px) {
+  .emp-sidebar-container {
+    width: 260px;
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(20px);
+  }
+
+  .emp-sidebar-container.mobile-open {
+    transform: translateX(0);
+    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .emp-layout-content,
+  .emp-layout-content-collapsed {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .emp-mobile-hamburger {
+    display: flex !important;
+  }
+
+  .emp-mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1999;
+    animation: empOverlayFadeIn 0.3s ease;
+  }
+
+  @keyframes empOverlayFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+/* Mobile hamburger button */
+.emp-mobile-hamburger {
+  display: none;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1998;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+  transition: all 0.3s ease;
+}
+
+.emp-mobile-hamburger:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+@media (max-width: 768px) {
+  .emp-layout-content,
+  .emp-layout-content-collapsed {
+    padding: 12px;
+    padding-top: 52px;
+  }
+}
+
+@media (max-width: 480px) {
+  .emp-layout-content,
+  .emp-layout-content-collapsed {
+    padding: 4px 2px;
+    padding-top: 44px;
+  }
+
+  .emp-mobile-hamburger {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+    border-radius: 6px;
+    top: 6px;
+    left: 6px;
+  }
+}

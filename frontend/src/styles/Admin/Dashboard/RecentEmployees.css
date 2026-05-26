@@ -1,0 +1,269 @@
+/* ======================================================
+   RECENT EMPLOYEES CARD - MODERN DESIGN
+   ====================================================== */
+
+/* CARD WRAPPER - MODERN DESIGN */
+.re-card {
+  background: white;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  font-family: "Inter", sans-serif;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.re-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.re-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
+.re-card h2 {
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.3px;
+}
+
+/* LIST - MODERN DESIGN */
+.re-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.re-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #f8fafc;
+}
+
+.re-item:hover {
+  background: linear-gradient(135deg, #f8faff 0%, #f1f5f9 100%);
+  transform: translateX(4px);
+}
+
+/* EMP INFO */
+.re-emp-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.re-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+}
+
+.re-avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.re-name {
+  font-weight: 700;
+  color: #1a1a2e;
+  font-size: 14px;
+}
+
+.re-email {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* EMP TYPE BADGE - MODERN DESIGN */
+.re-type {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 24px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.re-type.permanent {
+  background: linear-gradient(135deg, #d4f6e6 0%, #b8f0d4 100%);
+  color: #0e33aa;
+  box-shadow: 0 2px 8px rgba(12, 138, 72, 0.15);
+}
+
+.re-type.contract {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #e7dc38;
+  box-shadow: 0 2px 8px rgba(190, 18, 60, 0.15);
+}
+
+.re-type.internship {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: #15803d;
+  box-shadow: 0 2px 8px rgba(21, 128, 61, 0.15);
+}
+
+/* ARROW */
+.re-arrow {
+  font-size: 18px;
+  color: #64748b;
+  transition: all 0.3s ease;
+}
+
+.re-item:hover .re-arrow {
+  color: #667eea;
+  transform: translateX(4px);
+}
+
+/* SHOW MORE BUTTON - MODERN DESIGN */
+.re-show-btn {
+  margin-top: 16px;
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+}
+
+.re-show-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .re-card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .re-card::before {
+    height: 3px;
+  }
+
+  .re-card h2 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .re-item {
+    padding: 8px 10px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+  }
+
+  .re-emp-info {
+    gap: 8px;
+  }
+
+  .re-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 11px;
+  }
+
+  .re-avatar-img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .re-name {
+    font-size: 12px;
+  }
+
+  .re-email {
+    font-size: 10px;
+  }
+
+  .re-type {
+    padding: 3px 8px;
+    font-size: 9px;
+  }
+
+  .re-arrow {
+    font-size: 14px;
+  }
+
+  .re-show-btn {
+    padding: 10px;
+    font-size: 12px;
+    border-radius: 10px;
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .re-card {
+    padding: 14px;
+  }
+
+  .re-card h2 {
+    font-size: 15px;
+  }
+
+  .re-item {
+    padding: 8px;
+  }
+
+  .re-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 10px;
+  }
+
+  .re-name {
+    font-size: 11px;
+  }
+
+  .re-email {
+    font-size: 9px;
+  }
+
+  .re-type {
+    padding: 2px 6px;
+    font-size: 8px;
+  }
+
+  .re-arrow {
+    font-size: 12px;
+  }
+
+  .re-show-btn {
+    padding: 8px;
+    font-size: 11px;
+  }
+}

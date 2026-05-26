@@ -1,0 +1,633 @@
+/* AddEmployee.css - Scoped to .add-employee-page root - MODERN DESIGN */
+
+/* =========================================
+   PAGE ROOT - MODERN DESIGN
+   ========================================= */
+.add-employee-page {
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  padding: 2rem;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* =========================================
+   FORM CONTAINER - MODERN DESIGN
+   ========================================= */
+.add-employee-page .form-container {
+  background: #ffffff;
+  padding: 48px;
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+  animation: add-employee-fadeIn 0.5s ease;
+  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@keyframes add-employee-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.add-employee-page .form-container h2 {
+  text-align: center;
+  font-size: 28px;
+  color: #0f172a;
+  margin-bottom: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.add-employee-page .form-container h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+}
+
+/* =========================================
+   STEP INDICATOR - MODERN DESIGN
+   ========================================= */
+.add-employee-page .step-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 2.5rem;
+  position: relative;
+  width: 100%;
+}
+
+.add-employee-page .step-indicator::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60%;
+  height: 4px;
+  background: #e2e8f0;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+}
+
+.add-employee-page .step {
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+  height: 36px;
+  width: 120px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.add-employee-page .step.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+  transform: scale(1.05);
+}
+
+/* =========================================
+   FORM FIELDS - MODERN DESIGN
+   ========================================= */
+.add-employee-page label {
+  display: block;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.add-employee-page .form-group {
+  margin-bottom: 1.2rem;
+}
+
+.add-employee-page input,
+.add-employee-page select {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  background: white;
+}
+
+.add-employee-page input:focus,
+.add-employee-page select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+  outline: none;
+}
+
+.add-employee-page input.input-error,
+.add-employee-page select.input-error {
+  border-color: #dc3545;
+  background-color: #fff8f8;
+}
+
+.add-employee-page input.input-error:focus,
+.add-employee-page select.input-error:focus {
+  box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.15);
+}
+
+.add-employee-page input::placeholder {
+  color: #94a3b8;
+}
+
+.add-employee-page .error-message {
+  display: block;
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 5px;
+  padding-left: 5px;
+  animation: add-employee-fadeIn 0.3s ease;
+}
+
+@keyframes add-employee-errorFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   SECTION TITLE - MODERN DESIGN
+   ========================================= */
+.add-employee-page .section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  border-left: 4px solid #667eea;
+  padding-left: 12px;
+  margin: 1.6rem 0 1.2rem;
+  position: relative;
+}
+
+.add-employee-page .section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 3px;
+}
+
+/* =========================================
+   REVIEW CARD - MODERN DESIGN
+   ========================================= */
+.add-employee-page .review-card {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 1.2rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.35s ease;
+}
+
+.add-employee-page .review-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.add-employee-page .review-card h3 {
+  margin-top: 1rem;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 16px;
+}
+
+.add-employee-page .review-card p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #334155;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: white;
+  border-radius: 8px;
+}
+
+.add-employee-page .total-ctc {
+  text-align: right;
+  font-size: 20px;
+  font-weight: 800;
+  color: #0c8a48;
+  margin-top: 1.2rem;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #d4f6e6 0%, #b8f0d4 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(12, 138, 72, 0.15);
+}
+
+/* =========================================
+    BUTTONS - MODERN DESIGN
+    ========================================= */
+.add-employee-page button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.add-employee-page button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.45);
+}
+
+.add-employee-page button:disabled {
+  background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Navigation Buttons */
+.add-employee-page .form-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.add-employee-page .form-nav button {
+  width: 48%;
+}
+
+.add-employee-page .prev-btn {
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  box-shadow: 0 4px 16px rgba(71, 85, 105, 0.3);
+}
+
+.add-employee-page .prev-btn:hover {
+  box-shadow: 0 8px 24px rgba(71, 85, 105, 0.4);
+}
+
+.add-employee-page .close-btn {
+  background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+  box-shadow: 0 4px 16px rgba(245, 87, 108, 0.35);
+}
+
+.add-employee-page .close-btn:hover {
+  box-shadow: 0 8px 24px rgba(245, 87, 108, 0.45);
+}
+
+/* =========================================
+   STATUS MESSAGES - MODERN DESIGN
+   ========================================= */
+.add-employee-page .status-message {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 1rem;
+  font-weight: 700;
+  padding: 12px 16px;
+  border-radius: 10px;
+  animation: add-employee-fadeIn 0.3s ease;
+}
+
+.add-employee-page .status-message.success {
+  color: #0c8a48;
+  background: linear-gradient(135deg, #d4f6e6 0%, #b8f0d4 100%);
+  box-shadow: 0 4px 12px rgba(12, 138, 72, 0.15);
+}
+
+.add-employee-page .status-message.error {
+  color: #be123c;
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  box-shadow: 0 4px 12px rgba(190, 18, 60, 0.15);
+}
+
+/* =========================================
+   CONFIRMATION MODAL - MODERN DESIGN
+   ========================================= */
+.add-employee-page .confirmation-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: add-employee-fadeIn 0.3s ease;
+}
+
+.add-employee-page .confirmation-modal {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 90%;
+  animation: add-employee-slideUp 0.3s ease;
+}
+
+@keyframes add-employee-slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.add-employee-page .confirmation-modal h3 {
+  margin-top: 0;
+  color: #0f172a;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.add-employee-page .confirmation-modal p {
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+.add-employee-page .confirmation-details {
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.add-employee-page .confirmation-details p {
+  margin: 8px 0;
+  color: #334155;
+}
+
+.add-employee-page .confirmation-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.add-employee-page .confirm-btn {
+  background: linear-gradient(135deg, #28a745, #218838) !important;
+  color: white !important;
+  padding: 10px 20px !important;
+  border: none !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.add-employee-page .confirm-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(40, 167, 69, 0.4);
+}
+
+.add-employee-page .cancel-btn {
+  background: linear-gradient(135deg, #6c757d, #5a6268) !important;
+  color: white !important;
+  padding: 10px 20px !important;
+  border: none !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.add-employee-page .cancel-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(108, 117, 125, 0.4);
+}
+
+/* =========================================
+    MOBILE RESPONSIVE - MODERN BREAKPOINTS
+    ========================================= */
+@media (max-width: 992px) {
+  .add-employee-page {
+    width: 100%;
+    padding: 0.8rem;
+  }
+
+  .add-employee-page .form-container {
+    margin-left: 0;
+    max-width: 100%;
+    padding: 24px;
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .add-employee-page {
+    padding: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .add-employee-page .form-container {
+    width: 100%;
+    padding: 16px 12px;
+    margin-left: 0;
+    border-radius: 12px;
+  }
+
+  .add-employee-page .form-container h2 {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .add-employee-page .step-indicator {
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+
+  .add-employee-page .step {
+    width: 70px;
+    height: 28px;
+    font-size: 9px;
+    border-radius: 6px;
+  }
+
+  .add-employee-page label {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+
+  .add-employee-page input,
+  .add-employee-page select {
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  .add-employee-page .form-group {
+    margin-bottom: 0.8rem;
+  }
+
+  .add-employee-page .form-nav {
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 14px;
+  }
+
+  .add-employee-page .form-nav button {
+    width: 100%;
+    padding: 10px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+  .add-employee-page .review-card {
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  .add-employee-page .review-card h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .add-employee-page .review-card p {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 6px 0;
+    font-size: 12px;
+  }
+
+  .add-employee-page .total-ctc {
+    font-size: 14px;
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+
+  .add-employee-page .confirmation-buttons {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .add-employee-page .confirmation-modal {
+    width: 95%;
+    padding: 16px;
+  }
+
+  .add-employee-page .confirm-btn,
+  .add-employee-page .cancel-btn {
+    padding: 8px 14px !important;
+    font-size: 12px !important;
+    border-radius: 6px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-employee-page {
+    padding: 0.2rem;
+  }
+
+  .add-employee-page .form-container {
+    width: 100%;
+    padding: 8px 6px;
+    border-radius: 6px;
+  }
+
+  .add-employee-page .form-container h2 {
+    font-size: 14px;
+  }
+
+  .add-employee-page .step {
+    height: 20px;
+    width: 50px;
+    font-size: 7px;
+  }
+
+  .add-employee-page input,
+  .add-employee-page select {
+    padding: 6px 8px;
+    font-size: 11px;
+    border-radius: 4px;
+  }
+
+  .add-employee-page .review-card p {
+    font-size: 10px;
+    padding: 4px 0;
+  }
+
+  .add-employee-page .total-ctc {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+
+  .add-employee-page .section-title {
+    font-size: 12px;
+    margin: 0.6rem 0 0.4rem;
+  }
+
+  .add-employee-page .btn-primary {
+    padding: 8px 12px;
+    font-size: 11px;
+    border-radius: 6px;
+  }
+}
+
+/* =========================================
+   REMOVE NUMBER ARROWS
+   ========================================= */
+.add-employee-page input[type=number]::-webkit-inner-spin-button,
+.add-employee-page input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.add-employee-page input[type=number] {
+  appearance: textfield;
+}
