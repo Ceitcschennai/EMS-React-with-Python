@@ -50,9 +50,10 @@ const [profileImage, setProfileImage] = useState(null);
   // 🔥 OPEN EDIT PANEL
   const openEditPanel = () => {
     setEditData({
-      email: "",
-      contact_number: ""
+      email: profile.email || "",
+      contact_number: profile.contact_number || "",
     });
+
     setShowEditPanel(true);
     setShowMenu(false);
   };
@@ -60,19 +61,62 @@ const [profileImage, setProfileImage] = useState(null);
   // 🔥 SUBMIT REQUEST
   const handleSubmit = async () => {
     try {
-      await axios.post(`${API}/api/employee/request_update`, {
+      const payload = {
         emp_id,
-        email: editData.email,
-        phone: editData.contact_number
-      });
+      };
 
-      window.alert("Request Sent! Your profile update request has been sent to admin.");
+      if (editData.email !== profile.email) {
+        payload.email = editData.email;
+      }
+
+      if (editData.contact_number !== profile.contact_number) {
+        payload.phone = editData.contact_number;
+      }
+
+      if (!payload.email && !payload.phone) {
+        window.alert("No changes detected.");
+        return;
+      }
+
+      if (payload.email) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          if (!emailRegex.test(payload.email)) {
+              alert("Enter a valid email address.");
+              return;
+          }
+      }
+
+
+      if (payload.phone) {
+          if (!/^\d{10}$/.test(payload.phone)) {
+              alert("Phone number must contain exactly 10 digits.");
+              return;
+          }
+      }
+
+      const res = await axios.post(
+        `${API}/api/employee/request_update`,
+        payload
+      );
+
+      
+            
+      alert(res.data.message);
+
       setShowEditPanel(false);
+
+      // Optional: refresh profile
+      // loadAll();
+
     } catch (err) {
-      window.alert("Failed: Could not send your request. Please try again.");
+      console.error(err);
+
+      window.alert(
+        err.response?.data?.detail || "Failed to send request."
+      );
     }
   };
-
 
   useEffect(() => {
     const handleClickOutside = (event) => {

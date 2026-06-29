@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaUserCircle, FaSignOutAlt, FaCalendarAlt, FaBell, FaCog, FaBars, FaUserEdit } from "react-icons/fa";
 import "../../../styles/Admin/Dashboard/Topbar.css";
+import { timeAgo } from "../../utils/TimeAgo";
 
 const Topbar = ({ setMobileOpen, mobileOpen }) => {
   const today = new Date().toLocaleDateString("en-US", {
@@ -114,19 +115,30 @@ const Topbar = ({ setMobileOpen, mobileOpen }) => {
 
   // 🔥 FETCH NOTIFICATIONS
   useEffect(() => {
+
     const fetchNotifications = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/admin/edit_notifications");
+        const res = await axios.get(
+          "http://localhost:8000/api/admin/edit_notifications"
+        );
+
         setNotifications(res.data);
         setNotifCount(res.data.length);
+
       } catch (err) {
-        console.error("Notification fetch failed:", err);
+        console.error(err);
       }
     };
 
+    // First load
     fetchNotifications();
-  }, []);
 
+    // Refresh every 5 seconds
+    const interval = setInterval(fetchNotifications, 5000);
+
+    return () => clearInterval(interval);
+
+  }, []);
 
   // Logout
   const handleLogout = () => {
@@ -202,12 +214,20 @@ const Topbar = ({ setMobileOpen, mobileOpen }) => {
                         <div className="admin-notif-icon">
                           <FaUserEdit />
                         </div>
+
                         <div className="admin-notif-body">
                           <p className="admin-notif-emp">{n.emp_id}</p>
-                          <p className="admin-notif-desc">Updated profile information</p>
-                          <p className="admin-notif-time">{n.created_at ? new Date(n.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "Just now"}</p>
+
+                          <p className="admin-notif-desc">
+                            Updated profile information
+                          </p>
+
+                          <p className="admin-notif-time">
+                            {timeAgo(n.requested_at)}
+                          </p>
                         </div>
-                        <div className="admin-notif-unread-dot" />
+
+                        <div className="admin-notif-unread-dot"></div>
                       </div>
                     ))
                   )}
@@ -227,9 +247,9 @@ const Topbar = ({ setMobileOpen, mobileOpen }) => {
           </div>
 
           {/* Settings */}
-          <button className="admin-topbar-icon-btn">
+          {/*<button className="admin-topbar-icon-btn">
             <FaCog />
-          </button>
+          </button>*/}
 
           {/* Avatar */}
           <div
@@ -254,19 +274,19 @@ const Topbar = ({ setMobileOpen, mobileOpen }) => {
                 </div>
               </div>
 
-              <hr />
+              {/* <hr />
 
-              <div className="profile-menu-item1" onClick={() => navigate("/admin/dashboard/profile")}>
+              <div className="profile-menu-item1" onClick={() => navigate("")}>
                 <span className="profile-menu-item1-icon"><FaUserCircle /></span>
                 My Profile
               </div>
 
-              <div className="profile-menu-item1" onClick={() => navigate("/admin/dashboard/settings")}>
+              <div className="profile-menu-item1" onClick={() => navigate("")}>
                 <span className="profile-menu-item1-icon"><FaCog /></span>
                 Settings
               </div>
 
-              <hr />
+              <hr /> */}
 
               <div className="profile-menu-item1 logout" onClick={handleLogout}>
                 <span className="profile-menu-item1-icon"><FaSignOutAlt /></span>

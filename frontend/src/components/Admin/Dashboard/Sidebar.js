@@ -99,21 +99,6 @@ const Sidebar = ({
           </NavLink>
         </li>
 
-        {/* Workers */}
-        <li>
-          <NavLink
-            to="/admin/dashboard/workerspage"
-            onClick={handleNavClick}
-            className={({ isActive }) =>
-              isActive
-                ? "admin-sidebar-active admin-sidebar-menu-link"
-                : "admin-sidebar-menu-link"
-            }
-          >
-            <MdEngineering className="sidebar-icon" />
-            {!collapsed && <span>Workers</span>}
-          </NavLink>
-        </li>
 
         {/* Add Employee */}
         <li>
@@ -131,21 +116,7 @@ const Sidebar = ({
           </NavLink>
         </li>
 
-        {/* Add Worker */}
-        <li>
-          <NavLink
-            to="/admin/dashboard/Add-Worker"
-            onClick={handleNavClick}
-            className={({ isActive }) =>
-              isActive
-                ? "admin-sidebar-active admin-sidebar-menu-link"
-                : "admin-sidebar-menu-link"
-            }
-          >
-            <MdGroupAdd className="sidebar-icon" />
-            {!collapsed && <span>Add Worker</span>}
-          </NavLink>
-        </li>
+        
 
         {/* Documents */}
         <li>
@@ -159,7 +130,7 @@ const Sidebar = ({
             }
           >
             <MdDescription className="sidebar-icon" />
-            {!collapsed && <span>Documents</span>}
+            {!collapsed && <span>Employee Documents</span>}
           </NavLink>
         </li>
 
@@ -175,7 +146,40 @@ const Sidebar = ({
             }
           >
             <MdForum className="sidebar-icon" />
-            {!collapsed && <span>Communications</span>}
+            {!collapsed && <span>Employee Communications</span>}
+          </NavLink>
+        </li>
+
+
+        {/* Workers */}
+        <li>
+          <NavLink
+            to="/admin/dashboard/workerspage"
+            onClick={handleNavClick}
+            className={({ isActive }) =>
+              isActive
+                ? "admin-sidebar-active admin-sidebar-menu-link"
+                : "admin-sidebar-menu-link"
+            }
+          >
+            <MdEngineering className="sidebar-icon" />
+            {!collapsed && <span>Workers</span>}
+          </NavLink>
+        </li>
+
+        {/* Add Worker */}
+        <li>
+          <NavLink
+            to="/admin/dashboard/Add-Worker"
+            onClick={handleNavClick}
+            className={({ isActive }) =>
+              isActive
+                ? "admin-sidebar-active admin-sidebar-menu-link"
+                : "admin-sidebar-menu-link"
+            }
+          >
+            <MdGroupAdd className="sidebar-icon" />
+            {!collapsed && <span>Add Worker</span>}
           </NavLink>
         </li>
 

@@ -299,14 +299,14 @@ const Employees = () => {
                             👤 View Profile
                           </button>
 
-                          <button
+                          {/* <button
                             onClick={(e) => {
                               e.stopPropagation();
                               navigate(`/admin/employee/${emp.emp_id}/documents`);
                             }}
                           >
                             📄 Documents
-                          </button>
+                          </button> */}
 
                           <button
                             onClick={(e) => {
