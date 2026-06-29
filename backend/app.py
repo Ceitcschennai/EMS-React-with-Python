@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile, Depends
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile, Depends,  Query
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from schema import (
@@ -40,6 +40,7 @@ from xhtml2pdf import pisa
 # ""
 from sqlalchemy.orm import Session
 from sqlalchemy import text
+from sqlalchemy import func
 
 from Models import Admin, Employee, EmployeeDocument, EmailHistory, Worker
 from database import (
@@ -212,7 +213,7 @@ def validate_password(password: str):
             status_code=400,
             detail="Password must contain at least one uppercase letter",
         )
-    if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+    if not re.search(r"[_!@#$%^&*(),.?\":{}|<>]", password):
         raise HTTPException(
             status_code=400,
             detail="Password must contain at least one special character",
@@ -471,6 +472,25 @@ def login_admin(admin: AdminLogin):
         status_code=200, content={"message": f"Welcome back, {admin.email}!"}
     )
 
+
+
+@app.get("/api/admin/check-email")
+def check_email(
+    email: str = Query(...),
+    db: Session = Depends(get_employees_db)
+):
+    existing = db.query(Employee).filter(Employee.email == email.lower()).first()
+
+    if existing:
+        return {
+            "exists": True,
+            "message": "Email already exists"
+        }
+
+    return {
+        "exists": False,
+        "message": "Email is available"
+    }
 
 @app.post("/api/admin/dbadd_employee")
 def add_employee(employee: Addemployee, db: Session = Depends(get_employees_db)):
@@ -1370,6 +1390,22 @@ def deactivate_employee(emp_id: str, db: Session = Depends(get_employees_db)):
 
 #########
 
+@app.get("/api/admin/check-worker-email")
+def check_worker_email(
+    email: str = Query(...),
+    db: Session = Depends(get_employees_db)
+):
+    existing = (
+        db.query(Worker)
+        .filter(func.lower(Worker.email) == email.lower())
+        .first()
+    )
+
+    return {
+        "exists": existing is not None,
+        "message": "Email already exists" if existing else "Email is available"
+    }
+
 
 @app.post("/api/admin/add_worker")
 def add_worker(worker: AddWorker, db: Session = Depends(get_employees_db)):
@@ -1567,21 +1603,131 @@ def deactivate_worker(worker_id: str, db: Session = Depends(get_employees_db)):
 
 @app.post("/api/employee/request_update")
 def request_update(data: dict, db: Session = Depends(get_employees_db)):
+
+    # -------------------------------
+    # Check duplicate Email
+    # -------------------------------
+    if data.get("email"):
+        existing = (
+            db.query(Employee)
+            .filter(Employee.email == data["email"])
+            .first()
+        )
+
+        if existing and existing.emp_id != data["emp_id"]:
+            raise HTTPException(
+                status_code=400,
+                detail="Email already exists."
+            )
+
+    # -------------------------------
+    # Check duplicate Phone
+    # -------------------------------
+    if data.get("phone"):
+        existing = (
+            db.query(Employee)
+            .filter(Employee.contact_number == data["phone"])
+            .first()
+        )
+
+        if existing and existing.emp_id != data["emp_id"]:
+            raise HTTPException(
+                status_code=400,
+                detail="Phone number already exists."
+            )
+
+    # -------------------------------
+    # Check existing pending request
+    # -------------------------------
+    pending = db.execute(
+        text("""
+            SELECT *
+            FROM EMPLOYEE_EDIT_REQUESTS
+            WHERE emp_id = :emp_id
+            AND status = 'pending'
+        """),
+        {
+            "emp_id": data["emp_id"]
+        }
+    ).fetchone()
+
+    # ======================================================
+    # UPDATE EXISTING PENDING REQUEST
+    # ======================================================
+    if pending:
+
+        # Preserve old values if new ones are not sent
+        new_email = (
+            data.get("email")
+            if data.get("email") is not None
+            else pending.new_email
+        )
+
+        new_phone = (
+            data.get("phone")
+            if data.get("phone") is not None
+            else pending.new_phone
+        )
+
+        db.execute(
+            text("""
+                UPDATE EMPLOYEE_EDIT_REQUESTS
+                SET
+                    new_email = :email,
+                    new_phone = :phone,
+                    requested_at = GETDATE()
+                WHERE id = :id
+            """),
+            {
+                "id": pending.id,
+                "email": new_email,
+                "phone": new_phone,
+            },
+        )
+
+        db.commit()
+
+        return {
+            "message": "Existing profile update request updated successfully."
+        }
+
+    # ======================================================
+    # CREATE NEW REQUEST
+    # ======================================================
     db.execute(
         text("""
-        INSERT INTO EMPLOYEE_EDIT_REQUESTS 
-        (emp_id,  new_email, new_phone)
-        VALUES (:emp_id, :email, :phone)
-    """),
+            INSERT INTO EMPLOYEE_EDIT_REQUESTS
+            (
+                emp_id,
+                new_email,
+                new_phone,
+                status,
+                requested_at,
+                employee_read
+            )
+            VALUES
+            (
+                :emp_id,
+                :email,
+                :phone,
+                'pending',
+                GETDATE(),
+                0
+            )
+        """),
         {
             "emp_id": data["emp_id"],
-            "email": data["email"],
-            "phone": data["phone"],
+            "email": data.get("email"),
+            "phone": data.get("phone"),
         },
     )
 
     db.commit()
-    return {"message": "Update request sent to admin"}
+
+    return {
+        "message": "Profile update request sent successfully."
+    }
+
 
 
 @app.post("/api/admin/approve_update/{request_id}")
@@ -1589,52 +1735,66 @@ def approve_update(request_id: int, db: Session = Depends(get_employees_db)):
 
     req = db.execute(
         text("""
-        SELECT * FROM EMPLOYEE_EDIT_REQUESTS WHERE id = :id
-    """),
+            SELECT * FROM EMPLOYEE_EDIT_REQUESTS
+            WHERE id = :id
+        """),
         {"id": request_id},
     ).fetchone()
 
     if not req:
         raise HTTPException(status_code=404, detail="Request not found")
 
-    # ✅ Update employee table
-    db.execute(
-        text("""
-        UPDATE EMPLOYEES_TABLE
-        SET 
-            email = :email,
-            contact_number = :phone
-        WHERE emp_id = :emp_id
-    """),
-        {
-            "email": req.new_email,
-            "phone": req.new_phone,
-            "emp_id": req.emp_id,
-        },
-    )
+    # Update email only if requested
+    if req.new_email:
+        db.execute(
+            text("""
+                UPDATE EMPLOYEES_TABLE
+                SET email = :email
+                WHERE emp_id = :emp_id
+            """),
+            {
+                "email": req.new_email,
+                "emp_id": req.emp_id,
+            },
+        )
 
-    # ✅ Mark request approved
+    # Update phone only if requested
+    if req.new_phone:
+        db.execute(
+            text("""
+                UPDATE EMPLOYEES_TABLE
+                SET contact_number = :phone
+                WHERE emp_id = :emp_id
+            """),
+            {
+                "phone": req.new_phone,
+                "emp_id": req.emp_id,
+            },
+        )
+
+    # Mark request approved
     db.execute(
         text("""
-        UPDATE EMPLOYEE_EDIT_REQUESTS
-        SET status = 'approved', reviewed_at = GETDATE()
-        WHERE id = :id
-    """),
+            UPDATE EMPLOYEE_EDIT_REQUESTS
+            SET status = 'approved',
+                reviewed_at = GETDATE()
+            WHERE id = :id
+        """),
         {"id": request_id},
     )
 
     db.commit()
 
-    # ✅ SEND EMAIL (you already have email system)
-    # reuse your send email logic
+    # Get updated employee details
+    employee = db.query(Employee).filter(Employee.emp_id == req.emp_id).first()
+
     send_custom_email(
-        to_email=req.new_email,
+        to_email=employee.email,
         subject="Profile Update Approved",
         message="Your profile changes have been approved by admin.",
     )
 
     return {"message": "Approved & updated"}
-
 
 @app.post("/api/admin/reject_update/{request_id}")
 def reject_update(request_id: int, db: Session = Depends(get_employees_db)):
@@ -1655,26 +1815,52 @@ def reject_update(request_id: int, db: Session = Depends(get_employees_db)):
 
 @app.get("/api/admin/edit_notifications")
 def get_notifications(db: Session = Depends(get_employees_db)):
+
     result = db.execute(
         text("""
-        SELECT * FROM EMPLOYEE_EDIT_REQUESTS 
-        WHERE status = 'pending'
-        ORDER BY requested_at DESC
-    """)
+            SELECT
+                id,
+                emp_id,
+                new_email,
+                new_phone,
+                status,
+                requested_at
+            FROM EMPLOYEE_EDIT_REQUESTS
+            WHERE status='pending'
+            ORDER BY requested_at DESC
+        """)
     ).fetchall()
 
-    return [dict(row._mapping) for row in result]
+    notifications = []
+
+    for row in result:
+
+        notifications.append({
+            "id": row.id,
+            "emp_id": row.emp_id,
+            "new_email": row.new_email,
+            "new_phone": row.new_phone,
+            "status": row.status,
+            "requested_at": row.requested_at.isoformat()
+        })
+
+    return notifications
 
 
 @app.get("/api/admin/notification_count")
 def notification_count(db: Session = Depends(get_employees_db)):
+
     result = db.execute(
         text("""
-        SELECT COUNT(*) FROM EMPLOYEE_EDIT_REQUESTS WHERE status='pending'
-    """)
+            SELECT COUNT(*)
+            FROM EMPLOYEE_EDIT_REQUESTS
+            WHERE status='pending'
+        """)
     ).fetchone()
 
-    return {"count": result[0]}
+    return {
+        "count": result[0]
+    }
 
 
 @app.get("/api/employee/unified_notifications/{emp_id}")
