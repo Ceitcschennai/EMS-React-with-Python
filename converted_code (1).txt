@@ -1,0 +1,3767 @@
+// backend/Models.js
+from sqlalchemy import Column,func, Integer, String, Float, Date, Boolean, DateTime, LargeBinary, ForeignKey
+from datetime import datetime
+from database import BaseAdmin, BaseEmployees
+
+
+class Admin(BaseAdmin):
+    __tablename__ = "ADMIN_TABLE"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String(255), unique=True, index=True)
+    password = Column(String(255))
+    name = Column(String(255))
+
+
+class Employee(BaseEmployees):
+    __tablename__ = "EMPLOYEES_TABLE"
+
+    emp_id = Column(String(20), primary_key=True)
+    first_name = Column(String(100))
+    last_name = Column(String(100))
+    initial_name = Column(String(10), nullable=True)
+    email = Column(String(100), unique=True, index=True)
+
+    employment_type = Column(String(50))
+    department = Column(String(50))
+    position = Column(String(100))
+    date_of_join = Column(Date)
+
+    basic_salary = Column(Float)
+    house_rent_allowance = Column(Float)
+    dearness_allowance = Column(Float)
+    travel_allowance = Column(Float)
+    other_allowance = Column(Float)
+    total_ctc = Column(Float)
+
+    status = Column(String(20))
+    temporary_password = Column(String(100))
+    permanent_password = Column(String(255))
+    gender = Column(String(10))
+    dob = Column(Date)
+    contact_number = Column(String(15))
+    nationality = Column(String(20))
+    marital_status = Column(String(20))
+
+    # ---------------- Permanent Address ----------------
+    permanent_address = Column(String(500))
+    permanent_state = Column(String(100))
+    permanent_country = Column(String(100))
+    permanent_pincode = Column(String(10))
+
+    # ---------------- Temporary Address ----------------
+    temporary_address = Column(String(500))
+    temporary_state = Column(String(100))
+    temporary_country = Column(String(100))
+    temporary_pincode = Column(String(10))
+
+    # ---------------- Emergency Contact ----------------
+    emergency_contact_name = Column(String(100))
+    emergency_relationship = Column(String(20))
+    emergency_contact_number = Column(String(15))
+    emergency_contact_address = Column(String(200))
+
+    # ---------------- Education ----------------
+    undergraduate_name = Column(String(200))
+    undergraduate_university = Column(String(200))
+    undergraduate_year_of_completion = Column(String(10))
+    undergraduate_percentage_or_cgpa = Column(String(20))
+
+    PostGraduate_degree_name = Column(String(200))
+    PostGraduate_university = Column(String(200))
+    PostGraduate_year_of_completion = Column(String(10))
+    PostGraduate_percentage_or_cgpa = Column(String(20))
+
+    school_level = Column(String(20))
+    school_name = Column(String(200))
+    school_board_name = Column(String(100))
+    school_year_of_completion = Column(String(10))
+    school_percentage = Column(String(20))
+
+    # ---------------- Bank Details ----------------
+    account_holder_name = Column(String(100))
+    bank_name = Column(String(100))
+    branch_name = Column(String(100))
+    ifsc = Column(String(20))
+    account_number = Column(String(30))
+    profile_completed = Column(Boolean, default=False)
+    profile_completed_at = Column(Date)
+    deactivated_at = Column(Date)
+
+    offer_letter_status = Column(String(20), nullable=True)
+    offer_letter_sent_at = Column(DateTime, nullable=True)
+
+
+class EmployeeDocument(BaseEmployees):
+    """Model for storing employee documents in SQL Server"""
+
+    __tablename__ = "EMPLOYEE_DOCUMENTS"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    emp_id = Column(String(20), nullable=False, index=True)
+    document_category = Column(
+        String(50), nullable=False
+    )  # main_key (e.g., profile_photo, identity_proofs)
+    document_sub_category = Column(
+        String(50), nullable=False
+    )  # sub_key (e.g., aadhar_card, pan_card)
+    document_name = Column(String(255), nullable=False)
+    document_url = Column(String(500), nullable=False)
+    document_content = Column(
+        LargeBinary, nullable=True
+    )  # BLOB for storing actual file content
+    document_mime_type = Column(
+        String(100), nullable=True
+    )  # MIME type (e.g., image/png, application/pdf)
+    document_status = Column(
+        String(20), default="pending"
+    )  # pending, verified, rejected
+    uploaded_at = Column(DateTime,server_default=func.now(),onupdate=func.now())
+    verified_at = Column(DateTime, nullable=True, onupdate=func.now())
+    verified_by = Column(String(100), nullable=True)
+    rejection_reason = Column(String(500), nullable=True)
+    employee_read = Column(Boolean, default=False)
+
+
+class EmailHistory(BaseEmployees):
+    """Model for storing email history for each employee"""
+
+    __tablename__ = "EMAIL_HISTORY"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    emp_id = Column(String(20), nullable=False, index=True)
+    recipient_email = Column(String(100), nullable=False)
+    subject = Column(String(500), nullable=False)
+    body = Column(String, nullable=False)
+    sent_at = Column(DateTime, default=datetime.utcnow)
+    sent_by = Column(String(100), nullable=True)
+    status = Column(String(20), default="sent")
+    error_message = Column(String(500), nullable=True)
+
+
+class Worker(BaseEmployees):
+    """Model for storing worker information"""
+
+    __tablename__ = "WORKERS_TABLE"
+
+    worker_id = Column(String(20), primary_key=True)
+    first_name = Column(String(100))
+    last_name = Column(String(100))
+    initial_name = Column(String(10), nullable=True)
+    phone_number = Column(String(15))
+    email = Column(String(100), nullable=True, index=True)
+
+    category = Column(String(50))
+    sub_category = Column(String(50))
+    work_location = Column(String(100), default="Pune")
+    employment_type = Column(String(50), default="Contract")
+    date_of_join = Column(Date)
+    status = Column(String(20), default="Active")
+
+    basic_salary = Column(Float)
+    overtime = Column(Float, default=0)
+    bonus = Column(Float, default=0)
+    allowance = Column(Float, default=0)
+    total_salary = Column(Float)
+
+    worker_offer_letter_status = Column(String(20), nullable=True)
+    worker_offer_letter_sent_at = Column(DateTime, nullable=True)
+
+
+class EmployeeEditRequest(BaseEmployees):
+    __tablename__ = "EMPLOYEE_EDIT_REQUESTS"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    emp_id = Column(String(20), ForeignKey("EMPLOYEES_TABLE.emp_id"))
+
+    new_first_name = Column(String(50))
+    new_last_name = Column(String(50))
+    new_email = Column(String(100))
+    new_phone = Column(String(20))
+
+    status = Column(String(20), default="pending")
+    requested_at = Column(DateTime, default=datetime.utcnow)
+    reviewed_at = Column(DateTime, nullable=True)
+    employee_read = Column(Boolean, default=False)
+
+
+
+// backend/app.js
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile, Depends,  Query
+from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
+from schema import (
+    SENDER_PASSWORD,
+    SENDER_EMAIL,
+    AdminRegister,
+    SUPERADMIN_EMAIL,
+    SUPERADMIN_PASSWORD,
+    Documents,
+    ProfileRequest,
+    SuperAdmin,
+    AdminLogin,
+    Addemployee,
+    EmployeePasswordUpdate,
+    EmployeeLogin,
+    EmployeePersonalInfo,
+    TempemployeeLogin,
+    ForgotPasswordRequest,
+    ResetPasswordRequest,
+    SendEmailRequest,
+    EmailHistoryResponse,
+    EmailHistoryByEmployeeResponse,
+    AddWorker,
+)
+import os, json, smtplib, secrets
+from fastapi.middleware.cors import CORSMiddleware
+from email.message import EmailMessage
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import random
+import string, re
+from datetime import date, datetime, timedelta
+from offer_letter_generator import generate_offer_letter_pdf
+from email_service import send_custom_email, send_offer_letter_email
+from passlib.context import CryptContext
+from xhtml2pdf import pisa
+
+# SQL DB CHANGES
+# ""
+from sqlalchemy.orm import Session
+from sqlalchemy import text
+from sqlalchemy import func
+
+from Models import Admin, Employee, EmployeeDocument, EmailHistory, Worker
+from database import (
+    BaseAdmin,
+    BaseEmployees,
+    SessionEmployees,
+    engine_employees,
+    SessionAdmin,
+    engine_admin,
+)
+
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+BaseAdmin.metadata.create_all(bind=engine_admin)
+BaseEmployees.metadata.create_all(bind=engine_employees)
+
+# ""
+
+
+app = FastAPI(title="User Management API", version="1.1")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # you can restrict this to your domain later
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
+APP_HOST = "http://localhost:8000"
+DATA_FILE = "users.json"
+EMPLOYEES_FILE = "employees.json"
+SENT_MAILS_FILE = "sent_mails.json"
+
+
+def load_json(path):
+    if not os.path.exists(path):
+        return []
+    try:
+        with open(path, "r") as f:
+            return json.load(f)
+    except json.JSONDecodeError:
+        return []
+
+
+def save_json(path, data):
+    with open(path, "w") as f:
+        json.dump(data, f, indent=4)
+
+
+#####
+
+
+def load_sent_mails():
+    if not os.path.exists(SENT_MAILS_FILE):
+        return []
+    with open(SENT_MAILS_FILE, "r") as f:
+        try:
+            return json.load(f)
+        except:
+            return []
+
+
+def save_sent_mails(data):
+    with open(SENT_MAILS_FILE, "w") as f:
+        json.dump(data, f, indent=4)
+
+
+####
+def generate_emp_id(employees):
+    # Filter out employees missing 'emp_id'
+    valid_emps = [emp for emp in employees if "emp_id" in emp]
+
+    if not valid_emps:
+        return "EMP001"
+
+    last_emp = valid_emps[-1]
+    last_id = last_emp["emp_id"]
+    new_id = int(last_id.replace("EMP", "")) + 1
+    return f"EMP{new_id:03d}"
+
+
+def send_registration_email(receiver_email):
+    subject = "Admin Registration Successful"
+    body = f"""
+    Hello Admin,
+    
+    You have successfully registered your account.
+    Welcome to the system!
+
+    Regards,
+    SuperAdmin Team
+    """
+
+    msg = MIMEMultipart()
+    msg["From"] = SENDER_EMAIL
+    msg["To"] = receiver_email
+    msg["Subject"] = subject
+    msg.attach(MIMEText(body, "plain"))
+
+    try:
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()
+            server.login(SENDER_EMAIL, SENDER_PASSWORD)
+            server.send_message(msg)
+        print(f"✅ Registration email sent to {receiver_email}")
+    except Exception as e:
+        print(f"❌ Error sending email: {e}")
+
+
+def load_admins():
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, "r") as f:
+            try:
+                return json.load(f)
+            except json.JSONDecodeError:
+                return []
+    return []
+
+
+def save_admins(admins):
+    with open(DATA_FILE, "w") as f:
+        json.dump(admins, f, indent=4)
+
+
+def load_admins():
+    import json
+
+    try:
+        with open("users.json", "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
+
+def load_employees():
+    if not os.path.exists("employees.json"):
+        return []
+    with open("employees.json", "r") as f:
+        return json.load(f)
+
+
+def save_employees(employees):
+    with open("employees.json", "w") as f:
+        json.dump(employees, f, indent=4)
+
+
+def clean_string(value):
+    """Convert placeholder 'string' values to empty strings."""
+    return "" if value == "string" else value
+
+
+def remove_string_placeholders(data):
+    """Recursively remove all 'string' placeholder values in nested dict/list."""
+    if isinstance(data, dict):
+        return {k: remove_string_placeholders(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [remove_string_placeholders(item) for item in data]
+    else:
+        return clean_string(data)
+
+
+def validate_password(password: str):
+    # Must have at least one uppercase and one special character
+    if not re.search(r"[A-Z]", password):
+        raise HTTPException(
+            status_code=400,
+            detail="Password must contain at least one uppercase letter",
+        )
+    if not re.search(r"[_!@#$%^&*(),.?\":{}|<>]", password):
+        raise HTTPException(
+            status_code=400,
+            detail="Password must contain at least one special character",
+        )
+    if len(password) < 8:
+        raise HTTPException(
+            status_code=400, detail="Password must be at least 8 characters long"
+        )
+    if not re.search(r"[0-9]", password):
+        raise HTTPException(
+            status_code=400, detail="Password must contain at least one number"
+        )
+
+
+# SQL DB SETUP FUCNTIONS
+
+
+def get_admin_db():
+    db = SessionAdmin()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+def get_employees_db():
+    db = SessionEmployees()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+def get_admin_by_email(email: str):
+    db = SessionAdmin()
+    try:
+        return db.query(Admin).filter(Admin.email == email).first()
+    finally:
+        db.close()
+
+
+def insert_admin(email: str, password: str):
+    db = SessionAdmin()
+    try:
+        new_admin = Admin(email=email, password=password)
+        db.add(new_admin)
+        db.commit()
+        db.refresh(new_admin)
+        return new_admin
+    finally:
+        db.close()
+
+
+def generate_emp_id(
+    first_name: str, last_name: str, initial_name: str | None, db: Session
+):
+    """Generate Employee ID using first 3 letters + 5-digit random number"""
+
+    name_for_id = first_name
+    if initial_name:
+        name_for_id = f"{first_name} {initial_name}"
+    cleaned_name = name_for_id.replace(" ", "")
+    first_three = cleaned_name[:3].capitalize()
+
+    while True:
+        random_number = random.randint(10000, 99999)
+        emp_id = f"{first_three}{random_number}"
+
+        # Check in database (if db is a Session object)
+        if isinstance(db, Session):
+            existing = db.query(Employee).filter(Employee.emp_id == emp_id).first()
+            if not existing:
+                return emp_id
+        elif isinstance(db, list):
+            if not any(emp.get("emp_id") == emp_id for emp in db):
+                return emp_id
+
+
+def generate_temp_password(emp_id: str, email: str) -> str:
+    """Generate temporary password using emp_id, email, and random chars"""
+    special_chars = "_!@#$%&*"
+    random_part = "".join(random.choices(string.ascii_letters + string.digits, k=4))
+    special = random.choice(special_chars)
+    # Combine parts
+    password = f"{emp_id[:4]}{special}{random_part}{email[0:2]}"
+    return password
+
+
+def generate_worker_id(first_name: str, db: Session):
+    """Generate Worker ID using first 3 letters of first name + 5-digit random number with 'WRK' prefix"""
+    cleaned_name = first_name.replace(" ", "")
+    first_three = cleaned_name[:3].capitalize()
+
+    while True:
+        random_number = random.randint(10000, 99999)
+        worker_id = f"WRK{first_three}{random_number}"
+
+        # Check in database
+        existing = db.query(Worker).filter(Worker.worker_id == worker_id).first()
+        if not existing:
+            return worker_id
+
+
+def send_worker_offer_letter_email(
+    to_email,
+    First_name,
+    Last_name,
+    Initial_name,
+    pdf_path,
+    sub_category,
+    employment_type,
+):
+    """Send offer letter email to worker"""
+    msg = EmailMessage()
+    msg["Subject"] = "CeiTCS - Offer Letter"
+
+    msg["From"] = SENDER_EMAIL
+    msg["To"] = to_email
+
+    msg.set_content(
+        f"Dear {First_name} {Last_name} {Initial_name},\n\n"
+        "Congratulations! We are pleased to offer you the position of "
+        f"{sub_category} at CeiTCS under {employment_type} employment.\n\n"
+        "Please find the attached offer letter which contains complete details regarding your role, "
+        "responsibilities, compensation structure, and other employment terms.\n\n"
+        "Kindly review the document carefully and confirm your acceptance by replying to this email.\n\n"
+        "If you have any questions or require clarification, please feel free to contact our HR team.\n\n"
+        "We are excited to welcome you to CeiTCS and look forward to your valuable contribution to our organization.\n\n"
+        "Best Regards,\n"
+        "HR Department\n"
+        "Cloud Enabled Intellectual Technology and Consultancy Services (CeiTCS)"
+    )
+
+    # Attach the PDF
+    with open(pdf_path, "rb") as f:
+        msg.add_attachment(
+            f.read(), maintype="application", subtype="pdf", filename="Offer_Letter.pdf"
+        )
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login(SENDER_EMAIL, SENDER_PASSWORD)
+        smtp.send_message(msg)
+
+
+def generate_worker_offer_letter_pdf(worker):
+    """
+    Generate offer letter PDF for worker.
+    worker_offer_letter status: 'NULL' (not sent) -> 'sent' (after sending)
+    """
+
+    # Create output folder
+    folder = "offer_letters"
+    os.makedirs(folder, exist_ok=True)
+
+    # Generate unique filename based on worker details
+    pdf_filename = (
+        f"{worker.first_name}{worker.last_name}@{worker.worker_id}_offer_letter.pdf"
+    )
+    pdf_path = os.path.join(folder, pdf_filename)
+
+    # 1️⃣ Load worker template
+    template_file = "worker_offer_template.html"
+    with open(template_file, "r", encoding="utf-8") as f:
+        html = f.read()
+
+    # 2️⃣ Get current date
+    current_date = date.today().strftime("%Y-%m-%d")
+
+    # 3️⃣ Get full name and first name
+    First_name = worker.first_name
+    Last_name = worker.last_name
+    Initial_name = worker.initial_name
+
+    # 4️⃣ Replace placeholders
+    html = html.replace("{{ current_date }}", str(current_date))
+    html = html.replace("{{ First_name }}", str(First_name or ""))
+    html = html.replace("{{ Last_name }}", str(Last_name or ""))
+    html = html.replace("{{ Initial_name }}", str(Initial_name or ""))
+    html = html.replace("{{ phone_number }}", str(worker.phone_number or ""))
+    html = html.replace("{{ email }}", str(worker.email or ""))
+    html = html.replace("{{ category }}", str(worker.category or ""))
+    html = html.replace("{{ sub_category }}", str(worker.sub_category or ""))
+    html = html.replace("{{ work_location }}", str(worker.work_location or ""))
+    html = html.replace("{{ employment_type }}", str(worker.employment_type or ""))
+    html = html.replace("{{ date_of_join }}", str(worker.date_of_join or ""))
+    html = html.replace("{{ status }}", str(worker.status or ""))
+    html = html.replace("{{ basic_salary }}", str(worker.basic_salary or ""))
+    html = html.replace("{{ overtime }}", str(worker.overtime or ""))
+    html = html.replace("{{ bonus }}", str(worker.bonus or ""))
+    html = html.replace("{{ allowance }}", str(worker.allowance or ""))
+    html = html.replace("{{ total_salary }}", str(worker.total_salary or ""))
+
+    # 5️⃣ Convert HTML → PDF
+    with open(pdf_path, "wb") as result:
+        pisa.CreatePDF(html, dest=result)
+
+    return pdf_path
+
+
+# routes
+
+
+@app.post("/api/superadmin/login")
+def login(admin: SuperAdmin):
+    if admin.email == SUPERADMIN_EMAIL and admin.password == SUPERADMIN_PASSWORD:
+        return {"message": "Welcome SuperAdmin!", "email": admin.email}
+    raise HTTPException(status_code=401, detail="Invalid email or password")
+
+
+##SQL DB Chnages
+# ""
+@app.post("/api/admin/dbregister")
+def register_admin(admin: AdminRegister, db: Session = Depends(get_admin_db)):
+
+    # 1️⃣ Password match
+    if admin.password != admin.confirm_password:
+        raise HTTPException(status_code=400, detail="Passwords do not match")
+
+    # 2️⃣ Check duplicate email
+    existing_admin = db.query(Admin).filter(Admin.email == admin.email).first()
+    if existing_admin:
+        raise HTTPException(status_code=400, detail="Admin already exists")
+
+    # 3️⃣ Create new admin
+    new_admin = Admin(
+        name=admin.name,
+        email=admin.email,
+        password=admin.password,  # ⚠️ Later we will hash this
+    )
+
+    db.add(new_admin)
+    db.commit()
+    db.refresh(new_admin)
+
+    # 4️⃣ Send email notification
+    send_registration_email(admin.email)
+
+    return {"message": f"Admin {admin.email} registered successfully!"}
+
+
+@app.post("/api/admin/dblogin")
+def login_admin(admin: AdminLogin):
+
+    # 1️⃣ Get admin from database
+    db_admin = get_admin_by_email(admin.email)
+
+    if not db_admin:
+        raise HTTPException(status_code=404, detail="Admin not found")
+
+    # 2️⃣ Check password (plain comparison for now)
+    if db_admin.password != admin.password:
+        raise HTTPException(status_code=401, detail="Invalid password")
+
+    # 3️⃣ Success response
+    return JSONResponse(
+        status_code=200, content={"message": f"Welcome back, {admin.email}!"}
+    )
+
+
+
+@app.get("/api/admin/check-email")
+def check_email(
+    email: str = Query(...),
+    db: Session = Depends(get_employees_db)
+):
+    existing = db.query(Employee).filter(Employee.email == email.lower()).first()
+
+    if existing:
+        return {
+            "exists": True,
+            "message": "Email already exists"
+        }
+
+    return {
+        "exists": False,
+        "message": "Email is available"
+    }
+
+@app.post("/api/admin/dbadd_employee")
+def add_employee(employee: Addemployee, db: Session = Depends(get_employees_db)):
+
+    # Check duplicate email
+    existing = db.query(Employee).filter(Employee.email == employee.email).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Email already exists")
+
+    # Generate Employee ID
+    emp_id = generate_emp_id(
+        employee.first_name, employee.last_name, employee.initial_name, db
+    )
+
+    # Generate Temporary Password
+    temp_password = generate_temp_password(emp_id, employee.email)
+
+    new_employee = Employee(
+        emp_id=emp_id,
+        first_name=employee.first_name,
+        last_name=employee.last_name,
+        initial_name=employee.initial_name,
+        email=employee.email,
+        employment_type=employee.employment_type,
+        department=employee.department,
+        position=employee.position,
+        date_of_join=employee.date_of_join,
+        basic_salary=employee.basic_salary,
+        house_rent_allowance=employee.house_rent_allowance,
+        dearness_allowance=employee.dearness_allowance,
+        travel_allowance=employee.travel_allowance,
+        other_allowance=employee.other_allowance,
+        total_ctc=employee.total_ctc,
+        status="Active",
+        temporary_password=temp_password,
+    )
+
+    db.add(new_employee)
+    db.commit()
+    db.refresh(new_employee)
+
+    return {
+        "message": "Employee added successfully",
+        "emp_id": new_employee.emp_id,
+        "temporary_password": new_employee.temporary_password,
+    }
+
+
+@app.post("/api/employee/dbforgot-password")
+def forgot_password(
+    request: ForgotPasswordRequest, db: Session = Depends(get_employees_db)
+):
+
+    # 1️⃣ Check email exists
+    result = db.execute(
+        text("""
+            SELECT  first_name, last_name, initial_name, email
+            FROM EMPLOYEES_TABLE
+            WHERE email = :email
+        """),
+        {"email": request.email},
+    ).fetchone()
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Email not found")
+
+    first_name, last_name, initial_name, email = result
+
+    # 2️⃣ Generate OTP
+    otp = str(random.randint(100000, 999999))
+
+    # 3️⃣ Set Expiry (20 Minutes)
+    expiry_time = datetime.now() + timedelta(minutes=20)
+
+    # 4️⃣ Store OTP in DB
+    db.execute(
+        text("""
+            UPDATE EMPLOYEES_TABLE
+            SET reset_otp = :otp,
+                reset_otp_expiry = :expiry
+            WHERE email = :email
+        """),
+        {"otp": otp, "expiry": expiry_time, "email": email},
+    )
+    db.commit()
+
+    # 5️⃣ Send OTP Email
+    try:
+        msg = EmailMessage()
+        msg["Subject"] = "Password Reset OTP"
+        msg["From"] = "no-reply@yourcompany.com"
+        msg["To"] = email
+        msg.set_content(
+            f"Hi {first_name} {last_name},\n\n"
+            f"Your password reset OTP is:\n\n"
+            f"{otp}\n\n"
+            f"This OTP is valid for 20 minutes.\n"
+            f"Do not share this OTP with anyone."
+        )
+
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()
+            server.login("s.v.k23105@gmail.com", "wcikfesloppffabr")
+            server.send_message(msg)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to send OTP: {e}")
+
+    return {"message": "OTP sent successfully (Valid for 20 minutes)"}
+
+
+@app.post("/api/employee/dbreset-password")
+def reset_password(
+    request: ResetPasswordRequest, db: Session = Depends(get_employees_db)
+):
+
+    result = db.execute(
+        text("""
+            SELECT reset_otp, reset_otp_expiry
+            FROM EMPLOYEES_TABLE
+            WHERE email = :email
+        """),
+        {"email": request.email},
+    ).fetchone()
+
+    if not result:
+        raise HTTPException(status_code=400, detail="Invalid email")
+
+    stored_otp, expiry = result
+
+    if not stored_otp or not expiry:
+        raise HTTPException(
+            status_code=400, detail="OTP expired or not found. Please request again."
+        )
+
+    if stored_otp != request.otp:
+        raise HTTPException(status_code=400, detail="Invalid OTP")
+
+    if datetime.now() > expiry:
+        raise HTTPException(status_code=400, detail="OTP expired")
+
+    # 🔐 Limit password length
+    if len(request.new_password) > 20:
+        raise HTTPException(
+            status_code=400, detail="Password too long (max 20 characters)"
+        )
+
+    validate_password(request.new_password)
+
+    # 🔐 Hash password
+    safe_password = request.new_password[:72]
+    # 🔐 Hash new password
+    hashed_password = pwd_context.hash(request.new_password)
+
+    # 🔁 Update password + Clear OTP
+    db.execute(
+        text("""
+            UPDATE EMPLOYEES_TABLE
+            SET permanent_password = :password,
+                reset_otp = NULL,
+                reset_otp_expiry = NULL
+            WHERE email = :email
+        """),
+        {"password": request.new_password, "email": request.email},
+    )
+    db.commit()
+
+    return {"message": "Password reset successful"}
+
+
+@app.post("/api/employee/dbupdate_password")
+def update_employee_password(
+    data: EmployeePasswordUpdate, db: Session = Depends(get_employees_db)
+):
+
+    # 1️⃣ Password match check
+    if data.new_password != data.confirm_password:
+        raise HTTPException(status_code=400, detail="Passwords do not match")
+
+    validate_password(data.new_password)
+
+    # 2️⃣ Check employee exists & has temporary password
+    result = db.execute(
+        text("""
+            SELECT first_name, last_name, initial_name, temporary_password 
+            FROM EMPLOYEES_TABLE 
+            WHERE emp_id = :emp_id
+        """),
+        {"emp_id": data.emp_id},
+    ).fetchone()
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Employee not found")
+
+    first_name = result.first_name
+    last_name = result.last_name
+    temp_password = result.temporary_password
+
+    if temp_password is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Password already set. Cannot change again using this method.",
+        )
+
+    # 3️⃣ Move password → permanent & remove temporary
+    db.execute(
+        text("""
+            UPDATE EMPLOYEES_TABLE
+            SET permanent_password = :new_password,
+                temporary_password = NULL
+            WHERE emp_id = :emp_id
+        """),
+        {"new_password": data.new_password, "emp_id": data.emp_id},
+    )
+
+    db.commit()
+
+    return {
+        "message": f"Permanent password set successfully for {first_name} {last_name}",
+        "emp_id": data.emp_id,
+        "first_name": first_name,
+        "last_name": last_name,
+    }
+
+
+@app.post("/api/dbTemporaryemployee/login")
+def employee_login(credentials: TempemployeeLogin, db=Depends(get_employees_db)):
+
+    query = text("""
+        SELECT emp_id, first_name, last_name, initial_name, email, temporary_password,
+               department, position, status
+        FROM EMPLOYEES_TABLE
+        WHERE emp_id = :emp_id AND email = :email
+    """)
+
+    result = db.execute(
+        query, {"emp_id": credentials.emp_id, "email": credentials.email}
+    ).fetchone()
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Employee not found")
+
+    emp = dict(result._mapping)
+
+    if emp["temporary_password"] != credentials.temporary_password:
+        raise HTTPException(status_code=401, detail="Invalid password")
+
+    if emp["status"] != "Active":
+        raise HTTPException(status_code=403, detail="Account not active")
+
+    return {
+        "message": f"Welcome {emp['first_name']} {emp['last_name']}!",
+        "emp_id": emp["emp_id"],
+        "first_name": emp["first_name"],
+        "last_name": emp["last_name"],
+        "email": emp["email"],
+        "department": emp["department"],
+        "position": emp["position"],
+        "status": emp["status"],
+    }
+
+
+@app.post("/api/employee/dblogin")
+def login_employee(data: EmployeeLogin, db: Session = Depends(get_employees_db)):
+
+    result = db.execute(
+        text("""
+            SELECT emp_id, permanent_password, status, profile_completed
+            FROM EMPLOYEES_TABLE
+            WHERE email = :email 
+        """),
+        {"email": data.email},
+    ).fetchone()
+
+    # 1️⃣ Check if employee exists
+    if not result:
+        raise HTTPException(status_code=404, detail="Employee not found")
+
+    emp_id = result[0]
+    permanent_password = result[1]
+    status = result[2]
+    profile_completed = result[3]
+
+    # 2️⃣ Check if status is Active
+    if status != "Active":
+        raise HTTPException(
+            status_code=403,
+            detail="Employee account is not active. Please contact admin.",
+        )
+
+    # 3️⃣ Check password exists
+    if permanent_password is None:
+        raise HTTPException(
+            status_code=403, detail="Permanent password not set. Please contact admin."
+        )
+
+    # 4️⃣ Validate password
+    if permanent_password != data.password:
+        raise HTTPException(status_code=401, detail="Invalid password")
+
+    return {
+        "message": "Login successful! Welcome to the Employee Portal",
+        "emp_id": emp_id,  # ✅ ADD THIS
+        "profile_completed": profile_completed,  # ✅ ADD THIS
+    }
+
+
+@app.post("/api/admin/dbprofile")
+def get_admin_profile(data: ProfileRequest, db: Session = Depends(get_admin_db)):
+    # Fetch admin from SQL database
+    admin = db.query(Admin).filter(Admin.email == data.email).first()
+
+    if not admin:
+        raise HTTPException(status_code=404, detail="Admin not found")
+
+    return {
+        "id": admin.id,  # if you have id column
+        "name": admin.name,
+        "email": admin.email,
+    }
+
+
+# ""
+
+
+@app.get("/api/admin/employees")
+def get_all_employees(db: Session = Depends(get_employees_db)):
+
+    employees = db.query(Employee).all()
+
+    return employees
+
+
+@app.get("/api/admin/employees/{emp_id}")
+def get_employee_by_id(emp_id: str, db: Session = Depends(get_employees_db)):
+    employee = db.query(Employee).filter(Employee.emp_id == emp_id).first()
+
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee not found")
+
+    # Convert SQLAlchemy object to dict
+    employee_dict = {
+        c.name: getattr(employee, c.name) for c in employee.__table__.columns
+    }
+
+    return employee_dict
+
+
+@app.post("/api/employee/personal_info/{emp_id}")
+def add_personal_info(
+    emp_id: str, info: EmployeePersonalInfo, db: Session = Depends(get_employees_db)
+):
+
+    employee = db.query(Employee).filter(Employee.emp_id == emp_id).first()
+
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee ID not found")
+
+    # -------- Personal Info --------
+    employee.gender = info.gender
+    employee.dob = info.dob
+    employee.contact_number = info.contact_number
+    employee.nationality = info.nationality
+    employee.marital_status = info.martial_status
+
+    # -------- Permanent Address --------
+    employee.permanent_address = info.permanent_address.address
+    employee.permanent_state = info.permanent_address.state
+    employee.permanent_country = info.permanent_address.country
+    employee.permanent_pincode = info.permanent_address.pincode
+
+    # -------- Temporary Address --------
+    if info.temporary_address:
+        employee.temporary_address = info.temporary_address.address
+        employee.temporary_state = info.temporary_address.state
+        employee.temporary_country = info.temporary_address.country
+        employee.temporary_pincode = info.temporary_address.pincode
+
+    # -------- Emergency Contact --------
+    employee.emergency_contact_name = info.emergency_contact.contact_name
+    employee.emergency_relationship = info.emergency_contact.relationship
+    employee.emergency_contact_number = info.emergency_contact.contact_number
+    employee.emergency_contact_address = info.emergency_contact.address
+
+    # -------- UnderGraduate --------
+    employee.undergraduate_name = info.education.undergraduate.name
+    employee.undergraduate_university = info.education.undergraduate.university
+    employee.undergraduate_year_of_completion = (
+        info.education.undergraduate.year_of_completion
+    )
+    employee.undergraduate_percentage_or_cgpa = (
+        info.education.undergraduate.percentage_or_cgpa
+    )
+
+    # -------- PostGraduate (optional) --------
+    if info.education.postgraduate:
+        employee.PostGraduate_degree_name = info.education.postgraduate.degree_name
+        employee.PostGraduate_university = info.education.postgraduate.university
+        employee.PostGraduate_year_of_completion = (
+            info.education.postgraduate.year_of_completion
+        )
+        employee.PostGraduate_percentage_or_cgpa = (
+            info.education.postgraduate.percentage_or_cgpa
+        )
+
+    # -------- School --------
+    employee.school_level = info.education.school.level
+    employee.school_name = info.education.school.school_name
+    employee.school_board_name = info.education.school.board_name
+    employee.school_year_of_completion = info.education.school.year_of_completion
+    employee.school_percentage = info.education.school.percentage
+
+    # -------- Bank Details --------
+    employee.account_holder_name = info.bank_details.account_holder_name
+    employee.bank_name = info.bank_details.bank_name
+    employee.branch_name = info.bank_details.branch_name
+    employee.ifsc = info.bank_details.ifsc
+    employee.account_number = info.bank_details.account_number
+
+    # -------- Profile Status --------
+    profile_complete = all(
+        [
+            info.gender,
+            info.dob,
+            info.nationality,
+            info.martial_status,
+            info.contact_number,
+            info.permanent_address.address,
+            info.permanent_address.state,
+            info.permanent_address.country,
+            info.permanent_address.pincode,
+            info.bank_details.account_holder_name,
+            info.bank_details.bank_name,
+            info.bank_details.branch_name,
+            info.bank_details.account_number,
+            info.bank_details.ifsc,
+            info.emergency_contact.contact_name,
+            info.emergency_contact.contact_number,
+            info.emergency_contact.address,
+            info.education.undergraduate.name,
+            info.education.undergraduate.university,
+            info.education.undergraduate.year_of_completion,
+            info.education.undergraduate.percentage_or_cgpa,
+        ]
+    )
+
+    employee.profile_completed = profile_complete
+    employee.profile_completed_at = datetime.now() if profile_complete else None
+
+    db.commit()
+    db.refresh(employee)
+
+    return {
+        "message": f"Profile Completed successfully, Welcome {employee.first_name} {employee.last_name}",
+        "emp_id": emp_id,
+    }
+
+    ########
+
+
+@app.post("/api/admin/send_custom_mail")
+def send_email_to_employee(
+    email_request: SendEmailRequest, db: Session = Depends(get_employees_db)
+):
+    """
+    Send an email to an employee and store it in the email history.
+    Uses SENDER_EMAIL as the from address.
+    """
+    # 1. Find the employee
+    employee = (
+        db.query(Employee).filter(Employee.emp_id == email_request.emp_id).first()
+    )
+
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee not found")
+
+    recipient_email = employee.email
+
+    # 2. Create email message
+    msg = EmailMessage()
+    msg["Subject"] = email_request.subject
+    msg["From"] = SENDER_EMAIL
+    msg["To"] = recipient_email
+    msg.set_content(email_request.body)
+
+    # 3. Try to send the email
+    email_history = None
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+            smtp.login(SENDER_EMAIL, SENDER_PASSWORD)
+            smtp.send_message(msg)
+
+        # 4. Create email history record (success)
+        email_history = EmailHistory(
+            emp_id=email_request.emp_id,
+            recipient_email=recipient_email,
+            subject=email_request.subject,
+            body=email_request.body,
+            # email_type=email_request.email_type,
+            sent_by=SENDER_EMAIL,  # Admin who sent (can be enhanced with auth)
+            status="sent",
+        )
+        db.add(email_history)
+        db.commit()
+        db.refresh(email_history)
+
+        return {
+            "success": True,
+            "message": f"Email sent successfully to {recipient_email}",
+            "email_id": email_history.id,
+        }
+
+    except Exception as e:
+        # 5. Create email history record (failed)
+        error_message = str(e)
+        email_history = EmailHistory(
+            emp_id=email_request.emp_id,
+            recipient_email=recipient_email,
+            subject=email_request.subject,
+            body=email_request.body,
+            email_type=email_request.email_type,
+            sent_by=None,
+            status="failed",
+            error_message=error_message,
+        )
+        db.add(email_history)
+        db.commit()
+        db.refresh(email_history)
+
+        raise HTTPException(
+            status_code=500, detail=f"Failed to send email: {error_message}"
+        )
+
+
+@app.get("/api/admin/sent_mails")
+def get_all_email_history(db: Session = Depends(get_employees_db)):
+    """
+    Get all email history across all employees.
+    """
+    emails = db.query(EmailHistory).order_by(EmailHistory.sent_at.desc()).all()
+
+    email_list = []
+    for email in emails:
+        # Get employee name
+        employee = db.query(Employee).filter(Employee.emp_id == email.emp_id).first()
+        employee_name = (
+            f"{employee.first_name} {employee.last_name}" if employee else "Unknown"
+        )
+        first_name = employee.first_name if employee else ""
+        last_name = employee.last_name if employee else ""
+
+        email_list.append(
+            {
+                "id": email.id,
+                "emp_id": email.emp_id,
+                "full_name": employee_name,
+                "first_name": first_name,
+                "last_name": last_name,
+                "recipient_email": email.recipient_email,
+                "subject": email.subject,
+                "body": email.body,
+                "email_type": None,
+                "sent_at": email.sent_at.isoformat() if email.sent_at else None,
+                "sent_by": email.sent_by,
+                "status": email.status,
+                "error_message": email.error_message,
+            }
+        )
+
+    return {"total_emails": len(email_list), "emails": email_list}
+
+
+@app.get("/api/admin/sent_mails/{mail_id}")
+def get_email_history_by_employee(emp_id: str, db: Session = Depends(get_employees_db)):
+    """
+    Get email history for a specific employee.
+    """
+    # 1. Find the employee
+    employee = db.query(Employee).filter(Employee.emp_id == emp_id).first()
+
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee not found")
+
+    # 2. Get email history
+    emails = (
+        db.query(EmailHistory)
+        .filter(EmailHistory.emp_id == emp_id)
+        .order_by(EmailHistory.sent_at.desc())
+        .all()
+    )
+
+    # 3. Build response
+    email_list = []
+    for email in emails:
+        email_list.append(
+            {
+                "id": email.id,
+                "emp_id": email.emp_id,
+                "recipient_email": email.recipient_email,
+                "subject": email.subject,
+                "body": email.body,
+                "email_type": None,
+                "sent_at": email.sent_at.isoformat() if email.sent_at else None,
+                "sent_by": email.sent_by,
+                "status": email.status,
+                "error_message": email.error_message,
+            }
+        )
+
+    return {
+        "emp_id": employee.emp_id,
+        "first_name": employee.first_name,
+        "last_name": employee.last_name,
+        "email": employee.email,
+        "emails": email_list,
+    }
+
+    #######
+
+
+@app.post("/api/admin/dbsend_offer_letter/{emp_id}")
+def send_offer_letter(emp_id: str, db: Session = Depends(get_employees_db)):
+
+    employee = db.query(Employee).filter(Employee.emp_id == emp_id).first()
+
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee ID not found")
+
+    # Check if offer letter already sent
+    if employee.offer_letter_status == "Sent":
+        return {
+            "message": f"Offer letter already sent to {employee.first_name} {employee.last_name}",
+            "status": "Already Sent",
+            "first_name": employee.first_name,
+            "last_name": employee.last_name,
+        }
+
+    # Generate Offer Letter PDF
+    pdf_path = generate_offer_letter_pdf(employee)
+
+    # Send Email
+    send_offer_letter_email(
+        to_email=employee.email,
+        first_name=employee.first_name,
+        last_name=employee.last_name,
+        initial_name=employee.initial_name,
+        position=employee.position,
+        employment_type=employee.employment_type,
+        pdf_path=pdf_path,
+    )
+
+    # Update database
+    employee.offer_letter_status = "Sent"
+    employee.offer_letter_sent_at = datetime.now()
+
+    db.commit()
+    db.refresh(employee)
+
+    return {
+        "message": f"Offer letter sent successfully to {employee.first_name} {employee.last_name}",
+        "status": "Sent",
+        "first_name": employee.first_name,
+        "last_name": employee.last_name,
+    }
+
+
+@app.post("/api/employee/upload_document")
+async def upload_document(
+    emp_id: str = Form(...),
+    document_type: str = Form(...),
+    file: UploadFile = File(...),
+    db: Session = Depends(get_employees_db),
+):
+    employee = db.query(Employee).filter(Employee.emp_id == emp_id).first()
+    if not employee:
+        return {"error": "Employee not found"}
+
+    if "." not in document_type:
+        return {"error": "Invalid format. Use Category.SubCategory"}
+
+    main_key, sub_key = document_type.split(".")
+    main_key = main_key.strip()
+    sub_key = sub_key.strip()
+
+    allowed_categories = [
+        "profile_photo",
+        "identity_proofs",
+        "educational_certificates",
+        "additional_certificates",
+        "experience_documents",
+    ]
+
+    if main_key not in allowed_categories:
+        return {"error": f"Invalid document category: {main_key}"}
+
+    # ✅ Profile photo is auto-verified — skip pending check
+    is_profile_photo = main_key == "profile_photo"
+
+    existing_doc = (
+        db.query(EmployeeDocument)
+        .filter(
+            EmployeeDocument.emp_id == emp_id,
+            EmployeeDocument.document_category == main_key,
+            EmployeeDocument.document_sub_category == sub_key,
+        )
+        .first()
+    )
+
+    if existing_doc and not is_profile_photo:
+        if existing_doc.document_status == "pending":
+            return {
+                "message": "Admin needs to verify your document",
+                "status": "pending",
+            }
+        if existing_doc.document_status == "verified":
+            return {
+                "message": "Document already verified — no need to upload again",
+                "status": "verified",
+            }
+        # rejected → allow re-upload (fall through)
+
+    # Read file
+    file_content = await file.read()
+
+    mime_type = "application/octet-stream"
+    if file.filename:
+        ext = file.filename.lower().split(".")[-1] if "." in file.filename else ""
+        mime_types = {
+            "png": "image/png",
+            "jpg": "image/jpeg",
+            "jpeg": "image/jpeg",
+            "gif": "image/gif",
+            "pdf": "application/pdf",
+            "doc": "application/msword",
+            "docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        }
+        mime_type = mime_types.get(ext, "application/octet-stream")
+
+    upload_dir = f"uploads/{emp_id}"
+    os.makedirs(upload_dir, exist_ok=True)
+    file_path = os.path.join(upload_dir, file.filename)
+
+    with open(file_path, "wb") as f:
+        f.write(file_content)
+
+    # ✅ Profile photo → auto set to "verified", others → "pending"
+    final_status = "verified" if is_profile_photo else "pending"
+
+    if existing_doc:
+        existing_doc.document_name = file.filename
+        existing_doc.document_url = file_path
+        existing_doc.document_content = file_content
+        existing_doc.document_mime_type = mime_type
+        existing_doc.document_status = "pending"
+
+        # RESET old notification state
+        existing_doc.employee_read = 0
+        existing_doc.verified_at = None
+        existing_doc.rejection_reason = None
+        existing_doc.uploaded_at = datetime.now()
+        # ✅ Auto-set verified_at for profile photo
+        if is_profile_photo:
+            existing_doc.verified_at = datetime.now()
+        db.commit()
+        db.refresh(existing_doc)
+    else:
+        new_document = EmployeeDocument(
+            emp_id=emp_id,
+            document_category=main_key,
+            document_sub_category=sub_key,
+            document_name=file.filename,
+            document_url=file_path,
+            document_content=file_content,
+            document_mime_type=mime_type,
+            document_status=final_status,
+            # ✅ Auto-set verified_at for profile photo
+            verified_at=datetime.now() if is_profile_photo else None,
+        )
+        db.add(new_document)
+        db.commit()
+        db.refresh(new_document)
+
+    return {
+        "message": "Profile photo saved successfully!"
+        if is_profile_photo
+        else "Document uploaded successfully",
+        "status": final_status,
+        "emp_id": emp_id,
+        "category": main_key,
+        "document": sub_key,
+    }
+
+
+@app.get("/api/admin/all_documents")
+def get_all_documents(db: Session = Depends(get_employees_db)):
+    documents = db.query(EmployeeDocument).all()
+
+    result = []
+    for doc in documents:
+        result.append(
+            {
+                "emp_id": doc.emp_id,
+                "document_category": doc.document_category,
+                "document_sub_category": doc.document_sub_category,
+                "document_name": doc.document_name,
+                "document_url": doc.document_url,
+                "document_status": doc.document_status,
+                "uploaded_at": str(doc.uploaded_at) if doc.uploaded_at else None,
+            }
+        )
+
+    return {"documents": result}
+
+
+@app.post("/api/admin/verify_document")
+def verify_document(
+    emp_id: str = Form(...),
+    document_type: str = Form(...),
+    status: str = Form(...),  # verified / rejected
+    remarks: str = Form(None),
+    db: Session = Depends(get_employees_db),
+):
+    # 1️⃣ Validate document_type format
+    if "." not in document_type:
+        return {"error": "Invalid document_type. Use Category.SubCategory"}
+
+    main_key, sub_key = document_type.split(".")
+    main_key = main_key.strip()
+    sub_key = sub_key.strip()
+
+    # 2️⃣ Validate status
+    if status not in ["verified", "rejected"]:
+        return {"error": "Status must be 'verified' or 'rejected'"}
+
+    # 3️⃣ Find document in database
+    document = (
+        db.query(EmployeeDocument)
+        .filter(
+            EmployeeDocument.emp_id == emp_id,
+            EmployeeDocument.document_category == main_key,
+            EmployeeDocument.document_sub_category == sub_key,
+        )
+        .first()
+    )
+
+    if not document:
+        return {"error": "Document not found"}
+
+    # 4️⃣ Update document status
+    document.document_status = status
+
+    # Make notification unread again for re-uploaded docs
+    document.employee_read = 0
+
+    # Refresh notification timestamp
+    document.verified_at = datetime.now()
+
+    if status == "verified":
+        document.rejection_reason = None
+    else:
+        document.rejection_reason = remarks or ""
+
+    db.commit()
+    db.refresh(document)
+
+    return {
+        "message": "Document status updated",
+        "emp_id": emp_id,
+        "category": main_key,
+        "document": sub_key,
+        "status": status,
+        "remarks": remarks,
+    }
+
+
+#######
+
+
+@app.put("/api/admin/employees/{emp_id}/Inactive")
+def deactivate_employee(emp_id: str, db: Session = Depends(get_employees_db)):
+    employee = db.query(Employee).filter(Employee.emp_id == emp_id).first()
+
+    if not employee:
+        raise HTTPException(status_code=404, detail="Employee not found")
+
+    employee.status = "Inactive"
+    employee.deactivated_at = datetime.now()
+
+    db.commit()
+    db.refresh(employee)
+
+    return {
+        "message": f"Employee {emp_id} deactivated successfully",
+        "status": "Inactive",
+    }
+
+
+#########
+
+@app.get("/api/admin/check-worker-email")
+def check_worker_email(
+    email: str = Query(...),
+    db: Session = Depends(get_employees_db)
+):
+    existing = (
+        db.query(Worker)
+        .filter(func.lower(Worker.email) == email.lower())
+        .first()
+    )
+
+    return {
+        "exists": existing is not None,
+        "message": "Email already exists" if existing else "Email is available"
+    }
+
+
+@app.post("/api/admin/add_worker")
+def add_worker(worker: AddWorker, db: Session = Depends(get_employees_db)):
+    """Add a new worker to the database"""
+
+    # Check duplicate phone number if provided
+    if worker.phone_number:
+        existing_phone = (
+            db.query(Worker).filter(Worker.phone_number == worker.phone_number).first()
+        )
+        if existing_phone:
+            raise HTTPException(status_code=400, detail="Phone number already exists")
+
+    # Check duplicate email if provided
+    if worker.email:
+        existing_email = db.query(Worker).filter(Worker.email == worker.email).first()
+        if existing_email:
+            raise HTTPException(status_code=400, detail="Email already exists")
+
+    # Generate Worker ID
+    worker_id = generate_worker_id(worker.first_name, db)
+
+    # Create new worker
+    new_worker = Worker(
+        worker_id=worker_id,
+        first_name=worker.first_name,
+        last_name=worker.last_name,
+        initial_name=worker.initial_name,
+        phone_number=worker.phone_number,
+        email=worker.email,
+        category=worker.category,
+        sub_category=worker.sub_category,
+        work_location=worker.work_location,
+        employment_type=worker.employment_type,
+        date_of_join=worker.date_of_join,
+        status=worker.status,
+        basic_salary=worker.basic_salary,
+        overtime=worker.overtime,
+        bonus=worker.bonus,
+        allowance=worker.allowance,
+        total_salary=worker.total_salary,
+    )
+
+    db.add(new_worker)
+    db.commit()
+    db.refresh(new_worker)
+
+    return {
+        "message": "Worker added successfully",
+        "worker_id": new_worker.worker_id,
+        "worker": {
+            "worker_id": new_worker.worker_id,
+            "first_name": new_worker.first_name,
+            "last_name": new_worker.last_name,
+            "initial_name": new_worker.initial_name,
+            "phone_number": new_worker.phone_number,
+            "email": new_worker.email,
+            "category": new_worker.category,
+            "sub_category": new_worker.sub_category,
+            "work_location": new_worker.work_location,
+            "employment_type": new_worker.employment_type,
+            "date_of_join": str(new_worker.date_of_join),
+            "status": new_worker.status,
+            "basic_salary": new_worker.basic_salary,
+            "overtime": new_worker.overtime,
+            "bonus": new_worker.bonus,
+            "allowance": new_worker.allowance,
+            "total_salary": new_worker.total_salary,
+        },
+    }
+
+
+@app.get("/api/admin/workers")
+def get_all_workers(db: Session = Depends(get_employees_db)):
+    """Get all workers from the database"""
+    workers = db.query(Worker).all()
+    return {
+        "workers": [
+            {
+                "worker_id": w.worker_id,
+                "first_name": w.first_name,
+                "last_name": w.last_name,
+                "initial_name": w.initial_name,
+                "phone_number": w.phone_number,
+                "email": w.email,
+                "category": w.category,
+                "sub_category": w.sub_category,
+                "work_location": w.work_location,
+                "employment_type": w.employment_type,
+                "date_of_join": str(w.date_of_join),
+                "status": w.status,
+                "basic_salary": w.basic_salary,
+                "overtime": w.overtime,
+                "bonus": w.bonus,
+                "allowance": w.allowance,
+                "total_salary": w.total_salary,
+                "worker_offer_letter_status": w.worker_offer_letter_status,
+                "worker_offer_letter_sent_at": w.worker_offer_letter_sent_at,
+            }
+            for w in workers
+        ]
+    }
+
+
+@app.get("/api/admin/workers/{worker_id}")
+def get_worker(worker_id: str, db: Session = Depends(get_employees_db)):
+    """Get a specific worker by worker_id"""
+    worker = db.query(Worker).filter(Worker.worker_id == worker_id).first()
+
+    if not worker:
+        raise HTTPException(status_code=404, detail="Worker not found")
+
+    return {
+        "worker_id": worker.worker_id,
+        "first_name": worker.first_name,
+        "last_name": worker.last_name,
+        "initial_name": worker.initial_name,
+        "phone_number": worker.phone_number,
+        "email": worker.email,
+        "category": worker.category,
+        "sub_category": worker.sub_category,
+        "work_location": worker.work_location,
+        "employment_type": worker.employment_type,
+        "date_of_join": str(worker.date_of_join),
+        "status": worker.status,
+        "basic_salary": worker.basic_salary,
+        "overtime": worker.overtime,
+        "bonus": worker.bonus,
+        "allowance": worker.allowance,
+        "total_salary": worker.total_salary,
+    }
+
+
+@app.post("/api/admin/send_worker_offer_letter/{worker_id}")
+def send_worker_offer_letter(worker_id: str, db: Session = Depends(get_employees_db)):
+    """Send offer letter to worker"""
+
+    worker = db.query(Worker).filter(Worker.worker_id == worker_id).first()
+
+    if not worker:
+        raise HTTPException(status_code=404, detail="Worker ID not found")
+
+    # Check if offer letter already sent
+    if worker.worker_offer_letter_status == "sent":
+        return {
+            "message": f"Offer letter already sent to {worker.first_name}",
+            "status": "Already Sent",
+        }
+
+    # Generate Offer Letter PDF
+    pdf_path = generate_worker_offer_letter_pdf(worker)
+
+    # Send Email
+    send_worker_offer_letter_email(
+        to_email=worker.email,
+        First_name=worker.first_name,
+        Last_name=worker.last_name,
+        Initial_name=worker.initial_name,
+        sub_category=worker.sub_category,
+        employment_type=worker.employment_type,
+        pdf_path=pdf_path,
+    )
+
+    # Update database
+    worker.worker_offer_letter_status = "sent"
+    worker.worker_offer_letter_sent_at = datetime.now()
+
+    db.commit()
+    db.refresh(worker)
+
+    return {
+        "message": f"Offer letter sent successfully to {worker.first_name}",
+        "status": "sent",
+    }
+
+
+@app.put("/api/admin/workers/{worker_id}/Inactive")
+def deactivate_worker(worker_id: str, db: Session = Depends(get_employees_db)):
+    worker = db.query(Worker).filter(Worker.worker_id == worker_id).first()
+
+    if not worker:
+        raise HTTPException(status_code=404, detail="Worker not found")
+
+    worker.status = "Inactive"
+    worker.deactivated_at = datetime.now()
+
+    db.commit()
+    db.refresh(worker)
+
+    return {
+        "message": f"Worker {worker_id} deactivated successfully",
+        "status": "Inactive",
+    }
+
+
+@app.post("/api/employee/request_update")
+def request_update(data: dict, db: Session = Depends(get_employees_db)):
+
+    # -------------------------------
+    # Check duplicate Email
+    # -------------------------------
+    if data.get("email"):
+        existing = (
+            db.query(Employee)
+            .filter(Employee.email == data["email"])
+            .first()
+        )
+
+        if existing and existing.emp_id != data["emp_id"]:
+            raise HTTPException(
+                status_code=400,
+                detail="Email already exists."
+            )
+
+    # -------------------------------
+    # Check duplicate Phone
+    # -------------------------------
+    if data.get("phone"):
+        existing = (
+            db.query(Employee)
+            .filter(Employee.contact_number == data["phone"])
+            .first()
+        )
+
+        if existing and existing.emp_id != data["emp_id"]:
+            raise HTTPException(
+                status_code=400,
+                detail="Phone number already exists."
+            )
+
+    # -------------------------------
+    # Check existing pending request
+    # -------------------------------
+    pending = db.execute(
+        text("""
+            SELECT *
+            FROM EMPLOYEE_EDIT_REQUESTS
+            WHERE emp_id = :emp_id
+            AND status = 'pending'
+        """),
+        {
+            "emp_id": data["emp_id"]
+        }
+    ).fetchone()
+
+    # ======================================================
+    # UPDATE EXISTING PENDING REQUEST
+    # ======================================================
+    if pending:
+
+        # Preserve old values if new ones are not sent
+        new_email = (
+            data.get("email")
+            if data.get("email") is not None
+            else pending.new_email
+        )
+
+        new_phone = (
+            data.get("phone")
+            if data.get("phone") is not None
+            else pending.new_phone
+        )
+
+        db.execute(
+            text("""
+                UPDATE EMPLOYEE_EDIT_REQUESTS
+                SET
+                    new_email = :email,
+                    new_phone = :phone,
+                    requested_at = GETDATE()
+                WHERE id = :id
+            """),
+            {
+                "id": pending.id,
+                "email": new_email,
+                "phone": new_phone,
+            },
+        )
+
+        db.commit()
+
+        return {
+            "message": "Existing profile update request updated successfully."
+        }
+
+    # ======================================================
+    # CREATE NEW REQUEST
+    # ======================================================
+    db.execute(
+        text("""
+            INSERT INTO EMPLOYEE_EDIT_REQUESTS
+            (
+                emp_id,
+                new_email,
+                new_phone,
+                status,
+                requested_at,
+                employee_read
+            )
+            VALUES
+            (
+                :emp_id,
+                :email,
+                :phone,
+                'pending',
+                GETDATE(),
+                0
+            )
+        """),
+        {
+            "emp_id": data["emp_id"],
+            "email": data.get("email"),
+            "phone": data.get("phone"),
+        },
+    )
+
+    db.commit()
+
+    return {
+        "message": "Profile update request sent successfully."
+    }
+
+
+
+@app.post("/api/admin/approve_update/{request_id}")
+def approve_update(request_id: int, db: Session = Depends(get_employees_db)):
+
+    req = db.execute(
+        text("""
+            SELECT * FROM EMPLOYEE_EDIT_REQUESTS
+            WHERE id = :id
+        """),
+        {"id": request_id},
+    ).fetchone()
+
+    if not req:
+        raise HTTPException(status_code=404, detail="Request not found")
+
+    # Update email only if requested
+    if req.new_email:
+        db.execute(
+            text("""
+                UPDATE EMPLOYEES_TABLE
+                SET email = :email
+                WHERE emp_id = :emp_id
+            """),
+            {
+                "email": req.new_email,
+                "emp_id": req.emp_id,
+            },
+        )
+
+    # Update phone only if requested
+    if req.new_phone:
+        db.execute(
+            text("""
+                UPDATE EMPLOYEES_TABLE
+                SET contact_number = :phone
+                WHERE emp_id = :emp_id
+            """),
+            {
+                "phone": req.new_phone,
+                "emp_id": req.emp_id,
+            },
+        )
+
+    # Mark request approved
+    db.execute(
+        text("""
+            UPDATE EMPLOYEE_EDIT_REQUESTS
+            SET status = 'approved',
+                reviewed_at = GETDATE()
+            WHERE id = :id
+        """),
+        {"id": request_id},
+    )
+
+    db.commit()
+
+    # Get updated employee details
+    employee = db.query(Employee).filter(Employee.emp_id == req.emp_id).first()
+
+    send_custom_email(
+        to_email=employee.email,
+        subject="Profile Update Approved",
+        message="Your profile changes have been approved by admin.",
+    )
+
+    return {"message": "Approved & updated"}
+
+@app.post("/api/admin/reject_update/{request_id}")
+def reject_update(request_id: int, db: Session = Depends(get_employees_db)):
+
+    db.execute(
+        text("""
+        UPDATE EMPLOYEE_EDIT_REQUESTS
+        SET status = 'rejected', reviewed_at = GETDATE()
+        WHERE id = :id
+    """),
+        {"id": request_id},
+    )
+
+    db.commit()
+
+    return {"message": "Request rejected"}
+
+
+@app.get("/api/admin/edit_notifications")
+def get_notifications(db: Session = Depends(get_employees_db)):
+
+    result = db.execute(
+        text("""
+            SELECT
+                id,
+                emp_id,
+                new_email,
+                new_phone,
+                status,
+                requested_at
+            FROM EMPLOYEE_EDIT_REQUESTS
+            WHERE status='pending'
+            ORDER BY requested_at DESC
+        """)
+    ).fetchall()
+
+    notifications = []
+
+    for row in result:
+
+        notifications.append({
+            "id": row.id,
+            "emp_id": row.emp_id,
+            "new_email": row.new_email,
+            "new_phone": row.new_phone,
+            "status": row.status,
+            "requested_at": row.requested_at.isoformat()
+        })
+
+    return notifications
+
+
+@app.get("/api/admin/notification_count")
+def notification_count(db: Session = Depends(get_employees_db)):
+
+    result = db.execute(
+        text("""
+            SELECT COUNT(*)
+            FROM EMPLOYEE_EDIT_REQUESTS
+            WHERE status='pending'
+        """)
+    ).fetchone()
+
+    return {
+        "count": result[0]
+    }
+
+
+@app.get("/api/employee/unified_notifications/{emp_id}")
+def get_unified_notifications(emp_id: str, db: Session = Depends(get_employees_db)):
+    """
+    Unified notification system combining profile edit requests and document verifications.
+    Returns normalized notifications sorted by date (latest first).
+    """
+    # 1. Fetch approved/rejected profile edit requests
+    edit_requests = db.execute(
+        text("""
+            SELECT id, emp_id, status, reviewed_at as notification_date
+            FROM EMPLOYEE_EDIT_REQUESTS
+            WHERE emp_id = :emp_id AND status IN ('approved', 'rejected')
+        """),
+        {"emp_id": emp_id}
+    ).fetchall()
+
+    # 2. Fetch verified/rejected documents
+    documents = db.execute(
+        text("""
+            SELECT id, emp_id, document_status as status, verified_at as notification_date
+            FROM EMPLOYEE_DOCUMENTS
+            WHERE emp_id = :emp_id AND document_status IN ('verified', 'rejected')
+        """),
+        {"emp_id": emp_id}
+    ).fetchall()
+
+    # 3. Normalize: combine both into single notification list
+    notifications = []
+
+    for row in edit_requests:
+        notifications.append({
+            "id": row.id,
+            "type": "profile_edit",
+            "status": row.status,  # approved / rejected
+            "notification_date": row.notification_date.isoformat() if row.notification_date else None,
+            "message": f"Your profile update request has been {row.status}",
+        })
+
+    for row in documents:
+        notifications.append({
+            "id": row.id,
+            "type": "document",
+            "status": row.status,  # verified / rejected
+            "notification_date": row.notification_date.isoformat() if row.notification_date else None,
+            "message": f"Your document has been {row.status}",
+        })
+
+    # 4. Sort by notification_date descending (latest first)
+    notifications.sort(
+        key=lambda x: x["notification_date"] or "",
+        reverse=True
+    )
+
+    return {"notifications": notifications}
+
+
+@app.get("/api/employee/notifications/{emp_id}")
+def get_employee_notifications(emp_id: str, db: Session = Depends(get_employees_db)):
+    """
+    Get unread notifications for an employee from both edit requests and documents.
+    Returns unified notification format sorted by date (latest first).
+    """
+    # 1. Fetch unread approved/rejected profile edit requests
+    edit_requests = db.execute(
+        text("""
+            SELECT id, status, reviewed_at as date
+            FROM EMPLOYEE_EDIT_REQUESTS
+            WHERE emp_id = :emp_id 
+              AND status IN ('approved', 'rejected')
+              AND employee_read = 0
+        """),
+        {"emp_id": emp_id}
+    ).fetchall()
+
+    # 2. Fetch unread verified/rejected documents
+    documents = db.execute(
+        text("""
+            SELECT 
+                id,
+                document_status as status,
+                document_sub_category,
+                verified_at as date
+            FROM EMPLOYEE_DOCUMENTS
+            WHERE emp_id = :emp_id
+            AND document_status IN ('verified', 'rejected')
+            AND employee_read = 0
+        """),
+        {"emp_id": emp_id}
+    ).fetchall()
+
+    # 3. Normalize and combine
+    notifications = []
+
+    for row in edit_requests:
+        notif_type = "approved" if row.status == "approved" else "rejected"
+        notifications.append({
+            "id": row.id,
+            "table_type": "edit_request",
+            "type": notif_type,
+            "title": "Profile Update " + notif_type.title(),
+            "message": f"Your profile update request has been {row.status}",
+            "date": row.date.isoformat() if row.date else None,
+        })
+
+    for row in documents:
+        notif_type = "approved" if row.status == "verified" else "rejected"
+
+        doc_name = row.document_sub_category.replace("_", " ").title()
+
+        notifications.append({
+            "id": row.id,
+            "table_type": "document",
+            "type": notif_type,
+            "title": f"{doc_name} {notif_type.title()}",
+            "message": f"Your {doc_name} has been {row.status}",
+            "date": row.date.isoformat() if row.date else None,
+        })
+
+    # 4. Sort by date descending
+    notifications.sort(key=lambda x: x["date"] or "", reverse=True)
+
+    return {"notifications": notifications}
+
+
+@app.put("/api/employee/mark_notification_read")
+def mark_notification_read(data: dict, db: Session = Depends(get_employees_db)):
+    """
+    Mark a notification as read by setting employee_read = 1.
+    Expects: { "table_type": "edit_request" | "document", "id": int }
+    """
+    table_type = data.get("table_type")
+    notif_id = data.get("id")
+
+    if not table_type or not notif_id:
+        raise HTTPException(status_code=400, detail="table_type and id are required")
+
+    if table_type == "edit_request":
+        result = db.execute(
+            text("""
+                UPDATE EMPLOYEE_EDIT_REQUESTS
+                SET employee_read = 1
+                WHERE id = :id
+            """),
+            {"id": notif_id}
+        )
+        if result.rowcount == 0:
+            raise HTTPException(status_code=404, detail="Notification not found")
+
+    elif table_type == "document":
+        result = db.execute(
+            text("""
+                UPDATE EMPLOYEE_DOCUMENTS
+                SET employee_read = 1
+                WHERE id = :id
+            """),
+            {"id": notif_id}
+        )
+        if result.rowcount == 0:
+            raise HTTPException(status_code=404, detail="Notification not found")
+
+    else:
+        raise HTTPException(status_code=400, detail="Invalid table_type")
+
+    db.commit()
+    return {"message": "Notification marked as read"}
+
+
+
+// backend/contract_template.js
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CeiTCS Contract Letter</title>
+    <link rel="stylesheet" href="template.css">
+</head>
+<body>
+
+<div class="header-title">CeiTCS - Contract Offer Letter</div>
+
+<p>Dear <b>{{ first_name }} {{ last_name }} {{ initial_name }} </b>,</p>
+
+<p>
+Congratulations <b>{{ first_name }} {{ last_name }} {{ initial_name }}</b>! We are pleased to offer you a 
+<b>Contract</b> position as <b>{{ position }}</b> at CeiTCS.  
+Your skills, dedication, and performance have impressed our team, 
+and we believe you will be a valuable addition to our organization.
+</p>
+
+<h3>Contract Details:</h3>
+<ul>
+    <li><b>First Name:</b> {{ first_name }}</li>
+    <li><b>Last Name:</b> {{ last_name }}</li>
+    <li><b>Middle Initial:</b> {{ initial_name }}</li>
+    <li><b>Position:</b> {{ position }}</li>
+    <li><b>Employment Type:</b> Contract</li>
+    <li><b>Contract Duration:</b> 6 Months (extendable)</li>
+    <li><b>Salary:</b> ₹{{ total_ctc }} per month</li>
+    <li><b>Working Location:</b> Chennai</li>
+</ul>
+
+<p>
+Kindly confirm your acceptance by replying to this email.
+</p>
+
+<br/>
+<p><b>Warm regards,</b><br>
+<b>G. Mohanraj</b><br>
+Managing Director<br>
+CeiTCS</p>
+
+<div class="signature-section">
+    <h3>Acknowledgement and Acceptance</h3>
+
+    <p>
+        I, <b>{{ first_name }} {{ last_name }} {{ initial_name }}</b>, accept the terms and conditions mentioned in this offer letter.
+    </p>
+
+    <p class="signature-line">
+        Signature: ___________________________
+    </p>
+
+    <p class="signature-line">
+        Date: ________________________________
+    </p>
+</div>
+
+</body>
+</html>
+
+// backend/database.js
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+BaseAdmin = declarative_base()
+BaseEmployees = declarative_base()
+
+
+# # ADMIN DB
+# DATABASE_URL_ADMIN = (
+#     r"mssql+pyodbc://@localhost\SQLEXPRESS/Admin_db?"
+#     "driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=yes"
+# )
+
+# engine_admin = create_engine(DATABASE_URL_ADMIN)
+# SessionAdmin = sessionmaker(
+#     autocommit=False,
+#     autoflush=False,
+#     bind=engine_admin
+# )
+
+# # EMPLOYEES DB
+# DATABASE_URL_EMPLOYEES = (
+#     r"mssql+pyodbc://@localhost\SQLEXPRESS/Employees_db?"
+#     "driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=yes"
+# )
+
+
+# engine_employees = create_engine(DATABASE_URL_EMPLOYEES)
+# SessionEmployees = sessionmaker(
+#     autocommit=False,
+#     autoflush=False,
+#     bind=engine_employees
+# )
+
+
+# ADMIN DB
+# DATABASE_URL_ADMIN = (
+#     r"mssql+pyodbc://@localhost\SQLEXPRESS/Admin_db?"
+#     "driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=yes"
+# )
+DATABASE_URL_ADMIN=(
+    "mssql+pyodbc://@LAPTOP-LMNR6NHV/Admin_db?"
+    "driver=ODBC+Driver+17+for+SQL+Server&"
+    "trusted_connection=yes"
+)
+
+engine_admin = create_engine(DATABASE_URL_ADMIN)
+SessionAdmin = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine_admin
+)
+
+# EMPLOYEES DB
+# DATABASE_URL_EMPLOYEES = (
+#     r"mssql+pyodbc://@localhost\SQLEXPRESS/Employees_db?"
+#     "driver=ODBC+Driver+17+for+SQL+Server&trusted_connection=yes"
+# )
+DATABASE_URL_EMPLOYEES=(
+    "mssql+pyodbc://@/Employees_db?"
+    "driver=ODBC+Driver+17+for+SQL+Server&"
+    "trusted_connection=yes"
+)
+
+
+engine_employees = create_engine(DATABASE_URL_EMPLOYEES)
+SessionEmployees = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    
+    bind=engine_employees
+)
+
+// backend/email_service.js
+import smtplib
+from email.message import EmailMessage
+
+SENDER_EMAIL = "s.v.k23105@gmail.com"
+APP_PASSWORD = "wcik fesl oppf fabr"
+
+def send_offer_letter_email(to_email, first_name, last_name, initial_name, pdf_path, position, employment_type):
+    full_name = first_name
+    if initial_name:
+        full_name = f"{first_name} {initial_name}"
+    full_name = f"{full_name} {last_name}"
+    
+    msg = EmailMessage()
+    msg["Subject"] = "CeiTCS - Offer Letter"
+    
+    msg["From"] = SENDER_EMAIL
+    msg["To"] = to_email
+
+    msg.set_content(
+
+        f"Dear {full_name},\n\n"
+        "Congratulations! We are pleased to offer you the position of "
+        f"{position} at CeiTCS under {employment_type} employment.\n\n"
+        "Please find the attached offer letter which contains complete details regarding your role, "
+        "responsibilities, compensation structure, and other employment terms.\n\n"
+        "Kindly review the document carefully and confirm your acceptance by replying to this email.\n\n"
+        "If you have any questions or require clarification, please feel free to contact our HR team.\n\n"
+        "We are excited to welcome you to CeiTCS and look forward to your valuable contribution to our organization.\n\n"
+        "Best Regards,\n"
+        "HR Department\n"
+        "Cloud Enabled Intellectual Technology and Consultancy Services (CeiTCS)"
+    )
+
+    # Attach the PDF
+    with open(pdf_path, "rb") as f:
+        msg.add_attachment(f.read(), maintype="application", subtype="pdf", filename="Offer_Letter.pdf")
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login(SENDER_EMAIL, APP_PASSWORD)
+        smtp.send_message(msg)
+        
+
+def send_custom_email(to_email: str, subject: str, message: str):
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = SENDER_EMAIL
+    msg["To"] = to_email
+
+    msg.set_content(message)
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login(SENDER_EMAIL, APP_PASSWORD)
+        smtp.send_message(msg)
+
+
+// backend/employees.js
+[
+    {
+        "full_name": "Kavinkumar",
+        "email": "kk3080065@gmail.com",
+        "employment_type": "Permanent",
+        "department": "Engineering",
+        "position": "Engineer ",
+        "date_of_join": "2006-05-31",
+        "basic_salary": 8000.0,
+        "house_rent_allowance": 2000.0,
+        "dearness_allowance": 5000.0,
+        "travel_allowance": 800.0,
+        "other_allowance": 200.0,
+        "total_ctc": 16000.0,
+        "emp_id": "Kavinkumar@362",
+        "status": "Active",
+        "temporary_password": null,
+        "created_at": "2025-11-20T09:14:34.072929",
+        "permanent_password": "Kavin@123$",
+        "profile_completed": true,
+        "profile_updated_at": "2025-11-20 14:49:54",
+        "personal_info": {
+            "gender": "Male",
+            "dob": "2025-11-24",
+            "contact_number": "9361315514",
+            "Nationality": "Indian",
+            "Martial_status": "Single",
+            "temporary_address": {
+                "street": "",
+                "city_or_town": "",
+                "district": "",
+                "state": "",
+                "country": "",
+                "pincode": ""
+            },
+            "permanent_address": {
+                "street": "304/2/41 krishnampatti",
+                "city_or_town": "Sivaganga",
+                "district": "thiruppathur",
+                "state": "TN",
+                "country": "India",
+                "pincode": "630211"
+            },
+            "emergency_contact": {
+                "contact_name": "Kavinkumar S",
+                "relationship": "Friend",
+                "contact_number": "09361315514",
+                "contact_Address": "304/2/41 krishnampatti, thiruppathur"
+            },
+            "education": {
+                "undergraduate": {
+                    "degree_name": "B.Tech,  AI",
+                    "university": "Anna University",
+                    "year_of_completion": "2025",
+                    "percentage_or_cgpa": "87"
+                },
+                "postgraduate": {
+                    "degree_name": "",
+                    "university": "",
+                    "year_of_completion": "",
+                    "percentage_or_cgpa": ""
+                },
+                "school": {
+                    "level": "12th",
+                    "school_name": "Baba Amir badhusha Hr.Sec.School",
+                    "board_name": "State Board",
+                    "year_of_completion": "2021",
+                    "percentage": "78"
+                }
+            },
+            "bank_details": {
+                "account_holder_name": "Kavin",
+                "bank_name": "SBI",
+                "branch_name": "TRP",
+                "ifsc": "9878545612300255",
+                "account_number": "78945623102"
+            }
+        },
+        "offer_letter_status": "Sent",
+        "documents": {
+            "profile_photo": {
+                "profile_photo": {
+                    "document_name": "profile.jpg",
+                    "document_url": "uploads/Kavinkumar@362\\profile.jpg",
+                    "document_status": "verified",
+                    "remarks": ""
+                }
+            },
+            "identity_proofs": {
+                "passport": {
+                    "document_name": "Screenshot 2025-09-05 185700.png",
+                    "document_url": "uploads/Kavinkumar@362\\Screenshot 2025-09-05 185700.png",
+                    "document_status": "verified",
+                    "remarks": ""
+                },
+                "aadhar_card": {
+                    "document_name": "Screenshot 2025-09-05 185700.png",
+                    "document_url": "uploads/Kavinkumar@362\\Screenshot 2025-09-05 185700.png",
+                    "document_status": "verified",
+                    "remarks": ""
+                },
+                "pan_card": {
+                    "document_name": "Screenshot 2025-12-09 125509.png",
+                    "document_url": "http://localhost:8000/uploads/Kavinkumar@362/Screenshot 2025-12-09 125509.png",
+                    "document_status": "rejected",
+                    "remarks": "Incorrect document"
+                }
+            },
+            "educational_certificates": {
+                "diploma_certificate": {
+                    "document_name": "0_yGZ5EF4hsMe2JSOu.jpg",
+                    "document_url": "http://localhost:8000/uploads/Kavinkumar@362/0_yGZ5EF4hsMe2JSOu.jpg",
+                    "document_status": "rejected",
+                    "remarks": "Incorrect document"
+                }
+            },
+            "additional_certificates": {},
+            "experience_documents": {}
+        }
+    },
+    {
+        "full_name": "abi",
+        "email": "dadsqueen9988@gmail.com",
+        "employment_type": "Permanent",
+        "department": "Engineering",
+        "position": "Engineering",
+        "date_of_join": "2025-11-21",
+        "basic_salary": 5000.0,
+        "house_rent_allowance": 4000.0,
+        "dearness_allowance": 2000.0,
+        "travel_allowance": 3000.0,
+        "other_allowance": 1000.0,
+        "total_ctc": 15000.0,
+        "emp_id": "Abi34234",
+        "status": "Inactive",
+        "temporary_password": null,
+        "created_at": "2025-11-20T11:01:54.337702",
+        "permanent_password": "Abi@123$",
+        "profile_completed": true,
+        "profile_updated_at": "2025-11-20 21:51:57",
+        "personal_info": {
+            "gender": "Male",
+            "dob": "2025-11-11",
+            "contact_number": "9876542310",
+            "Nationality": "Indian",
+            "Martial_status": "Single",
+            "temporary_address": {
+                "street": "304/2/41 krishnampatti, thiruppathur",
+                "city_or_town": "Sivaganga",
+                "district": "svg",
+                "state": "TN",
+                "country": "India",
+                "pincode": "630211"
+            },
+            "permanent_address": {
+                "street": "304/2/41 krishnampatti, thiruppathur",
+                "city_or_town": "Sivaganga",
+                "district": "",
+                "state": "TN",
+                "country": "India",
+                "pincode": "630211"
+            },
+            "emergency_contact": {
+                "contact_name": "",
+                "relationship": "Friend",
+                "contact_number": "",
+                "contact_Address": ""
+            },
+            "education": {
+                "undergraduate": null,
+                "postgraduate": null,
+                "school": null
+            },
+            "bank_details": {
+                "account_holder_name": "",
+                "bank_name": "",
+                "branch_name": "",
+                "ifsc": "",
+                "account_number": ""
+            }
+        },
+        "salary": "",
+        "joining_date": "",
+        "offer_letter_status": "Sent",
+        "deactivated_at": "2026-03-02 12:27:16"
+    },
+    {
+        "full_name": "kavin",
+        "email": "kavinkumar.s@gmail.com",
+        "employment_type": "Permanent",
+        "department": "Engineering",
+        "position": "engineering ",
+        "date_of_join": "2025-12-13",
+        "basic_salary": 5000.0,
+        "house_rent_allowance": 2000.0,
+        "dearness_allowance": 3000.0,
+        "travel_allowance": 300.0,
+        "other_allowance": 200.0,
+        "total_ctc": 10500.0,
+        "emp_id": "Kav63573",
+        "status": "Active",
+        "temporary_password": null,
+        "created_at": "2025-11-21T06:46:28.752983",
+        "documents": {
+            "profile_photo": {
+                "emp_id": null,
+                "document_type": null,
+                "document_status": null,
+                "comment": ""
+            },
+            "identity_proofs": {
+                "aadhar_card": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "pan_card": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "passport": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "driving_license": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "educational_certificates": {
+                "diploma_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "degree_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "postgraduate_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "consolidated_marksheet": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "provisional_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "transfer_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "additional_certificates": {
+                "language_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "other_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "experience_documents": {
+                "experience_certificate_1": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "experience_certificate_2": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "experience_certificate_3": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "relieving_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "salary_slips": []
+            }
+        },
+        "permanent_password": "Kavin@123$",
+        "profile_completed": true,
+        "profile_updated_at": "2025-11-23 13:21:29",
+        "personal_info": {
+            "gender": "Male",
+            "dob": "2025-11-24",
+            "contact_number": "9361315514",
+            "Nationality": "Indian",
+            "Martial_status": "Single",
+            "temporary_address": {
+                "street": "",
+                "city_or_town": "",
+                "district": "",
+                "state": "",
+                "country": "",
+                "pincode": ""
+            },
+            "permanent_address": {
+                "street": "304/2/41 krishnampatti",
+                "city_or_town": "Sivaganga",
+                "district": "thiruppathur",
+                "state": "TN",
+                "country": "India",
+                "pincode": "630211"
+            },
+            "emergency_contact": {
+                "contact_name": "Kavinkumar S",
+                "relationship": "Friend",
+                "contact_number": "09361315514",
+                "contact_Address": "304/2/41 krishnampatti, thiruppathur"
+            },
+            "education": {
+                "undergraduate": {
+                    "degree_name": "B.Tech,  AI",
+                    "university": "Anna University",
+                    "year_of_completion": "2025",
+                    "percentage_or_cgpa": "87"
+                },
+                "postgraduate": {
+                    "degree_name": "",
+                    "university": "",
+                    "year_of_completion": "",
+                    "percentage_or_cgpa": ""
+                },
+                "school": {
+                    "level": "12th",
+                    "school_name": "Baba",
+                    "board_name": "State Board",
+                    "year_of_completion": "2021",
+                    "percentage": "78"
+                }
+            },
+            "bank_details": {
+                "account_holder_name": "Kavin",
+                "bank_name": "SBI",
+                "branch_name": "TRP",
+                "ifsc": "9878545612300255",
+                "account_number": "78945623102"
+            }
+        },
+        "offer_letter_status": "Sent"
+    },
+    {
+        "full_name": "kavin",
+        "email": "kavinkumar.s.9361@gmail.com",
+        "employment_type": "Permanent",
+        "department": "Engineering",
+        "position": "engineering ",
+        "date_of_join": "2025-12-13",
+        "basic_salary": 5000.0,
+        "house_rent_allowance": 2000.0,
+        "dearness_allowance": 3000.0,
+        "travel_allowance": 300.0,
+        "other_allowance": 200.0,
+        "total_ctc": 10500.0,
+        "emp_id": "Kav18735",
+        "status": "Active",
+        "temporary_password": null,
+        "created_at": "2025-11-21T06:49:19.883598",
+        "documents": {
+            "profile_photo": {
+                "emp_id": null,
+                "document_type": null,
+                "document_status": null,
+                "comment": ""
+            },
+            "identity_proofs": {
+                "aadhar_card": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "pan_card": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "passport": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "driving_license": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "educational_certificates": {
+                "diploma_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "degree_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "postgraduate_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "consolidated_marksheet": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "provisional_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "transfer_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "additional_certificates": {
+                "language_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "other_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "experience_documents": {
+                "experience_certificate_1": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "experience_certificate_2": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "experience_certificate_3": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "relieving_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "salary_slips": []
+            }
+        },
+        "permanent_password": "Kavin@123",
+        "profile_completed": true,
+        "profile_updated_at": "2025-11-23 14:02:05",
+        "personal_info": {
+            "gender": "Male",
+            "dob": "2025-11-24",
+            "contact_number": "9361315514",
+            "Nationality": "Indian",
+            "Martial_status": "Single",
+            "temporary_address": {
+                "street": "",
+                "city_or_town": "",
+                "district": "",
+                "state": "",
+                "country": "",
+                "pincode": ""
+            },
+            "permanent_address": {
+                "street": "304/2/41 krishnampatti",
+                "city_or_town": "Sivaganga",
+                "district": ", thiruppathur",
+                "state": "TN",
+                "country": "India",
+                "pincode": "630211"
+            },
+            "emergency_contact": {
+                "contact_name": "Kavinkumar S",
+                "relationship": "Friend",
+                "contact_number": "09361315514",
+                "contact_Address": "304/2/41 krishnampatti, thiruppathur"
+            },
+            "education": {
+                "undergraduate": {
+                    "degree_name": "B.tech, AI",
+                    "university": "Anna University ",
+                    "year_of_completion": "2025",
+                    "percentage_or_cgpa": "87"
+                },
+                "postgraduate": {
+                    "degree_name": "",
+                    "university": "",
+                    "year_of_completion": "",
+                    "percentage_or_cgpa": ""
+                },
+                "school": {
+                    "level": "12th",
+                    "school_name": "baba ",
+                    "board_name": "State Board",
+                    "year_of_completion": "2021",
+                    "percentage": "78"
+                }
+            },
+            "bank_details": {
+                "account_holder_name": "Kavinkumar ",
+                "bank_name": "SBI",
+                "branch_name": "Trp",
+                "ifsc": "78945612302545",
+                "account_number": "98754612302"
+            }
+        }
+    },
+    {
+        "full_name": "kavin",
+        "email": "kavink@gmail.com",
+        "employment_type": "Permanent",
+        "department": "Engineering",
+        "position": "engineering ",
+        "date_of_join": "2025-12-13",
+        "basic_salary": 5000.0,
+        "house_rent_allowance": 2000.0,
+        "dearness_allowance": 3000.0,
+        "travel_allowance": 300.0,
+        "other_allowance": 200.0,
+        "total_ctc": 10500.0,
+        "emp_id": "Kav80736",
+        "status": "Inactive",
+        "temporary_password": null,
+        "created_at": "2025-11-21T06:52:53.385831",
+        "documents": {
+            "profile_photo": {
+                "emp_id": null,
+                "document_type": null,
+                "document_status": null,
+                "comment": ""
+            },
+            "identity_proofs": {
+                "aadhar_card": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "pan_card": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "passport": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "driving_license": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "educational_certificates": {
+                "diploma_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "degree_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "postgraduate_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "consolidated_marksheet": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "provisional_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "transfer_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "additional_certificates": {
+                "language_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "other_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                }
+            },
+            "experience_documents": {
+                "experience_certificate_1": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "experience_certificate_2": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "experience_certificate_3": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "relieving_certificate": {
+                    "emp_id": null,
+                    "document_type": null,
+                    "document_status": null,
+                    "comment": ""
+                },
+                "salary_slips": []
+            }
+        },
+        "permanent_password": "Kavin@123$",
+        "deactivated_at": "2025-12-06 13:03:25"
+    },
+    {
+        "full_name": "kkkcom",
+        "email": "kavinkumar.santhanakrishnan@gmail.com",
+        "employment_type": "Contract",
+        "department": "Engineering",
+        "position": "Java",
+        "date_of_join": "2025-12-26",
+        "basic_salary": 1000.0,
+        "house_rent_allowance": 1000.0,
+        "dearness_allowance": 1000.0,
+        "travel_allowance": 1000.0,
+        "other_allowance": 998.0,
+        "total_ctc": 4998.0,
+        "emp_id": "Kkk45483",
+        "status": "Active",
+        "temporary_password": "Kkk4%Dy35kk",
+        "created_at": "2025-12-08T07:04:28.411426",
+        "documents": {
+            "profile_photo": {},
+            "identity_proofs": {},
+            "educational_certificates": {},
+            "additional_certificates": {},
+            "experience_documents": {}
+        },
+        "salary": "",
+        "joining_date": ""          
+    }
+]
+
+// backend/offer_letter_generator.js
+import os
+from xhtml2pdf import pisa
+from datetime import date
+
+def generate_offer_letter_pdf(employee):
+
+    # Create output folder
+    folder = "offer_letters"
+    os.makedirs(folder, exist_ok=True)
+
+    pdf_path = os.path.join(folder, f"{employee.emp_id}_offer_letter.pdf")
+
+    # 1️⃣ Select template based on employment type
+    if employee.employment_type.lower() == "permanent":
+        template_file = "template.html"
+    elif employee.employment_type.lower() == "contract":
+        template_file = "contract_template.html"
+    else:
+        raise ValueError("Invalid employment type! Must be 'Permanent' or 'Contract'.")
+
+    # 2️⃣ Load template
+    with open(template_file, "r", encoding="utf-8") as f:
+        html = f.read()
+
+    # 3️⃣ Replace placeholders
+    # full_name = ""
+    # if employee.first_name:
+    #     full_name = employee.first_name
+    #     if employee.initial_name:
+    #         full_name = f"{employee.first_name} {employee.initial_name}"
+    #     if employee.last_name:
+    #         full_name = f"{full_name} {employee.last_name}"
+    # html = html.replace("{{ full_name }}", str(full_name or ""))
+    html = html.replace("{{ first_name }}", str(employee.first_name or ""))
+    html = html.replace("{{ last_name }}", str(employee.last_name or ""))
+    html = html.replace("{{ initial_name }}", str(employee.initial_name or ""))
+    html = html.replace("{{ position }}", str(employee.position or ""))
+    html = html.replace("{{ total_ctc }}", str(employee.total_ctc or ""))
+    html = html.replace("{{ date_of_join }}", str(employee.date_of_join or ""))
+    html = html.replace("{{ employment_type }}", str(employee.employment_type or ""))
+
+    # 4️⃣ Convert HTML → PDF
+    with open(pdf_path, "wb") as result:
+        pisa.CreatePDF(html, dest=result)
+
+    return pdf_path
+
+// backend/package-lock.js
+{
+  "name": "backend",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {}
+}
+
+
+// backend/schema.js
+from pydantic import BaseModel,EmailStr
+from pydantic import BaseModel,EmailStr,computed_field,Field
+from typing import List, Literal, Optional
+from datetime import datetime, date
+
+
+class AdminRegister(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+    confirm_password: str
+
+class SuperAdmin(BaseModel):
+    email: str
+    password: str
+
+class AdminLogin(BaseModel):
+    email: str
+    password: str
+
+class ProfileRequest(BaseModel):
+    email: str
+    
+SUPERADMIN_EMAIL = "s.v.k23105@gmail.com"
+SUPERADMIN_PASSWORD = "vinay_30"
+
+SENDER_PASSWORD = "wcik fesl oppf fabr" 
+SENDER_EMAIL = "s.v.k23105@gmail.com"
+
+class Addemployee(BaseModel):
+    # Basic Info
+    first_name: str
+    last_name: Optional[str] = None
+    initial_name: Optional[str] = None
+    email: EmailStr
+
+    # Employment Details
+    employment_type: Literal["Permanent", "Contract", "Internship"]
+    department: Literal["Human Resources", "Engineering", "Finance", "Marketing", "Operations", "Sales"]
+    position: str
+    date_of_join: str  # Format: YYYY-MM-DD
+
+    # Salary Details
+    basic_salary: float
+    house_rent_allowance: float
+    dearness_allowance: float
+    travel_allowance: float
+    other_allowance: float
+    
+
+
+    @computed_field
+    @property
+    def total_ctc(self) -> float:
+        return (
+            self.basic_salary +
+            self.house_rent_allowance +
+            self.dearness_allowance +
+            self.travel_allowance +
+            self.other_allowance
+        )
+    
+class TempemployeeLogin(BaseModel):
+    emp_id: str
+    email: str
+    temporary_password: str
+
+class EmployeePasswordUpdate(BaseModel):
+    emp_id: str
+    new_password: str
+    confirm_password: str
+    
+class EmployeeLogin(BaseModel):
+    email: str
+    password: str
+##
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class ResetPasswordRequest(BaseModel):
+    email: EmailStr
+    otp: str
+    new_password: str
+
+class SendEmailRequest(BaseModel):
+    emp_id: str
+    subject: str
+    body: str
+
+class EmailHistoryResponse(BaseModel):
+    id: int
+    emp_id: str
+    recipient_email: str
+    subject: str
+    body: str
+    email_type: str
+    sent_at: datetime
+    sent_by: Optional[str] = None
+    status: str
+    error_message: Optional[str] = None
+
+class EmailHistoryByEmployeeResponse(BaseModel):
+    emp_id: str
+    first_name: str
+    last_name: str
+    initial_name: Optional[str] = None
+    email: str
+    emails: List[EmailHistoryResponse]
+
+##
+class Address(BaseModel):
+    address: str
+    state: str
+    country: str
+    pincode: str
+
+# ----------------------- EDUCATION MODELS -----------------------
+class underGraduate(BaseModel):
+    name: str
+    university: str
+    year_of_completion: str
+    percentage_or_cgpa: str
+
+
+class PostGraduate(BaseModel):
+    degree_name: str
+    university: str
+    year_of_completion: str
+    percentage_or_cgpa: str
+
+
+class School(BaseModel):
+    level: str  # "10th" or "12th"
+    school_name: str
+    board_name: str  # CBSE / State Board
+    year_of_completion: str
+    percentage: str
+
+
+class Education(BaseModel):
+    undergraduate: Optional[underGraduate] = None
+    postgraduate: Optional[PostGraduate] = None
+    school: Optional[School] = None
+
+
+# ----------------------- BANK DETAILS MODEL -----------------------
+class BankDetails(BaseModel):
+    account_holder_name: str
+    bank_name: str
+    branch_name: str
+    ifsc: str
+    account_number: str
+
+class emergencyContact(BaseModel):
+    contact_name: str
+    relationship: Literal["Friend", "Guardian", "Parent", "Sister"]
+    contact_number: str
+    address: str
+    
+
+# ---------------------- EMPLOYEE PERSONAL INFO ----------------------
+
+class EmployeePersonalInfo(BaseModel):
+    gender: Literal["Male", "Female"]
+    dob: str
+    contact_number: str
+    nationality: Literal["Indian"]
+    martial_status: Literal["Single", "Married"]
+
+    temporary_address: Address | None = None
+    permanent_address: Address
+
+    education: Education = Field(default_factory=Education)
+    bank_details: BankDetails
+    emergency_contact: emergencyContact
+
+    
+
+class DocumentItem(BaseModel):
+    emp_id: str
+    document_type: str
+    document_status: Literal["verified", "rejected"]
+    comment: Optional[str] = ""
+
+
+# ---------------------- IDENTITY PROOFS ----------------------
+class IdentityProofs(BaseModel):
+    aadhar_card: DocumentItem = Field(default_factory=DocumentItem)
+    pan_card: DocumentItem = Field(default_factory=DocumentItem)
+    passport: DocumentItem = Field(default_factory=DocumentItem)
+    driving_license: DocumentItem = Field(default_factory=DocumentItem)
+
+
+# ---------------------- EDUCATIONAL CERTIFICATES ----------------------
+class EducationalCertificates(BaseModel):
+    diploma_certificate: DocumentItem = Field(default_factory=DocumentItem)
+    degree_certificate: DocumentItem = Field(default_factory=DocumentItem)
+    postgraduate_certificate: DocumentItem = Field(default_factory=DocumentItem)
+    consolidated_marksheet: DocumentItem = Field(default_factory=DocumentItem)
+    provisional_certificate: DocumentItem = Field(default_factory=DocumentItem)
+    transfer_certificate: DocumentItem = Field(default_factory=DocumentItem)
+
+
+# ---------------------- ADDITIONAL CERTIFICATES ----------------------
+class AdditionalCertificates(BaseModel):
+    language_certificate: DocumentItem = Field(default_factory=DocumentItem)
+    other_certificate: DocumentItem = Field(default_factory=DocumentItem)
+
+
+# ---------------------- EXPERIENCE DOCUMENTS ----------------------
+class ExperienceDocuments(BaseModel):
+    experience_certificate_1: DocumentItem = Field(default_factory=DocumentItem)
+    experience_certificate_2: DocumentItem = Field(default_factory=DocumentItem)
+    experience_certificate_3: DocumentItem = Field(default_factory=DocumentItem)
+    relieving_certificate: DocumentItem = Field(default_factory=DocumentItem)
+
+    # Salary slips support multiple documents
+    salary_slips: List[DocumentItem] = Field(default_factory=list)
+
+
+# ---------------------- MAIN DOCUMENTS SECTION ----------------------
+class Documents(BaseModel):
+    profile_photo: dict = Field(default_factory=dict)
+    identity_proofs: dict = Field(default_factory=dict)
+    educational_certificates: dict = Field(default_factory=dict)
+    additional_certificates: dict = Field(default_factory=dict)
+    experience_documents: dict = Field(default_factory=dict)
+
+documents: Documents = Field(default_factory=Documents)
+
+
+
+
+class AddWorker(BaseModel):
+    # Basic Info
+    first_name: str
+    last_name: Optional[str] = None
+    initial_name: Optional[str] = None
+    phone_number: str
+    email: EmailStr | None = None
+
+    # Work Details
+    category: Literal["Mechanical", "Civil"]
+    sub_category: Literal[
+        "Fabricator",
+        "Welder ARC",
+        "Welder MIG FCAW",
+        "Structural Fitter",
+        "Grinder",
+        "Gas Cutter",
+        "Rigger",
+        "Helper"
+    ]
+
+    work_location: str = "Pune"
+    employment_type: Literal["Permanent", "Contract"] = "Contract"
+    date_of_join: date
+    status: Literal["Active", "Inactive"] = "Active"
+
+    # Salary Details
+    basic_salary: float
+    overtime: float = 0
+    bonus: float = 0
+    allowance: float = 0
+
+    @computed_field
+    @property
+    def total_salary(self) -> float:
+        return (
+            self.basic_salary +
+            self.overtime +
+            self.bonus +
+            self.allowance
+        )
+
+// backend/sent_mails.js
+[
+    {
+        "mail_id": "MAIL0001",
+        "to_email": "kk3080065@gmail.com",
+        "employee_id": "Kavinkumar@362",
+        "employee_name": "Kavinkumar",
+        "subject": "HELLO BRO",
+        "message": "THIS FOR THE PROJECT UPDATE TEST",
+        "timestamp": "2025-12-03 13:54:26"
+    },
+    {
+        "mail_id": "MAIL0002",
+        "to_email": "dadsqueen9988@gmail.com",
+        "employee_id": "Abi34234",
+        "employee_name": "abi",
+        "subject": "hey there",
+        "message": "how are you ",
+        "timestamp": "2025-12-08 12:39:49"
+    },
+    {
+        "mail_id": "MAIL0003",
+        "to_email": "dadsqueen9988@gmail.com",
+        "employee_id": "Abi34234",
+        "employee_name": "abi",
+        "subject": "hey there",
+        "message": "how are you ",
+        "timestamp": "2025-12-08 12:40:19"
+    }
+]
+
+// backend/template.js
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    margin: 40px;
+    background: #f7f7f7;
+    color: #333;
+    line-height: 1.6;
+}
+
+.header-title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    color: #222;
+    letter-spacing: 1px;
+}
+
+h3 {
+    margin-top: 25px;
+    color: #444;
+    border-left: 4px solid #0a84ff;
+    padding-left: 10px;
+}
+
+ul {
+    margin: 15px 0;
+    padding-left: 25px;
+}
+
+ul li {
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.signature-section {
+    margin-top: 40px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 6px;
+}
+
+.signature-section h3 {
+    margin-top: 0;
+}
+
+.signature-line {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+p {
+    font-size: 16px;
+}
+
+b {
+    color: #000;
+}
+
+
+// backend/template.js
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CeiTCS Offer Letter</title>
+    <link rel="stylesheet" href="template.css">
+</head>
+<body>
+
+<div class="header-title">CeiTCS - Offer Letter</div>
+
+<p>Dear <b>{{ full_name }}</b>,</p>
+
+<p>
+We are pleased to offer you the position of <b>{{ position }}</b> at CeiTCS. After
+reviewing your qualifications and your performance during the probation period,
+we are confident in your ability to contribute significantly to our team.
+</p>
+
+<p>
+Your expected start date will be <b>{{ date_of_join }}</b>, and you will report to our 
+Managing Director – <b>Mr. G. Mohanraj</b>. This position is based at our office in 
+Chennai, Tamil Nadu.
+</p>
+
+<h3>Key Details of the Offer:</h3>
+<ul>
+    <li><b>Position:</b> {{ position }}</li>
+    <li><b>Employment Type:</b> {{ employment_type }}</li>
+    <li><b>Salary:</b> ₹{{ total_ctc }} per month</li>
+    <li><b>Benefits:</b> P.F & E.S.I</li>
+    <li><b>Notice Period:</b> 3 months</li>
+</ul>
+
+<p>
+Please confirm your acceptance of this offer by signing and returning this letter 
+within <b>two weeks</b> of receiving this offer.
+</p>
+
+<p>
+This offer is contingent upon successful completion of any background verification and submission
+of required documents as requested by our HR department.
+</p>
+
+<br/>
+
+<p><b>Warm regards,</b><br>
+<b>G. Mohanraj</b><br>
+Managing Director<br>
+CeiTCS</p>
+
+<div class="signature-section">
+    <h3>Acknowledgement and Acceptance</h3>
+
+    <p>
+        I, <b>{{ full_name }}</b>, accept the terms and conditions mentioned in this offer letter.
+    </p>
+
+    <p class="signature-line">
+        Signature: ___________________________
+    </p>
+
+    <p class="signature-line">
+        Date: ________________________________
+    </p>
+</div>
+
+</body>
+</html>
+
+
+// backend/users.js
+[
+    {
+        "name": "Kavin",
+        "email": "kk3080065@gmail.com",
+        "password": "Kavin"
+    },
+    {
+        "name": "Kkavin",
+        "email": "kk30800@gmail.com",
+        "password": "Kavin@!23"
+    }
+]
+
+// backend/worker_offer_template.js
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CeiTCS Worker Offer Letter</title>
+    <link rel="stylesheet" href="template.css">
+</head>
+<body>
+
+<div class="header-title">CeiTCS - Offer Letter</div>
+
+<p><b>Date:</b> {{ current_date }}</p>
+
+<p>
+<b>To,</b><br>
+{{ First_name }} {{ Last_name }} {{ Initial_name }}<br>
+Phone: {{ phone_number }}<br>
+Email: {{ email }}
+</p>
+
+<p><b>Subject: Offer of Employment</b></p>
+
+<p>Dear {{ First_name }},</p>
+
+<p>
+We are pleased to offer you the position of <b>{{ sub_category }}</b> under the <b>{{ category }}</b> Department at our organization. 
+Based on your skills, experience, and qualifications, we believe you will be a valuable addition to our team.
+
+In this role, you will be responsible for performing duties related to your trade, maintaining quality and safety standards, 
+and contributing effectively to project execution and team objectives. You are expected to carry out your responsibilities 
+with professionalism, dedication, and adherence to company policies and industry standards.
+
+Your role is crucial to the successful completion of our ongoing and future projects, and we look forward to your active 
+participation and commitment toward achieving organizational goals.
+</p>
+
+<h3>📍 Work Details:</h3>
+<ul>
+    <li><b>Work Location:</b> {{ work_location }}</li>
+    <li><b>Employment Type:</b> {{ employment_type }}</li>
+    <li><b>Date of Joining:</b> {{ date_of_join }}</li>
+    <li><b>Status:</b> {{ status }}</li>
+</ul>
+
+<h3>💰 Compensation:</h3>
+<p>Your salary structure will be as follows:</p>
+<ul>
+    <li><b>Basic Salary:</b> ₹{{ basic_salary }}</li>
+    <li><b>Overtime:</b> ₹{{ overtime }}</li>
+    <li><b>Bonus:</b> ₹{{ bonus }}</li>
+    <li><b>Allowance:</b> ₹{{ allowance }}</li>
+</ul>
+
+<p><b>👉 Total Salary:</b> ₹{{ total_salary }} per month</p>
+
+<h3>🏢 Benefits:</h3>
+<ul>
+    <li>Accommodation provided by company</li>
+    <li>Cooking utensils & gas provided</li>
+    <li>Group insurance coverage</li>
+    <li>Transportation facility</li>
+    <li>Other benefits as per Indian labor laws</li>
+</ul>
+
+<h3>📄 Terms & Conditions:</h3>
+<ul>
+    <li>You are required to submit all necessary documents in a single PDF before joining.</li>
+    <li>Your employment is subject to company policies and performance.</li>
+    <li>Any misconduct may lead to termination as per company rules.</li>
+</ul>
+
+<p>We believe your skills and experience will be a valuable addition to our team.</p>
+
+<p>Kindly confirm your acceptance of this offer.</p>
+
+<p>We look forward to working with you.</p>
+
+<p><b>Best Regards,</b><br>
+<b>HR Department</b><br>
+CeiTCS</p>
+
+<p>Contact: ceitcschennai@gmail.com<br>
+Mobile: +91-9841905323 / 99628 19529</p>
+
+<div class="signature-section">
+    <h3>Acknowledgement and Acceptance</h3>
+    
+    <p>
+        I, <b>{{ First_name }}  {{ Last_name }} {{ Initial_name }}</b>, accept the terms and conditions mentioned in this offer letter.
+    </p>
+
+    <p class="signature-line">
+        Signature: ___________________________
+    </p>
+
+    <p class="signature-line">
+        Date: ________________________________
+    </p>
+</div>
+
+</body>
+</html>
+
+
+
+File name:worker_offer_template.html
