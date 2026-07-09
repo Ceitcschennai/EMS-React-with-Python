@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../styles/Admin/Dashboard/EmployeesPage.css";
 
@@ -11,7 +11,6 @@ const Employees = () => {
   const [typeFilter, setTypeFilter] = useState("");
   const [deptFilter, setDeptFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("Active");
-  const [allDocuments, setAllDocuments] = useState([]);
   const navigate = useNavigate();
   const [isRefreshing] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState(null);
@@ -19,7 +18,6 @@ const Employees = () => {
   // Fetch Employees
   useEffect(() => {
     fetchEmployees();
-    fetchAllDocuments();
   }, []);
 
   const fetchEmployees = async () => {
@@ -41,32 +39,40 @@ const Employees = () => {
     }
   };
 
-  // Fetch all documents from SQL DB
-  const fetchAllDocuments = async () => {
-    try {
-      const res = await fetch(`${API}/api/admin/all_documents`);
-      const data = await res.json();
-      setAllDocuments(data.documents || []);
-    } catch (err) {
-      console.error("Error fetching documents:", err);
-    }
-  };
+const [profilePhotos, setProfilePhotos] = useState({});
 
-  // Get profile photo URL for an employee
-  const getProfilePhotoUrl = (empId) => {
-    const profileDoc = allDocuments.find(
-      (doc) =>
-        doc.emp_id === empId &&
-        doc.document_category === "profile_photo" &&
-        doc.document_sub_category === "profile_photo" &&
-        doc.document_status === "verified"
-    );
 
-    if (profileDoc?.document_url) {
-      return `${API}/${profileDoc.document_url.replace(/\\/g, "/")}`;
-    }
-    return null;
-  };
+  // Fetch profile photo for a specific employee
+  const fetchProfilePhoto = useCallback(async (empId) => {
+      if (profilePhotos[empId]) return;
+
+      try {
+          const res = await fetch(`${API}/api/employee/profile-photo/${empId}`);
+          const data = await res.json();
+
+          if (data.profile_photo?.document_url) {
+              const url = `${API}/${data.profile_photo.document_url.replace(/\\/g, "/")}`;
+
+              setProfilePhotos(prev => ({
+                  ...prev,
+                  [empId]: url,
+              }));
+          }
+
+      } catch (err) {
+          console.error(err);
+      }
+
+  }, [profilePhotos]);
+
+  useEffect(() => {
+      if (!employees.length) return;
+
+      employees.forEach(emp => {
+          fetchProfilePhoto(emp.emp_id);
+      });
+
+  }, [employees, fetchProfilePhoto]);
 
   // Inactive Function
   const handleInactive = async (empId, empName) => {
@@ -216,7 +222,7 @@ const Employees = () => {
           <tbody>
             {filteredEmployees.length > 0 ? (
               filteredEmployees.map((emp, index) => {
-                const profilePhotoUrl = getProfilePhotoUrl(emp.emp_id);
+                const profilePhotoUrl = profilePhotos[emp.emp_id];
 
                 return (
                   <tr
@@ -299,14 +305,14 @@ const Employees = () => {
                             👤 View Profile
                           </button>
 
-                          <button
+                          {/* <button
                             onClick={(e) => {
                               e.stopPropagation();
                               navigate(`/admin/employee/${emp.emp_id}/documents`);
                             }}
                           >
                             📄 Documents
-                          </button>
+                          </button> */}
 
                           <button
                             onClick={(e) => {

@@ -4,16 +4,17 @@ from database import BaseAdmin, BaseEmployees
 
 
 class Admin(BaseAdmin):
-    __tablename__ = "ADMIN_TABLE"
+    __tablename__ = "E_ADMIN_TABLE"
+    __table_args__ = {"schema": "CEITCS_EMS"}
 
-    id = Column(Integer, primary_key=True, index=True)
-    email = Column(String(255), unique=True, index=True)
-    password = Column(String(255))
-    name = Column(String(255))
-
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    email = Column(String(255), unique=True, index=True, nullable=False)
+    password = Column(String(255), nullable=False)
+    name = Column(String(255), nullable=False)
 
 class Employee(BaseEmployees):
-    __tablename__ = "EMPLOYEES_TABLE"
+    __tablename__ = "E_EMPLOYEES_TABLE"
+    __table_args__ = {"schema": "CEITCS_EMS"}
 
     emp_id = Column(String(20), primary_key=True)
     first_name = Column(String(100))
@@ -91,49 +92,66 @@ class Employee(BaseEmployees):
     offer_letter_sent_at = Column(DateTime, nullable=True)
 
 
-class EmployeeDocument(BaseEmployees):
-    """Model for storing employee documents in SQL Server"""
 
-    __tablename__ = "EMPLOYEE_DOCUMENTS"
+class EmployeeDocument(BaseEmployees):
+    """Model for storing employee documents"""
+
+    __tablename__ = "E_EMPLOYEE_DOCUMENTS_TABLE"
+    __table_args__ = {"schema": "CEITCS_EMS"}
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    emp_id = Column(String(20), nullable=False, index=True)
-    document_category = Column(
-        String(50), nullable=False
-    )  # main_key (e.g., profile_photo, identity_proofs)
-    document_sub_category = Column(
-        String(50), nullable=False
-    )  # sub_key (e.g., aadhar_card, pan_card)
+
+    emp_id = Column(
+    String(20),
+    ForeignKey("CEITCS_EMS.E_EMPLOYEES_TABLE.emp_id"),
+    nullable=False,
+    index=True,
+)
+
+    document_category = Column(String(50), nullable=False)
+    document_sub_category = Column(String(50), nullable=False)
+
     document_name = Column(String(255), nullable=False)
     document_url = Column(String(500), nullable=False)
-    document_content = Column(
-        LargeBinary, nullable=True
-    )  # BLOB for storing actual file content
-    document_mime_type = Column(
-        String(100), nullable=True
-    )  # MIME type (e.g., image/png, application/pdf)
-    document_status = Column(
-        String(20), default="pending"
-    )  # pending, verified, rejected
-    uploaded_at = Column(DateTime,server_default=func.now(),onupdate=func.now())
-    verified_at = Column(DateTime, nullable=True, onupdate=func.now())
+
+    document_content = Column(LargeBinary, nullable=True)
+    document_mime_type = Column(String(100), nullable=True)
+
+    document_status = Column(String(20), default="pending")
+
+    uploaded_at = Column(DateTime, server_default=func.now())
+    verified_at = Column(DateTime, nullable=True)
+
     verified_by = Column(String(100), nullable=True)
+
     rejection_reason = Column(String(500), nullable=True)
+
     employee_read = Column(Boolean, default=False)
 
+    
 
 class EmailHistory(BaseEmployees):
     """Model for storing email history for each employee"""
 
-    __tablename__ = "EMAIL_HISTORY"
+    __tablename__ = "E_EMAIL_HISTORY_TABLE"
+    __table_args__ = {"schema": "CEITCS_EMS"}
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    emp_id = Column(String(20), nullable=False, index=True)
+
+    emp_id = Column(
+        String(20),
+        ForeignKey("CEITCS_EMS.E_EMPLOYEES_TABLE.emp_id"),
+        nullable=False,
+        index=True,
+    )
+
     recipient_email = Column(String(100), nullable=False)
     subject = Column(String(500), nullable=False)
     body = Column(String, nullable=False)
+
     sent_at = Column(DateTime, default=datetime.utcnow)
     sent_by = Column(String(100), nullable=True)
+
     status = Column(String(20), default="sent")
     error_message = Column(String(500), nullable=True)
 
@@ -141,26 +159,33 @@ class EmailHistory(BaseEmployees):
 class Worker(BaseEmployees):
     """Model for storing worker information"""
 
-    __tablename__ = "WORKERS_TABLE"
+    __tablename__ = "E_WORKERS_TABLE"
+    __table_args__ = {"schema": "CEITCS_EMS"}
 
     worker_id = Column(String(20), primary_key=True)
+
     first_name = Column(String(100))
     last_name = Column(String(100))
     initial_name = Column(String(10), nullable=True)
+
     phone_number = Column(String(15))
     email = Column(String(100), nullable=True, index=True)
 
     category = Column(String(50))
     sub_category = Column(String(50))
+
     work_location = Column(String(100), default="Pune")
     employment_type = Column(String(50), default="Contract")
+
     date_of_join = Column(Date)
+
     status = Column(String(20), default="Active")
 
     basic_salary = Column(Float)
     overtime = Column(Float, default=0)
     bonus = Column(Float, default=0)
     allowance = Column(Float, default=0)
+
     total_salary = Column(Float)
 
     worker_offer_letter_status = Column(String(20), nullable=True)
@@ -168,19 +193,32 @@ class Worker(BaseEmployees):
 
 
 class EmployeeEditRequest(BaseEmployees):
-    __tablename__ = "EMPLOYEE_EDIT_REQUESTS"
+    """Model for storing employee profile edit requests"""
 
-    id = Column(Integer, primary_key=True, index=True)
+    __tablename__ = "E_EMPLOYEE_EDIT_REQUESTS_TABLE"
+    __table_args__ = {"schema": "CEITCS_EMS"}
 
-    emp_id = Column(String(20), ForeignKey("EMPLOYEES_TABLE.emp_id"))
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
 
-    new_first_name = Column(String(50))
-    new_last_name = Column(String(50))
+    emp_id = Column(
+        String(20),
+        ForeignKey("CEITCS_EMS.E_EMPLOYEES_TABLE.emp_id"),
+        nullable=False,
+    )
+
     new_email = Column(String(100))
     new_phone = Column(String(20))
 
+    new_marital_status = Column(String(20))
+
+    new_emergency_contact_name = Column(String(100))
+    new_emergency_relationship = Column(String(20))
+    new_emergency_contact_number = Column(String(20))
+    new_emergency_contact_address = Column(String(300))
+    
     status = Column(String(20), default="pending")
+
     requested_at = Column(DateTime, default=datetime.utcnow)
     reviewed_at = Column(DateTime, nullable=True)
-    employee_read = Column(Boolean, default=False)
 
+    employee_read = Column(Boolean, default=False)

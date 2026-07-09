@@ -307,13 +307,14 @@
   letter-spacing: 0.5px;
 }
 
-.communication-page .status.sent {
+
+.communication-page .status.active {
   background: linear-gradient(135deg, #d4f6e6 0%, #b8f0d4 100%);
   color: #0c8a48;
   box-shadow: 0 2px 8px rgba(12, 138, 72, 0.15);
 }
 
-.communication-page .status.pending {
+.communication-page .status.inactive {
   background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
   color: #e65100;
   box-shadow: 0 2px 8px rgba(230, 81, 0, 0.15);

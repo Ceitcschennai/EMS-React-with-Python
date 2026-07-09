@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile, Depends
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile, Depends,  Query
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from schema import (
@@ -40,6 +40,7 @@ from xhtml2pdf import pisa
 # ""
 from sqlalchemy.orm import Session
 from sqlalchemy import text
+from sqlalchemy import func
 
 from Models import Admin, Employee, EmployeeDocument, EmailHistory, Worker
 from database import (
@@ -472,6 +473,25 @@ def login_admin(admin: AdminLogin):
     )
 
 
+
+@app.get("/api/admin/check-email")
+def check_email(
+    email: str = Query(...),
+    db: Session = Depends(get_employees_db)
+):
+    existing = db.query(Employee).filter(Employee.email == email.lower()).first()
+
+    if existing:
+        return {
+            "exists": True,
+            "message": "Email already exists"
+        }
+
+    return {
+        "exists": False,
+        "message": "Email is available"
+    }
+
 @app.post("/api/admin/dbadd_employee")
 def add_employee(employee: Addemployee, db: Session = Depends(get_employees_db)):
 
@@ -528,7 +548,7 @@ def forgot_password(
     result = db.execute(
         text("""
             SELECT  first_name, last_name, initial_name, email
-            FROM EMPLOYEES_TABLE
+            FROM CEITCS_EMS.E_EMPLOYEES_TABLE
             WHERE email = :email
         """),
         {"email": request.email},
@@ -548,7 +568,7 @@ def forgot_password(
     # 4️⃣ Store OTP in DB
     db.execute(
         text("""
-            UPDATE EMPLOYEES_TABLE
+            UPDATE CEITCS_EMS.E_EMPLOYEES_TABLE
             SET reset_otp = :otp,
                 reset_otp_expiry = :expiry
             WHERE email = :email
@@ -590,7 +610,7 @@ def reset_password(
     result = db.execute(
         text("""
             SELECT reset_otp, reset_otp_expiry
-            FROM EMPLOYEES_TABLE
+            FROM CEITCS_EMS.E_EMPLOYEES_TABLE
             WHERE email = :email
         """),
         {"email": request.email},
@@ -628,7 +648,7 @@ def reset_password(
     # 🔁 Update password + Clear OTP
     db.execute(
         text("""
-            UPDATE EMPLOYEES_TABLE
+            UPDATE CEITCS_EMS.E_EMPLOYEES_TABLE
             SET permanent_password = :password,
                 reset_otp = NULL,
                 reset_otp_expiry = NULL
@@ -656,7 +676,7 @@ def update_employee_password(
     result = db.execute(
         text("""
             SELECT first_name, last_name, initial_name, temporary_password 
-            FROM EMPLOYEES_TABLE 
+            FROM CEITCS_EMS.E_EMPLOYEES_TABLE
             WHERE emp_id = :emp_id
         """),
         {"emp_id": data.emp_id},
@@ -678,7 +698,7 @@ def update_employee_password(
     # 3️⃣ Move password → permanent & remove temporary
     db.execute(
         text("""
-            UPDATE EMPLOYEES_TABLE
+            UPDATE CEITCS_EMS.E_EMPLOYEES_TABLE
             SET permanent_password = :new_password,
                 temporary_password = NULL
             WHERE emp_id = :emp_id
@@ -702,7 +722,7 @@ def employee_login(credentials: TempemployeeLogin, db=Depends(get_employees_db))
     query = text("""
         SELECT emp_id, first_name, last_name, initial_name, email, temporary_password,
                department, position, status
-        FROM EMPLOYEES_TABLE
+        FROM CEITCS_EMS.E_EMPLOYEES_TABLE
         WHERE emp_id = :emp_id AND email = :email
     """)
 
@@ -739,7 +759,7 @@ def login_employee(data: EmployeeLogin, db: Session = Depends(get_employees_db))
     result = db.execute(
         text("""
             SELECT emp_id, permanent_password, status, profile_completed
-            FROM EMPLOYEES_TABLE
+            FROM CEITCS_EMS.E_EMPLOYEES_TABLE
             WHERE email = :email 
         """),
         {"email": data.email},
@@ -1266,23 +1286,47 @@ async def upload_document(
 
 @app.get("/api/admin/all_documents")
 def get_all_documents(db: Session = Depends(get_employees_db)):
-    documents = db.query(EmployeeDocument).all()
+    documents = (
+        db.query(EmployeeDocument)
+        .filter(EmployeeDocument.document_category != "profile_photo")
+        .all()
+    )
 
     result = []
     for doc in documents:
         result.append(
-            {
-                "emp_id": doc.emp_id,
-                "document_category": doc.document_category,
-                "document_sub_category": doc.document_sub_category,
-                "document_name": doc.document_name,
-                "document_url": doc.document_url,
-                "document_status": doc.document_status,
-                "uploaded_at": str(doc.uploaded_at) if doc.uploaded_at else None,
-            }
-        )
+                {
+                    "id": doc.id,
+                    "emp_id": doc.emp_id,
+                    "document_category": doc.document_category,
+                    "document_sub_category": doc.document_sub_category,
+                    "document_name": doc.document_name,
+                    "document_url": doc.document_url,
+                    "document_status": doc.document_status,
+                    "rejection_reason": doc.rejection_reason,
+                    "uploaded_at": str(doc.uploaded_at) if doc.uploaded_at else None,
+                    "verified_at": str(doc.verified_at) if doc.verified_at else None,
+                }
+            )
 
     return {"documents": result}
+
+
+@app.get("/api/employee/profile-photo/{emp_id}")
+def get_profile_photo(emp_id: str, db: Session = Depends(get_employees_db)):
+    profile_photo = (db.query(EmployeeDocument).filter(EmployeeDocument.emp_id == emp_id,EmployeeDocument.document_category == "profile_photo",EmployeeDocument.document_sub_category == "profile_photo",).first())
+
+    if not profile_photo:
+        return {"profile_photo": None}
+
+    return {
+        "profile_photo": {
+            "document_url": profile_photo.document_url,
+            "uploaded_at": str(profile_photo.uploaded_at) if profile_photo.uploaded_at else None,
+            "verified_at": str(profile_photo.verified_at) if profile_photo.verified_at else None,
+            "document_status": profile_photo.document_status,
+        }
+    }
 
 
 @app.post("/api/admin/verify_document")
@@ -1333,6 +1377,76 @@ def verify_document(
     else:
         document.rejection_reason = remarks or ""
 
+    employee = db.query(Employee).filter(
+        Employee.emp_id == emp_id
+    ).first()
+
+
+    if status == "rejected":
+
+        msg = EmailMessage()
+
+        msg["Subject"] = "Document Verification Rejected"
+
+        msg["From"] = SENDER_EMAIL
+
+        msg["To"] = employee.email
+
+        msg.set_content(f"""
+    Dear {employee.first_name},
+
+    Your document has been rejected by the HR/Admin Team.
+
+    Document:
+    {main_key} - {sub_key}
+
+    Reason:
+    {remarks}
+
+    Please upload the corrected document from your Employee Portal.
+
+    Regards,
+    HR Department
+    CeiTCS
+    """)
+
+        with smtplib.SMTP_SSL("smtp.gmail.com",465) as smtp:
+            smtp.login(SENDER_EMAIL,SENDER_PASSWORD)
+            smtp.send_message(msg)
+
+
+    if status == "verified":
+
+        msg = EmailMessage()
+
+        msg["Subject"] = "Document Verified"
+
+        msg["From"] = SENDER_EMAIL
+
+        msg["To"] = employee.email
+
+        msg.set_content(f"""
+    Dear {employee.first_name},
+
+    Congratulations.
+
+    Your document has been verified successfully.
+
+    Document:
+    {main_key} - {sub_key}
+
+    No further action is required.
+
+    Regards,
+    HR Department
+    CeiTCS
+    """)
+
+        with smtplib.SMTP_SSL("smtp.gmail.com",465) as smtp:
+            smtp.login(SENDER_EMAIL,SENDER_PASSWORD)
+            smtp.send_message(msg)
+
+
     db.commit()
     db.refresh(document)
 
@@ -1369,6 +1483,22 @@ def deactivate_employee(emp_id: str, db: Session = Depends(get_employees_db)):
 
 
 #########
+
+@app.get("/api/admin/check-worker-email")
+def check_worker_email(
+    email: str = Query(...),
+    db: Session = Depends(get_employees_db)
+):
+    existing = (
+        db.query(Worker)
+        .filter(func.lower(Worker.email) == email.lower())
+        .first()
+    )
+
+    return {
+        "exists": existing is not None,
+        "message": "Email already exists" if existing else "Email is available"
+    }
 
 
 @app.post("/api/admin/add_worker")
@@ -1567,114 +1697,645 @@ def deactivate_worker(worker_id: str, db: Session = Depends(get_employees_db)):
 
 @app.post("/api/employee/request_update")
 def request_update(data: dict, db: Session = Depends(get_employees_db)):
+
+    # ======================================================
+    # Check employee exists
+    # ======================================================
+    employee = (
+        db.query(Employee)
+        .filter(Employee.emp_id == data["emp_id"])
+        .first()
+    )
+
+    if not employee:
+        raise HTTPException(
+            status_code=404,
+            detail="Employee not found."
+        )
+
+    # ======================================================
+    # Remove whitespace
+    # ======================================================
+    for key, value in data.items():
+        if isinstance(value, str):
+            data[key] = value.strip()
+
+    # ======================================================
+    # Validate Marital Status
+    # ======================================================
+    if data.get("marital_status"):
+
+        if data["marital_status"] not in ["Single", "Married"]:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid marital status."
+            )
+
+    # ======================================================
+    # Duplicate Email Check
+    # ======================================================
+    if data.get("email"):
+
+        existing = (
+            db.query(Employee)
+            .filter(Employee.email == data["email"])
+            .first()
+        )
+
+        if existing and existing.emp_id != employee.emp_id:
+            raise HTTPException(
+                status_code=400,
+                detail="Email already exists."
+            )
+
+    # ======================================================
+    # Duplicate Phone Check
+    # ======================================================
+    if data.get("phone"):
+
+        existing = (
+            db.query(Employee)
+            .filter(Employee.contact_number == data["phone"])
+            .first()
+        )
+
+        if existing and existing.emp_id != employee.emp_id:
+            raise HTTPException(
+                status_code=400,
+                detail="Phone number already exists."
+            )
+
+    # ======================================================
+    # Ignore values that are unchanged
+    # ======================================================
+    if data.get("email") == employee.email:
+        data["email"] = None
+
+    if data.get("phone") == employee.contact_number:
+        data["phone"] = None
+
+    if data.get("marital_status") == employee.marital_status:
+        data["marital_status"] = None
+
+    if (
+        data.get("emergency_contact_name")
+        == employee.emergency_contact_name
+    ):
+        data["emergency_contact_name"] = None
+
+    if (
+        data.get("emergency_relationship")
+        == employee.emergency_relationship
+    ):
+        data["emergency_relationship"] = None
+
+    if (
+        data.get("emergency_contact_number")
+        == employee.emergency_contact_number
+    ):
+        data["emergency_contact_number"] = None
+
+    if (
+        data.get("emergency_contact_address")
+        == employee.emergency_contact_address
+    ):
+        data["emergency_contact_address"] = None
+
+    # ======================================================
+    # Check if at least one field changed
+    # ======================================================
+    editable_fields = [
+
+        "email",
+
+        "phone",
+
+        "marital_status",
+
+        "emergency_contact_name",
+
+        "emergency_relationship",
+
+        "emergency_contact_number",
+
+        "emergency_contact_address",
+
+    ]
+
+    if not any(data.get(field) is not None for field in editable_fields):
+
+        raise HTTPException(
+
+            status_code=400,
+
+            detail="No changes detected."
+
+        )
+
+    # ======================================================
+    # Check Pending Request
+    # ======================================================
+    pending = db.execute(
+        text("""
+            SELECT *
+            FROM CEITCS_EMS.E_EMPLOYEE_EDIT_REQUESTS_TABLE
+            WHERE emp_id = :emp_id
+            AND status='pending'
+        """),
+        {
+            "emp_id": employee.emp_id
+        },
+    ).fetchone()
+
+    # ======================================================
+    # UPDATE EXISTING REQUEST
+    # ======================================================
+    if pending:
+
+        db.execute(
+            text("""
+                UPDATE CEITCS_EMS.E_EMPLOYEE_EDIT_REQUESTS_TABLE
+                SET
+
+                    new_email =
+                    COALESCE(:email,new_email),
+
+                    new_phone =
+                    COALESCE(:phone,new_phone),
+
+                    new_marital_status =
+                    COALESCE(:marital_status,new_marital_status),
+
+                    new_emergency_contact_name =
+                    COALESCE(:ec_name,new_emergency_contact_name),
+
+                    new_emergency_relationship =
+                    COALESCE(:relationship,new_emergency_relationship),
+
+                    new_emergency_contact_number =
+                    COALESCE(:ec_phone,new_emergency_contact_number),
+
+                    new_emergency_contact_address =
+                    COALESCE(:ec_address,new_emergency_contact_address),
+
+                    requested_at = GETDATE()
+
+                WHERE id=:id
+            """),
+            {
+
+                "id": pending.id,
+
+                "email": data.get("email"),
+
+                "phone": data.get("phone"),
+
+                "marital_status": data.get("marital_status"),
+
+                "ec_name": data.get("emergency_contact_name"),
+
+                "relationship": data.get("emergency_relationship"),
+
+                "ec_phone": data.get("emergency_contact_number"),
+
+                "ec_address": data.get("emergency_contact_address"),
+
+            },
+        )
+
+        db.commit()
+
+        return {
+            "message":
+            "Existing pending request updated successfully."
+        }
+
+    # ======================================================
+    # CREATE NEW REQUEST
+    # ======================================================
     db.execute(
         text("""
-        INSERT INTO EMPLOYEE_EDIT_REQUESTS 
-        (emp_id,  new_email, new_phone)
-        VALUES (:emp_id, :email, :phone)
-    """),
+            INSERT INTO
+            CEITCS_EMS.E_EMPLOYEE_EDIT_REQUESTS_TABLE
+            (
+
+                emp_id,
+
+                new_email,
+
+                new_phone,
+
+                new_marital_status,
+
+                new_emergency_contact_name,
+
+                new_emergency_relationship,
+
+                new_emergency_contact_number,
+
+                new_emergency_contact_address,
+
+                status,
+
+                requested_at,
+
+                employee_read
+
+            )
+
+            VALUES
+            (
+
+                :emp_id,
+
+                :email,
+
+                :phone,
+
+                :marital_status,
+
+                :ec_name,
+
+                :relationship,
+
+                :ec_phone,
+
+                :ec_address,
+
+                'pending',
+
+                GETDATE(),
+
+                0
+
+            )
+        """),
         {
-            "emp_id": data["emp_id"],
-            "email": data["email"],
-            "phone": data["phone"],
+
+            "emp_id": employee.emp_id,
+
+            "email": data.get("email"),
+
+            "phone": data.get("phone"),
+
+            "marital_status": data.get("marital_status"),
+
+            "ec_name": data.get("emergency_contact_name"),
+
+            "relationship": data.get("emergency_relationship"),
+
+            "ec_phone": data.get("emergency_contact_number"),
+
+            "ec_address": data.get("emergency_contact_address"),
+
         },
     )
 
     db.commit()
-    return {"message": "Update request sent to admin"}
+
+    return {
+        "message":
+        "Profile update request submitted successfully."
+    }
+
 
 
 @app.post("/api/admin/approve_update/{request_id}")
-def approve_update(request_id: int, db: Session = Depends(get_employees_db)):
+def approve_update(
+        request_id: int,
+        db: Session = Depends(get_employees_db)
+    ):
 
-    req = db.execute(
-        text("""
-        SELECT * FROM EMPLOYEE_EDIT_REQUESTS WHERE id = :id
-    """),
-        {"id": request_id},
-    ).fetchone()
+        # ============================================
+        # Get Request
+        # ============================================
+        req = db.execute(
+            text("""
+                SELECT *
+                FROM CEITCS_EMS.E_EMPLOYEE_EDIT_REQUESTS_TABLE
+                WHERE id = :id
+            """),
+            {"id": request_id}
+        ).fetchone()
 
-    if not req:
-        raise HTTPException(status_code=404, detail="Request not found")
+        if not req:
+            raise HTTPException(
+                status_code=404,
+                detail="Request not found."
+            )
 
-    # ✅ Update employee table
-    db.execute(
-        text("""
-        UPDATE EMPLOYEES_TABLE
-        SET 
-            email = :email,
-            contact_number = :phone
-        WHERE emp_id = :emp_id
-    """),
-        {
-            "email": req.new_email,
-            "phone": req.new_phone,
-            "emp_id": req.emp_id,
-        },
-    )
+        # ============================================
+        # Get Employee
+        # ============================================
+        employee = (
+            db.query(Employee)
+            .filter(Employee.emp_id == req.emp_id)
+            .first()
+        )
 
-    # ✅ Mark request approved
-    db.execute(
-        text("""
-        UPDATE EMPLOYEE_EDIT_REQUESTS
-        SET status = 'approved', reviewed_at = GETDATE()
-        WHERE id = :id
-    """),
-        {"id": request_id},
-    )
+        if not employee:
+            raise HTTPException(
+                status_code=404,
+                detail="Employee not found."
+            )
 
-    db.commit()
+        # ============================================
+        # Update Email
+        # ============================================
+        if req.new_email:
 
-    # ✅ SEND EMAIL (you already have email system)
-    # reuse your send email logic
-    send_custom_email(
-        to_email=req.new_email,
-        subject="Profile Update Approved",
-        message="Your profile changes have been approved by admin.",
-    )
+            employee.email = req.new_email
 
-    return {"message": "Approved & updated"}
+        # ============================================
+        # Update Phone
+        # ============================================
+        if req.new_phone:
+
+            employee.contact_number = req.new_phone
+
+        # ============================================
+        # Update Marital Status
+        # ============================================
+        if req.new_marital_status:
+
+            employee.marital_status = req.new_marital_status
+
+        # ============================================
+        # Update Emergency Contact Name
+        # ============================================
+        if req.new_emergency_contact_name:
+
+            employee.emergency_contact_name = (
+                req.new_emergency_contact_name
+            )
+
+        # ============================================
+        # Update Emergency Relationship
+        # ============================================
+        if req.new_emergency_relationship:
+
+            employee.emergency_relationship = (
+                req.new_emergency_relationship
+            )
+
+        # ============================================
+        # Update Emergency Contact Number
+        # ============================================
+        if req.new_emergency_contact_number:
+
+            employee.emergency_contact_number = (
+                req.new_emergency_contact_number
+            )
+
+        # ============================================
+        # Update Emergency Contact Address
+        # ============================================
+        if req.new_emergency_contact_address:
+
+            employee.emergency_contact_address = (
+                req.new_emergency_contact_address
+            )
+
+        # ============================================
+        # Mark Request Approved
+        # ============================================
+        db.execute(
+            text("""
+                UPDATE CEITCS_EMS.E_EMPLOYEE_EDIT_REQUESTS_TABLE
+
+                SET
+
+                    status='approved',
+
+                    reviewed_at=GETDATE(),
+
+                    employee_read=0
+
+                WHERE id=:id
+            """),
+            {
+                "id": request_id
+            }
+        )
+
+        # ============================================
+        # Save Employee Changes
+        # ============================================
+        db.commit()
+
+        db.refresh(employee)
+
+        # ============================================
+        # Send Email
+        # ============================================
+        try:
+
+            send_custom_email(
+
+                to_email=employee.email,
+
+                subject="Profile Update Approved",
+
+                message=f"""
+    Hello {employee.first_name},
+
+    Your profile update request has been approved by the administrator.
+
+    The requested changes have been applied successfully.
+
+    Thank you.
+
+    CEITCS HR Team
+    """
+
+            )
+
+        except Exception as e:
+
+            print("Email Error:", e)
+
+        return {
+
+            "message": "Profile update approved successfully."
+
+        }
+
+
 
 
 @app.post("/api/admin/reject_update/{request_id}")
-def reject_update(request_id: int, db: Session = Depends(get_employees_db)):
+def reject_update(
+        request_id: int,
+        db: Session = Depends(get_employees_db)
+    ):
 
-    db.execute(
+        # Get request
+        req = db.execute(
+            text("""
+                SELECT *
+                FROM CEITCS_EMS.E_EMPLOYEE_EDIT_REQUESTS_TABLE
+                WHERE id = :id
+            """),
+            {"id": request_id},
+        ).fetchone()
+
+        if not req:
+            raise HTTPException(
+                status_code=404,
+                detail="Request not found."
+            )
+
+        # Update request
+        db.execute(
+            text("""
+                UPDATE CEITCS_EMS.E_EMPLOYEE_EDIT_REQUESTS_TABLE
+                SET
+                    status = 'rejected',
+                    reviewed_at = GETDATE(),
+                    employee_read = 0
+                WHERE id = :id
+            """),
+            {"id": request_id},
+        )
+
+        db.commit()
+
+        # Notify employee
+        employee = (
+            db.query(Employee)
+            .filter(Employee.emp_id == req.emp_id)
+            .first()
+        )
+
+        if employee:
+
+            try:
+
+                send_custom_email(
+
+                    to_email=employee.email,
+
+                    subject="Profile Update Rejected",
+
+                    message=f"""
+    Hello {employee.first_name},
+
+    Your profile update request has been reviewed.
+
+    Unfortunately, it was rejected by the administrator.
+
+    Please contact HR if you need further clarification.
+
+    Thank you.
+
+    CEITCS HR Team
+    """
+
+                )
+
+            except Exception as e:
+                print("Email Error:", e)
+
+        return {
+            "message": "Profile update request rejected successfully."
+        }
+
+
+@app.get("/api/admin/pending_update/{emp_id}")
+def pending_update(emp_id: str, db: Session = Depends(get_employees_db)):
+
+    req = db.execute(
         text("""
-        UPDATE EMPLOYEE_EDIT_REQUESTS
-        SET status = 'rejected', reviewed_at = GETDATE()
-        WHERE id = :id
-    """),
-        {"id": request_id},
-    )
+            SELECT *
+            FROM CEITCS_EMS.E_EMPLOYEE_EDIT_REQUESTS_TABLE
+            WHERE emp_id = :emp_id
+            AND status='pending'
+            ORDER BY requested_at DESC
+        """),
+        {"emp_id": emp_id}
+    ).fetchone()
 
-    db.commit()
+    if not req:
+        return None
 
-    return {"message": "Request rejected"}
-
+    return dict(req._mapping)
 
 @app.get("/api/admin/edit_notifications")
 def get_notifications(db: Session = Depends(get_employees_db)):
+
     result = db.execute(
         text("""
-        SELECT * FROM EMPLOYEE_EDIT_REQUESTS 
-        WHERE status = 'pending'
-        ORDER BY requested_at DESC
-    """)
+            SELECT
+                id,
+                emp_id,
+
+                new_email,
+                new_phone,
+
+                new_marital_status,
+
+                new_emergency_contact_name,
+                new_emergency_relationship,
+                new_emergency_contact_number,
+                new_emergency_contact_address,
+
+                status,
+                requested_at
+
+            FROM CEITCS_EMS.E_EMPLOYEE_EDIT_REQUESTS_TABLE
+
+            WHERE status='pending'
+
+            ORDER BY requested_at DESC
+        """)
     ).fetchall()
 
-    return [dict(row._mapping) for row in result]
+    notifications = []
 
+    for row in result:
+
+        notifications.append({
+
+            "id": row.id,
+
+            "emp_id": row.emp_id,
+
+            "new_email": row.new_email,
+
+            "new_phone": row.new_phone,
+
+            "new_marital_status": row.new_marital_status,
+
+            "new_emergency_contact_name": row.new_emergency_contact_name,
+
+            "new_emergency_relationship": row.new_emergency_relationship,
+
+            "new_emergency_contact_number": row.new_emergency_contact_number,
+
+            "new_emergency_contact_address": row.new_emergency_contact_address,
+
+            "status": row.status,
+
+            "requested_at": row.requested_at.isoformat()
+
+        })
+
+    return notifications
 
 @app.get("/api/admin/notification_count")
 def notification_count(db: Session = Depends(get_employees_db)):
+
     result = db.execute(
         text("""
-        SELECT COUNT(*) FROM EMPLOYEE_EDIT_REQUESTS WHERE status='pending'
-    """)
+            SELECT COUNT(*)
+            FROM CEITCS_EMS.E_EMPLOYEE_EDIT_REQUESTS_TABLE
+            WHERE status='pending'
+        """)
     ).fetchone()
 
-    return {"count": result[0]}
+    return {
+        "count": result[0]
+    }
 
 
 @app.get("/api/employee/unified_notifications/{emp_id}")
@@ -1687,7 +2348,7 @@ def get_unified_notifications(emp_id: str, db: Session = Depends(get_employees_d
     edit_requests = db.execute(
         text("""
             SELECT id, emp_id, status, reviewed_at as notification_date
-            FROM EMPLOYEE_EDIT_REQUESTS
+            FROM CEITCS_EMS.E_EMPLOYEE_EDIT_REQUESTS_TABLE
             WHERE emp_id = :emp_id AND status IN ('approved', 'rejected')
         """),
         {"emp_id": emp_id}
@@ -1696,9 +2357,16 @@ def get_unified_notifications(emp_id: str, db: Session = Depends(get_employees_d
     # 2. Fetch verified/rejected documents
     documents = db.execute(
         text("""
-            SELECT id, emp_id, document_status as status, verified_at as notification_date
-            FROM EMPLOYEE_DOCUMENTS
-            WHERE emp_id = :emp_id AND document_status IN ('verified', 'rejected')
+            SELECT
+                id,
+                emp_id,
+                document_status AS status,
+                document_sub_category,
+                rejection_reason,
+                verified_at AS notification_date
+            FROM CEITCS_EMS.E_EMPLOYEE_DOCUMENTS_TABLE
+            WHERE emp_id = :emp_id
+            AND document_status IN ('verified', 'rejected')
         """),
         {"emp_id": emp_id}
     ).fetchall()
@@ -1719,9 +2387,10 @@ def get_unified_notifications(emp_id: str, db: Session = Depends(get_employees_d
         notifications.append({
             "id": row.id,
             "type": "document",
-            "status": row.status,  # verified / rejected
+            "status": row.status,
             "notification_date": row.notification_date.isoformat() if row.notification_date else None,
-            "message": f"Your document has been {row.status}",
+            "message": f"Your {row.document_sub_category.replace('_',' ').title()} has been {row.status}",
+            "reason": row.rejection_reason
         })
 
     # 4. Sort by notification_date descending (latest first)
@@ -1743,7 +2412,7 @@ def get_employee_notifications(emp_id: str, db: Session = Depends(get_employees_
     edit_requests = db.execute(
         text("""
             SELECT id, status, reviewed_at as date
-            FROM EMPLOYEE_EDIT_REQUESTS
+            FROM CEITCS_EMS.E_EMPLOYEE_EDIT_REQUESTS_TABLE
             WHERE emp_id = :emp_id 
               AND status IN ('approved', 'rejected')
               AND employee_read = 0
@@ -1754,15 +2423,16 @@ def get_employee_notifications(emp_id: str, db: Session = Depends(get_employees_
     # 2. Fetch unread verified/rejected documents
     documents = db.execute(
         text("""
-            SELECT 
+            SELECT
                 id,
                 document_status as status,
                 document_sub_category,
+                rejection_reason,
                 verified_at as date
-            FROM EMPLOYEE_DOCUMENTS
-            WHERE emp_id = :emp_id
-            AND document_status IN ('verified', 'rejected')
-            AND employee_read = 0
+            FROM CEITCS_EMS.E_EMPLOYEE_DOCUMENTS_TABLE
+            WHERE emp_id=:emp_id
+            AND document_status IN ('verified','rejected')
+            AND employee_read=0
         """),
         {"emp_id": emp_id}
     ).fetchall()
@@ -1792,6 +2462,7 @@ def get_employee_notifications(emp_id: str, db: Session = Depends(get_employees_
             "type": notif_type,
             "title": f"{doc_name} {notif_type.title()}",
             "message": f"Your {doc_name} has been {row.status}",
+            "reason": row.rejection_reason,
             "date": row.date.isoformat() if row.date else None,
         })
 
@@ -1816,7 +2487,7 @@ def mark_notification_read(data: dict, db: Session = Depends(get_employees_db)):
     if table_type == "edit_request":
         result = db.execute(
             text("""
-                UPDATE EMPLOYEE_EDIT_REQUESTS
+                UPDATE CEITCS_EMS.E_EMPLOYEE_EDIT_REQUESTS_TABLE
                 SET employee_read = 1
                 WHERE id = :id
             """),
@@ -1828,7 +2499,7 @@ def mark_notification_read(data: dict, db: Session = Depends(get_employees_db)):
     elif table_type == "document":
         result = db.execute(
             text("""
-                UPDATE EMPLOYEE_DOCUMENTS
+                UPDATE CEITCS_EMS.E_EMPLOYEE_DOCUMENTS_TABLE
                 SET employee_read = 1
                 WHERE id = :id
             """),

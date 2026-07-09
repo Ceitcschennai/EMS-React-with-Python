@@ -2,91 +2,171 @@ import React, { useState, useEffect, useCallback, useRef } from "react"; // ✅ 
 import "../../../styles/EmployeeHome/EmpDashboard/ProfilePage.css";
 import axios from "axios";
 import EmployeeLayout from "./EmployeeLayout";
+import { FaCheck, FaTimes  } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
 
 const API = "http://localhost:8000";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("personal");
-const [profile, setProfile] = useState({});
-const [profileImage, setProfileImage] = useState(null);
+  const [profile, setProfile] = useState({});
+  const [profileImage, setProfileImage] = useState(null);
 
   const emp_id = localStorage.getItem("emp_id");
   const menuRef = useRef();
 
-  // 🔥 EDIT FEATURE STATES
-  const [showMenu, setShowMenu] = useState(false);
-  const [showEditPanel, setShowEditPanel] = useState(false);
+  // // 🔥 EDIT FEATURE STATES
+  // const [showMenu, setShowMenu] = useState(false);
+  const [editingField, setEditingField] = useState(null);
+
+
+
+
   const [editData, setEditData] = useState({
     email: "",
-    contact_number: ""
+    contact_number: "",
+    marital_status: "",
+    emergency_contact_name: "",
+    emergency_contact_number: "",
+    emergency_relationship: "",
+    emergency_contact_address: "",
   });
 
-  /* ============================================================
-        FETCH PROFILE PHOTO — ✅ wrapped in useCallback
-  ============================================================ */
-  const fetchProfilePhoto = useCallback(async () => {
-    try {
-      const res = await axios.get(`${API}/api/admin/all_documents`);
-      const allDocs = res.data?.documents || [];
 
-      const profileDoc = allDocs.find(
-        (d) =>
-          d.emp_id === emp_id &&
-          d.document_category === "profile_photo" &&
-          d.document_sub_category === "profile_photo"
-      );
-
-      if (profileDoc?.document_url) {
-        const cleanUrl = profileDoc.document_url.replace(/\\/g, "/");
-        setProfileImage(`${API}/${cleanUrl}`);
-      }
-    } catch (err) {
-      console.error("Failed to fetch profile photo:", err);
-    }
-  }, [emp_id]); // ✅ emp_id is the only dependency
-
-
-
-  // 🔥 OPEN EDIT PANEL
-  const openEditPanel = () => {
+  const handleChange = (e) => {
     setEditData({
-      email: "",
-      contact_number: ""
+      ...editData,
+      [e.target.name]: e.target.value,
     });
-    setShowEditPanel(true);
-    setShowMenu(false);
   };
+/* ============================================================
+        FETCH PROFILE PHOTO
+    ============================================================ */
+    const fetchProfilePhoto = useCallback(async () => {
+      try {
+        const res = await axios.get(`${API}/api/employee/profile-photo/${emp_id}`);
+        const profile = res.data.profile_photo;
+
+        if (profile?.document_url) {
+          setProfileImage(`${API}/${profile.document_url.replace(/\\/g, "/")}`);
+        }
+      } catch (err) {
+        console.error("Failed to fetch profile photo:", err);
+      }
+    }, [emp_id]);
+
+
+    const startEditing = (field) => {
+
+      setEditingField(field);
+
+      setEditData({
+
+          email: profile.email || "",
+
+          contact_number: profile.contact_number || "",
+
+          marital_status: profile.marital_status || "",
+
+          emergency_contact_address: profile.emergency_contact_address || "",
+
+          emergency_relationship: profile.emergency_relationship || "",
+
+          emergency_contact_name: profile.emergency_contact_name || "",
+
+          emergency_contact_number: profile.emergency_contact_number || ""
+
+      });
+
+  };
+
+  // // 🔥 OPEN EDIT PANEL
+  // const openEditPanel = () => {
+  //   setEditData({
+  //     email: profile.email || "",
+  //     contact_number: profile.contact_number || "",
+  //   });
+
+  //   setShowEditPanel(true);
+  //   setShowMenu(false);
+  // };
 
   // 🔥 SUBMIT REQUEST
   const handleSubmit = async () => {
     try {
-      await axios.post(`${API}/api/employee/request_update`, {
+      const payload = {
         emp_id,
-        email: editData.email,
-        phone: editData.contact_number
-      });
+      };
 
-      window.alert("Request Sent! Your profile update request has been sent to admin.");
-      setShowEditPanel(false);
+      switch (editingField) {
+        case "email":
+          payload.email = editData.email;
+          break;
+
+        case "contact_number":
+          payload.phone = editData.contact_number;
+          break;
+
+        case "marital_status":
+          payload.marital_status = editData.marital_status;
+          break;
+
+        case "emergency_contact_name":
+          payload.emergency_contact_name =
+            editData.emergency_contact_name;
+          break;
+
+        case "emergency_contact_number":
+          payload.emergency_contact_number =
+            editData.emergency_contact_number;
+          break;
+
+        case "emergency_relationship":
+          payload.emergency_relationship =
+            editData.emergency_relationship;
+          break;
+
+        case "emergency_contact_address":
+          payload.emergency_contact_address =
+            editData.emergency_contact_address;
+          break;
+
+        default:
+          return;
+      }
+
+      const res = await axios.post(
+        `${API}/api/employee/request_update`,
+        payload
+      );
+
+      alert(res.data.message);
+
+      setEditingField(null);
+
     } catch (err) {
-      window.alert("Failed: Could not send your request. Please try again.");
+      console.error(err);
+
+      alert(
+        err.response?.data?.detail ||
+        "Failed to send request."
+      );
     }
   };
 
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (menuRef.current && !menuRef.current.contains(event.target)) {
+  //       setShowMenu(false);
+  //     }
+  //   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setShowMenu(false);
-      }
-    };
+  //   document.addEventListener("mousedown", handleClickOutside);
 
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
 
   /* ============================================================
         LOAD EMPLOYEE PROFILE DATA
@@ -165,14 +245,8 @@ const [profileImage, setProfileImage] = useState(null);
           {/* ── SIDEBAR ── */}
           <div className="Pro-emp-sidebar" style={{ position: "relative" }}>
             <div className="Pro-emp-sidebar-menu" ref={menuRef}>
-                <button 
-                  onClick={() => setShowMenu(!showMenu)}
-                  className="Pro-emp-menu-btn"
-                >
-                  ⋮
-                </button>
 
-                {showMenu && (
+                {/*{showMenu && (
                   <div className="Pro-emp-sidebar-dropdown">
                     <button 
                       onClick={openEditPanel}
@@ -181,7 +255,7 @@ const [profileImage, setProfileImage] = useState(null);
                       <span>Edit Profile</span>
                     </button>
                   </div>
-                )}
+                )}*/}
               </div>
             <div className="Pro-emp-profile-pic-container">
               {profileImage ? (
@@ -208,8 +282,78 @@ const [profileImage, setProfileImage] = useState(null);
              <h3 className="Pro-emp-profile-name">{profile?.first_name || ''} {profile?.last_name || ''}</h3>
 
             <div className="Pro-emp-profile-info-box">
-              <p><span>📧</span> {profile.email || "—"}</p>
-              <p><span>📞</span> {profile.contact_number || "—"}</p>
+              <p>{editingField === "email" ? (
+                  <div className="inline-edit">
+
+                    <input
+                        name="email"
+                        value={editData.email}
+                        onChange={handleChange}
+                    />
+
+                    <button
+                        className="save-btn"
+                        onClick={handleSubmit}
+                    >
+                        <FaCheck />
+                    </button>
+
+                    <button
+                        className="cancel-btn1"
+                        onClick={() => setEditingField(null)}
+                    >
+                        <FaTimes />
+                    </button>
+
+                </div>
+              ) : (
+                  <>
+                      <span>{profile.email}</span>
+
+                      <button
+                        className="edit-btn"
+                        onClick={() => startEditing("email")}
+                    >
+                        <MdEdit size={15} />
+                    </button>
+                  </>
+              )}</p>
+              <p>{editingField === "contact_number" ? (
+                  <div className="inline-edit">
+
+                    <input
+                        name="contact_number"
+                        value={editData.contact_number}
+                        onChange={handleChange}
+                    />
+
+                    <button
+                        className="save-btn"
+                        onClick={handleSubmit}
+                    >
+                        <FaCheck />
+                    </button>
+
+                    <button
+                        className="cancel-btn1"
+                        onClick={() => setEditingField(null)}
+                    >
+                        <FaTimes />
+                    </button>
+
+                </div>
+              ) : (
+                  <>
+                      <span>{profile.contact_number}</span>
+
+                      <button
+                        className="edit-btn"
+                        onClick={() => startEditing("contact_number")}
+                    >
+                        <MdEdit size={15} />
+                    </button>
+                  </>
+              )}</p>
               <p><span>📅</span> Joined: {profile.date_of_join || "—"}</p>
             </div>
 
@@ -241,7 +385,55 @@ const [profileImage, setProfileImage] = useState(null);
              <div><label>Gender</label><p>{profile?.gender || "—"}</p></div>
              <div><label>Date of Birth</label><p>{profile?.dob || "—"}</p></div>
              <div><label>Nationality</label><p>{profile?.nationality || "—"}</p></div>
-             <div><label>Marital Status</label><p>{profile?.marital_status || "—"}</p></div>
+             <div className="profile-field">
+
+                <div className="profile-field-header">
+
+                    <label>MARITAL STATUS</label>
+
+                    <button
+                        className="edit-btn"
+                        onClick={() => startEditing("marital_status")}
+                    >
+                        <MdEdit size={15} />
+                    </button>
+
+                </div>
+
+                <p>
+                    {editingField === "marital_status" ? (
+                        <div className="inline-edit">
+
+                            <select
+                                name="marital_status"
+                                value={editData.marital_status}
+                                onChange={handleChange}
+                            >
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                            </select>
+
+                            <button
+                                className="save-btn"
+                                onClick={handleSubmit}
+                            >
+                                <FaCheck />
+                            </button>
+
+                            <button
+                                className="cancel-btn1"
+                                onClick={() => setEditingField(null)}
+                            >
+                                <FaTimes />
+                            </button>
+
+                        </div>
+                    ) : (
+                        profile.marital_status
+                    )}
+                </p>
+
+            </div>
              <div><label>Contact Number</label><p>{profile?.contact_number || "—"}</p></div>
                   </div>
 
@@ -249,10 +441,163 @@ const [profileImage, setProfileImage] = useState(null);
 
                   <h4 className="Pro-emp-section-title">Emergency Contact</h4>
                   <div className="Pro-emp-row">
-             <div><label>Emergency Contact Name</label><p>{profile?.emergency_contact_name || "—"}</p></div>
-             <div><label>Relationship</label><p>{profile?.emergency_relationship || "—"}</p></div>
-             <div><label>Phone</label><p>{profile?.emergency_contact_number || "—"}</p></div>
-             <div><label>Address</label><p>{profile?.emergency_contact_address || "—"}</p></div>
+             <div className="profile-field">
+                  <div className="profile-field-header">
+
+                    <label>Emergency Contact Name</label>
+
+                    <button
+                        className="edit-btn"
+                        onClick={() => startEditing("emergency_contact_name")}
+                    >
+                        <MdEdit size={15} />
+                    </button>
+                  </div>
+                    <p>
+                        {editingField === "emergency_contact_name" ? (
+                            <div className="inline-edit">
+
+                              <input
+                                  name="emergency_contact_name"
+                                  value={editData.emergency_contact_name}
+                                  onChange={handleChange}
+                              />
+
+                              <button
+                                  className="save-btn"
+                                  onClick={handleSubmit}
+                              >
+                                  <FaCheck />
+                              </button>
+
+                              <button
+                                  className="cancel-btn1"
+                                  onClick={() => setEditingField(null)}
+                              >
+                                  <FaTimes />
+                              </button>
+
+                          </div>
+              ) : (
+                  profile.emergency_contact_name
+              )}</p></div>
+             <div className="profile-field">
+                  <div className="profile-field-header">
+
+                    <label>Relationship</label>
+
+                    <button
+                        className="edit-btn"
+                        onClick={() => startEditing("emergency_relationship")}
+                    >
+                        <MdEdit size={15} />
+                    </button>
+                  </div>
+                    <p>
+                        {editingField === "emergency_relationship" ? (
+                            <div className="inline-edit">
+
+                              <input
+                                  name="emergency_relationship"
+                                  value={editData.emergency_relationship}
+                                  onChange={handleChange}
+                              />
+
+                              <button
+                                  className="save-btn"
+                                  onClick={handleSubmit}
+                              >
+                                  <FaCheck />
+                              </button>
+
+                              <button
+                                  className="cancel-btn1"
+                                  onClick={() => setEditingField(null)}
+                              >
+                                  <FaTimes />
+                              </button>
+
+                          </div>
+              ) : (
+                  profile.emergency_relationship
+              )}</p></div>
+
+             <div className="profile-field">
+                  <div className="profile-field-header">
+                    <label>Phone</label>
+                    <button
+                        className="edit-btn"
+                        onClick={() => startEditing("emergency_contact_number")}
+                    >
+                        <MdEdit size={15} />
+                    </button>
+                  </div>
+                    <p>
+                        {editingField === "emergency_contact_number" ? (
+                            <div className="inline-edit">
+
+                              <input
+                                  name="emergency_contact_number"
+                                  value={editData.emergency_contact_number}
+                                  onChange={handleChange}
+                              />
+
+                              <button
+                                  className="save-btn"
+                                  onClick={handleSubmit}
+                              >
+                                  <FaCheck />
+                              </button>
+
+                              <button
+                                  className="cancel-btn1"
+                                  onClick={() => setEditingField(null)}
+                              >
+                                  <FaTimes />
+                              </button>
+
+                          </div>
+              ) : (
+                  profile.emergency_contact_number
+              )}</p></div>
+             <div className="profile-field">
+                  <div className="profile-field-header">
+                    <label>Address</label>
+                    <button
+                        className="edit-btn"
+                        onClick={() => startEditing("emergency_contact_address")}
+                    >
+                        <MdEdit size={15} />
+                    </button>
+                  </div>
+                    <p>
+                        {editingField === "emergency_contact_address" ? (
+                            <div className="inline-edit">
+
+                              <input
+                                  name="emergency_contact_address"
+                                  value={editData.emergency_contact_address}
+                                  onChange={handleChange}
+                              />
+
+                              <button
+                                  className="save-btn"
+                                  onClick={handleSubmit}
+                              >
+                                  <FaCheck />
+                              </button>
+
+                              <button
+                                  className="cancel-btn1"
+                                  onClick={() => setEditingField(null)}
+                              >
+                                  <FaTimes />
+                              </button>
+
+                          </div>
+              ) : (
+                  profile.emergency_contact_address
+              )}</p></div>
                   </div>
 
                   <hr />
@@ -298,7 +643,7 @@ const [profileImage, setProfileImage] = useState(null);
               <div className="Pro-emp-tab-content">
                 <div className="Pro-emp-card">
 
-                   <h4 className="Pro-emp-section-title">Temporary Address</h4>
+                   <h4 className="Pro-emp-section-title">Communication Address</h4>
                    <div className="Pro-emp-row">
                      <div><label>Address</label><p>{profile?.temporary_address || "—"}</p></div>
                      <div><label>State</label><p>{profile?.temporary_state || "—"}</p></div>
@@ -385,6 +730,7 @@ const [profileImage, setProfileImage] = useState(null);
         </div>
       </div>
       {/* 🔥 EDIT POPUP */}
+      {/* 
       {showEditPanel && (
         <div className="edit-modal">
           <div className="edit-box">
@@ -393,7 +739,7 @@ const [profileImage, setProfileImage] = useState(null);
               Edit Profile
             </h3>
 
-            {/* Email */}
+          
             <label>Email</label>
             <input
               value={editData.email}
@@ -403,7 +749,6 @@ const [profileImage, setProfileImage] = useState(null);
               placeholder="Enter email"
             />
 
-            {/* Phone */}
             <label>Phone Number</label>
             <input
               value={editData.contact_number}
@@ -416,7 +761,6 @@ const [profileImage, setProfileImage] = useState(null);
               placeholder="Enter phone number"
             />
 
-            {/* 🔥 ACTION BUTTONS */}
             <div className="edit-box-actions">
               <button className="edit-save-btn" onClick={handleSubmit}>
                 Send Request
@@ -432,7 +776,7 @@ const [profileImage, setProfileImage] = useState(null);
 
           </div>
         </div>
-      )}
+      )}*/}
     </EmployeeLayout>
   );
 };

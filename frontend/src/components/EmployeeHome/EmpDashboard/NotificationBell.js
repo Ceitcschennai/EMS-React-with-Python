@@ -22,7 +22,6 @@ const NotificationBell = ({ empId }) => {
     };
 
     fetchNotifications();
-    // Poll every 30 seconds for new notifications
     const interval = setInterval(fetchNotifications, 30000);
     return () => clearInterval(interval);
   }, [empId]);
@@ -57,7 +56,6 @@ const NotificationBell = ({ empId }) => {
   };
 
   const handleNotificationClick = async (notification) => {
-    // Mark as read in backend
     try {
       await fetch(`${API}/api/employee/mark_notification_read`, {
         method: "PUT",
@@ -68,7 +66,6 @@ const NotificationBell = ({ empId }) => {
         }),
       });
 
-      // Remove from UI state instantly
       setNotifications((prev) =>
         prev.filter((n) => !(n.id === notification.id && n.table_type === notification.table_type))
       );
@@ -119,6 +116,14 @@ const NotificationBell = ({ empId }) => {
                   <div className="notification-content">
                     <h5 className="notification-title">{notif.title}</h5>
                     <p className="notification-message">{notif.message}</p>
+                    {notif.reason && (
+                      <div className="notification-reason">
+                        <div className="notification-reason-header">
+                          <span className="notification-reason-label">HR Feedback</span>
+                        </div>
+                        <p className="notification-reason-text">{notif.reason}</p>
+                      </div>
+                    )}
                     <span className="notification-date">{formatDate(notif.date)}</span>
                   </div>
                   <div className="notification-indicator"></div>

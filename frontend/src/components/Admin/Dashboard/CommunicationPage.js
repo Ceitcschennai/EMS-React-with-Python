@@ -21,6 +21,7 @@ const CommunicationPage = () => {
   const [selectedMail, setSelectedMail] = useState(null);
 
   const [sentMails, setSentMails] = useState([]);
+  const [employeeStatusFilter, setEmployeeStatusFilter] = useState("Active");
 
   const FIXED_FROM_EMAIL = "s.v.k23105@gmail.com";
 
@@ -80,22 +81,31 @@ const CommunicationPage = () => {
     fetch(`${API}/api/admin/employees`)
       .then((res) => res.json())
       .then((data) => {
-        const formatted = data.map((emp) => ({
-          id: emp.emp_id,
-          name: `${emp.first_name || ""} ${emp.last_name || ""}`.trim(),
-          email: emp.email,
-          dept: emp.department,
-          status: emp.offer_letter_status
-            ? emp.offer_letter_status
-            : emp.status === "Active"
-            ? "Pending"
-            : emp.status,
-        })).sort((a, b) => a.name.localeCompare(b.name));
+
+        const filtered = data.filter((emp) => {
+          if (employeeStatusFilter === "All") return true;
+          return emp.status === employeeStatusFilter;
+        });
+
+        const formatted = filtered
+          .map((emp) => ({
+            id: emp.emp_id,
+            name: `${emp.first_name || ""} ${emp.last_name || ""}`.trim(),
+            email: emp.email,
+            dept: emp.department,
+
+            // Employee Status
+            employeeStatus: emp.status,
+
+            // Offer Letter Status
+            offerLetterStatus: emp.offer_letter_status || "Pending",
+          }))
+          .sort((a, b) => a.name.localeCompare(b.name));
 
         setEmployees(formatted);
       })
       .catch((err) => console.error("Employees fetch error:", err));
-  }, []);
+  }, [employeeStatusFilter]);
 
   /* ============================================================
       FETCH SENT MAILS
@@ -156,7 +166,11 @@ const CommunicationPage = () => {
       FILTERED EMPLOYEES
   ============================================================ */
   const filteredEmployees = employees
-    .filter((emp) => (filter === "All" ? true : emp.status === filter))
+    .filter((emp) =>
+      filter === "All"
+        ? true
+        : emp.offerLetterStatus === filter
+    )
     .filter((emp) => {
       const text = search.toLowerCase();
       return (
@@ -167,8 +181,14 @@ const CommunicationPage = () => {
     });
 
   const totalEmployees = employees.length;
-  const sentCount = employees.filter((e) => e.status === "Sent").length;
-  const pendingCount = employees.filter((e) => e.status === "Pending").length;
+  const sentCount = employees.filter(
+    (e) => e.offerLetterStatus === "Sent"
+  ).length;
+
+  const pendingCount = employees.filter(
+    (e) => e.offerLetterStatus === "Pending"
+  ).length;
+
 
   /* ============================================================
       COMPOSE MAIL
@@ -269,7 +289,7 @@ const CommunicationPage = () => {
     <div className="communication-page">
       <div className="communications-container">
 
-        <h2 className="page-title">Communications</h2>
+        <h2 className="page-title">Employee Communications</h2>
         <p className="subtitle">Send offer letters and manage email communications</p>
 
         {/* SUMMARY CARDS */}
@@ -297,6 +317,16 @@ const CommunicationPage = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+
+          <select
+              value={employeeStatusFilter}
+              onChange={(e) => setEmployeeStatusFilter(e.target.value)}
+              className="filter-buttons"
+            >
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="All">All</option>
+            </select>
 
           <div className="filter-buttons">
             <button className={filter === "All" ? "active" : ""} onClick={() => setFilter("All")}>All</button>
@@ -328,13 +358,22 @@ const CommunicationPage = () => {
                     <td>{emp.email}</td>
                     <td>{emp.dept}</td>
                     <td>
-                      <span className={emp.status === "Sent" ? "status sent" : "status pending"}>
-                        {emp.status}
-                      </span>
+                        <span
+                          className={
+                            emp.employeeStatus === "Active"
+                              ? "status active"
+                              : "status inactive"
+                          }
+                        >
+                          {emp.employeeStatus}
+                        </span>
                     </td>
                     <td>
-{emp.status === "Pending" ? (
-                          <button className="send-btn" onClick={() => sendOfferLetter(emp.id)}>
+                      {emp.offerLetterStatus === "Pending" ? (
+                          <button
+                            className="send-btn"
+                            onClick={() => sendOfferLetter(emp.id)}
+                          >
                             <FaPaperPlane /> Send Offer Letter
                           </button>
                         ) : (

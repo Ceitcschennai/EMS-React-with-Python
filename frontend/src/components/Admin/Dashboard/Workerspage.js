@@ -341,7 +341,7 @@ const WorkersPage = () => {
                               👤 View Profile
                             </button>
 
-                            <button
+                            {/* <button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleViewDocuments(w.worker_id);
@@ -357,7 +357,7 @@ const WorkersPage = () => {
                               }}
                             >
                               📧 Send Email
-                            </button>
+                            </button> */}
 
                             <button
                               className="delete-btn"

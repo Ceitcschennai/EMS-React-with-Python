@@ -273,3 +273,24 @@ class AddWorker(BaseModel):
             self.bonus +
             self.allowance
         )
+    
+
+
+
+class EmployeeEditRequestSchema(BaseModel):
+
+    emp_id: str
+
+    email: Optional[EmailStr] = None
+
+    phone: Optional[str] = None
+
+    marital_status: Optional[str] = None
+
+    emergency_contact_name: Optional[str] = None
+
+    emergency_relationship: Optional[str] = None
+
+    emergency_contact_number: Optional[str] = None
+
+    emergency_contact_address: Optional[str] = None

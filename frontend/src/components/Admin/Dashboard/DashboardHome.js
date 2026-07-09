@@ -6,6 +6,7 @@ import "../../../styles/Admin/Dashboard/DashboardHome.css";
 
 const DashboardHome = () => {
   const [employees, setEmployees] = useState([]);
+  const [allDocuments, setAllDocuments] = useState([]);
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -25,46 +26,53 @@ const DashboardHome = () => {
   // ---------------------------
   // New Function to Count Document Status
   // ---------------------------
-  const countDocumentStatus = (employees) => {
-    let verified = 0;
-    let pending = 0;
-    let rejected = 0;
 
-    employees.forEach((emp) => {
-      if (!emp.documents) return;
+  useEffect(() => {
+    fetchEmployees();
+    fetchDocuments();
+  }, []);
 
-      Object.values(emp.documents).forEach((section) => {
-        if (!section || typeof section !== "object") return;
-
-        Object.values(section).forEach((doc) => {
-          if (!doc || typeof doc !== "object") return;
-
-          const status = doc.document_status;
-
-          if (status === "verified") verified++;
-          else if (status === "pending") pending++;
-          else if (status === "rejected") rejected++;
-        });
-      });
-    });
-
-    return { verified, pending, rejected };
+  const fetchEmployees = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/admin/employees");
+      const data = await res.json();
+      setEmployees(data || []);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  // Get document counts
-  const { verified, pending } = countDocumentStatus(employees);
+  const fetchDocuments = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/admin/all_documents");
+      const data = await res.json();
+
+      setAllDocuments(data.documents || []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
 
   const totalEmployees = employees.length;
   const permanentEmployees = employees.filter(
     (emp) => emp.employment_type === "Permanent"
   ).length;
 
-  const verifiedDocs = verified;
-  const pendingDocs = pending;
+  const verifiedDocs = allDocuments.filter(
+      doc =>
+          doc.document_status === "verified" &&
+          doc.document_category !== "profile_photo"
+  ).length;
 
-  // Upcoming reviews = pending documents
-  const upcomingReviews = pending;
+  const pendingDocs = allDocuments.filter(
+      doc =>
+          doc.document_status === "pending" &&
+          doc.document_category !== "profile_photo"
+  ).length;
 
+
+  const upcomingReviews = pendingDocs;
   return (
     <div className="dashboard-home-page">
       <div className="admin-info-cards">
@@ -83,17 +91,17 @@ const DashboardHome = () => {
         />
 
         <InfoCard
-          title="Documents Verified"
-          value={verifiedDocs}
-          subtitle={`${pendingDocs} pending verification`}
-          icon="📄"
+            title="Documents Verified"
+            value={verifiedDocs}
+            subtitle={`${pendingDocs} pending verification`}
+            icon="📄"
         />
 
         <InfoCard
-          title="Upcoming Reviews"
-          value={upcomingReviews}
-          subtitle="Documents waiting for review"
-          icon="📅"
+            title="Upcoming Reviews"
+            value={upcomingReviews}
+            subtitle="Documents waiting for review"
+            icon="📅"
         />
       </div>
 

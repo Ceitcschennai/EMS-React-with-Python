@@ -1,9 +1,81 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { FaCloudUploadAlt, FaCertificate } from "react-icons/fa";
+import {
+  FaCloudUploadAlt,
+  FaFileAlt,
+  FaIdCard,
+  FaGraduationCap,
+  FaAward,
+  FaBriefcase,
+  FaCheckCircle,
+  FaClock,
+  FaTimesCircle,
+  FaChevronDown,
+  FaEye,
+  FaExclamationTriangle,
+  FaSpinner,
+  FaClipboardList,
+  FaShieldAlt,
+} from "react-icons/fa";
 import "../../../styles/EmployeeHome/EmpDashboard/MyDocuments.css";
 import EmployeeLayout from "./EmployeeLayout";
 
 const API = "http://127.0.0.1:8000";
+
+// ✅ Same normalization logic as the admin DocumentVerification page
+const normalizeUrl = (url) => {
+  if (!url) return "";
+  let clean = url.replace(/\\/g, "/");
+  if (clean.startsWith("http://") || clean.startsWith("https://")) return clean;
+  if (clean.startsWith("/")) return `${API}${clean}`;
+  return `${API}/${clean}`;
+};
+
+const CATEGORY_META = {
+  identity: {
+    key: "identity_proofs",
+    title: "Identity Proofs",
+    icon: FaIdCard,
+    fields: [
+      { sub: "passport", label: "Passport", required: false },
+      { sub: "aadhar_card", label: "Aadhar Card", required: true },
+      { sub: "pan_card", label: "PAN Card", required: true },
+      { sub: "driving_license", label: "Driving License", required: false },
+    ],
+  },
+  education: {
+    key: "educational_certificates",
+    title: "Educational Certificates",
+    icon: FaGraduationCap,
+    fields: [
+      { sub: "diploma_certificate", label: "Diploma", required: false },
+      { sub: "degree_certificate", label: "UG", required: true },
+      { sub: "postgraduate_certificate", label: "PG", required: false },
+      { sub: "consolidated_marksheet", label: "Consolidated Marksheet", required: true },
+      { sub: "provisional_certificate", label: "Provisional Certificate", required: true },
+      { sub: "transfer_certificate", label: "Transfer Certificate", required: true },
+    ],
+  },
+  additional: {
+    key: "additional_certificates",
+    title: "Additional Certificates",
+    icon: FaAward,
+    fields: [
+      { sub: "language_certificate", label: "Language Certificate", required: false },
+      { sub: "other_certificate", label: "Other Certificate", required: false },
+    ],
+  },
+  experience: {
+    key: "experience_documents",
+    title: "Experience Documents",
+    icon: FaBriefcase,
+    fields: [
+      { sub: "experience_certificate_1", label: "Experience Certificate 1", required: true },
+      { sub: "experience_certificate_2", label: "Experience Certificate 2", required: true },
+      { sub: "experience_certificate_3", label: "Experience Certificate 3", required: false },
+      { sub: "relieving_certificate", label: "Relieving Letter", required: true },
+    ],
+  },
+};
 
 const EmpMyDocuments = () => {
   const emp_id = localStorage.getItem("emp_id");
@@ -48,6 +120,8 @@ const EmpMyDocuments = () => {
           document_status: doc.document_status,
           document_name: doc.document_name,
           document_url: doc.document_url,
+          rejection_reason: doc.rejection_reason || "",
+          reviewed_at: doc.verified_at,
         };
       });
 
@@ -172,6 +246,14 @@ const EmpMyDocuments = () => {
       }
     }
 
+    const statusMeta = {
+      "Approved": { cls: "badge-verified", Icon: FaCheckCircle, text: "Verified" },
+      "Rejected": { cls: "badge-rejected", Icon: FaTimesCircle, text: "Rejected" },
+      "Uploaded": { cls: "badge-pending", Icon: FaClock, text: "Pending Review" },
+      "Uploading...": { cls: "badge-pending", Icon: FaSpinner, text: "Uploading..." },
+      "Not Uploaded": { cls: "badge-empty", Icon: FaFileAlt, text: "Not Uploaded" },
+    }[status];
+
     return (
       <React.Fragment key={inputId}>
         <input
@@ -182,49 +264,168 @@ const EmpMyDocuments = () => {
           onChange={(e) => handleUpload(mainKey, subKey, e)}
         />
 
-        <div className="emp-doc-card">
-          <div className="emp-doc-left">
-            <div className="emp-doc-left-row">
-               <FaCertificate className="emp-doc-icon" />
-              <span className="emp-doc-name">
-                {label}
-                {required && (
-                  <span style={{ color: "red", fontWeight: "bold" }}> *</span>
-                )}
-              </span>
+        <div className={`emp-doc-card card-${statusMeta.cls}`}>
+          <div className="emp-doc-card-top">
+            <div className="emp-doc-icon-wrap">
+              <FaFileAlt className="emp-doc-icon" />
             </div>
-
-            <span
-              className={`emp-doc-status-text ${
-                status === "Approved"
-                  ? "status-green"
-                  : status === "Rejected"
-                  ? "status-red"
-                  : status === "Uploaded" || status === "Uploading..."
-                  ? "status-blue"
-                  : "status-gray"
-              }`}
-            >
-              {status}
-            </span>
+            <div className="emp-doc-name-block">
+              <span className="emp-doc-name">{label}</span>
+              {required && <span className="emp-doc-required-badge">Required</span>}
+            </div>
           </div>
 
-          <div className="emp-doc-right">
-              <button
-                className={buttonClass}
-                disabled={disabled}
-                onClick={() =>
-                  !disabled && document.getElementById(inputId).click()
-                }
-              >
+          <div className="emp-doc-card-middle">
+            <span className={`emp-doc-status-badge ${statusMeta.cls}`}>
+              <statusMeta.Icon
+                className={status === "Uploading..." ? "spin-icon" : ""}
+              />
+              {statusMeta.text}
+            </span>
+
+            {status === "Rejected" && (
+              <div className="emp-doc-rejection-panel">
+                <FaExclamationTriangle className="reject-icon" />
+                <div className="reject-content">
+                  <strong>HR Feedback</strong>
+                  <p>
+                    {doc?.rejection_reason
+                      ? doc.rejection_reason
+                      : "No rejection reason was provided by the administrator."}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {doc?.reviewed_at &&
+              (doc.document_status === "verified" ||
+                doc.document_status === "rejected") && (
+                <div className="emp-doc-reviewed-time">
+                  <FaClock className="review-icon" />
+                  <span>
+                    Reviewed On{" "}
+                    {new Date(doc.reviewed_at).toLocaleString("en-IN", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </div>
+              )}
+          </div>
+
+          <div className="emp-doc-card-bottom">
+            <button
+              className={buttonClass}
+              disabled={disabled}
+              onClick={() =>
+                !disabled && document.getElementById(inputId).click()
+              }
+            >
+              {isUploading ? (
+                <FaSpinner className="spin-icon" />
+              ) : (
                 <FaCloudUploadAlt />
-                {isUploading ? " Uploading..." : ` ${buttonLabel}`}
-              </button>
+              )}
+              {isUploading ? " Uploading..." : ` ${buttonLabel}`}
+            </button>
+
+            {doc?.document_url && (
+              <a
+                href={normalizeUrl(doc.document_url)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="emp-doc-view-btn"
+              >
+                <FaEye /> View
+              </a>
+            )}
           </div>
         </div>
       </React.Fragment>
     );
   };
+
+  /* ============================================================
+        STATS (derived only — does not touch existing logic)
+  ============================================================ */
+  const computeCategoryStats = (catKey, fields) => {
+    let verified = 0;
+    let pending = 0;
+    let rejected = 0;
+    let total = fields.length;
+
+    fields.forEach(({ sub }) => {
+      const doc = documents?.[catKey]?.[sub];
+      const status = doc?.document_status;
+
+      if (status === "verified") verified++;
+      else if (status === "pending") pending++;
+      else if (status === "rejected") rejected++;
+    });
+
+    return {
+      total,
+      verified,
+      pending,
+      rejected,
+    };
+  };
+
+  const totalRequiredDocuments = Object.values(CATEGORY_META).reduce(
+  (count, cat) => count + cat.fields.filter(field => field.required).length,
+  0
+);
+
+  const requiredVerified = Object.values(CATEGORY_META).reduce((count, cat) => {
+    cat.fields
+      .filter(field => field.required)
+      .forEach(({ sub }) => {
+        const doc = documents?.[cat.key]?.[sub];
+
+        if (doc?.document_status === "verified") {
+          count++;
+        }
+      });
+
+    return count;
+  }, 0);
+
+  const totalDocuments = Object.values(CATEGORY_META).reduce(
+    (count, cat) => count + cat.fields.length,
+    0
+  );
+
+  const overallStats = Object.values(CATEGORY_META).reduce(
+    (acc, cat) => {
+      const stats = computeCategoryStats(cat.key, cat.fields);
+
+      acc.verified += stats.verified;
+      acc.pending += stats.pending;
+      acc.rejected += stats.rejected;
+
+      return acc;
+    },
+    {
+      verified: 0,
+      pending: 0,
+      rejected: 0,
+    }
+  );
+
+  const completionPct =
+  totalRequiredDocuments > 0
+    ? Math.round((requiredVerified / totalRequiredDocuments) * 100)
+    : 0;
+
+  const completionHint =
+    completionPct === 100
+      ? "All documents verified. You're all set!"
+      : completionPct === 0
+      ? "Let's get started — upload your documents."
+      : "Great start! Keep uploading.";
 
   /* ============================================================
         RENDER
@@ -233,65 +434,128 @@ const EmpMyDocuments = () => {
     <EmployeeLayout>
       <div className="emp-doc-wrapper">
         <div className="emp-doc-container">
-          <h2 className="emp-doc-title">My Documents</h2>
 
-          {/* ✅ PROFILE PHOTO SECTION REMOVED */}
+          <h1 className="emp-doc-page-title">My Documents</h1>
+          <p className="emp-doc-page-subtitle">
+            Manage and track all your employment documents
+          </p>
 
-          {/* IDENTITY PROOFS */}
-          <div className="emp-section" onClick={() => toggleSection("identity")}>
-            <h3>Identity Proofs</h3>
-            <span className="arrow">{open.identity ? "▲" : "▼"}</span>
-          </div>
-          {open.identity && (
-            <div className="emp-doc-grid">
-              {renderCard("identity_proofs", "passport", "Passport")}
-              {renderCard("identity_proofs", "aadhar_card", "Aadhar Card", true)}
-              {renderCard("identity_proofs", "pan_card", "PAN Card", true)}
-              {renderCard("identity_proofs", "driving_license", "Driving License")}
+          {/* OVERVIEW: donut completion card + 5 pastel stat tiles */}
+          <div className="emp-doc-overview-row">
+            <div className="ov-card ov-completion">
+              <div className="ov-completion-top">
+                <div
+                  className="ov-donut"
+                  style={{
+                    background: `conic-gradient(var(--doc-primary) ${completionPct}%, #ede9fe ${completionPct}% 100%)`,
+                  }}
+                >
+                  <div className="ov-donut-hole" />
+                </div>
+                <span className="ov-label">
+                  Overall Required Documents Completion
+                </span>
+              </div>
+              <span className="ov-completion-value">{completionPct}%</span>
+              <div className="ov-completion-track">
+                <div
+                  className="ov-completion-fill"
+                  style={{ width: `${completionPct}%` }}
+                />
+              </div>
+              <span className="ov-completion-hint">{completionHint}</span>
             </div>
-          )}
 
-          {/* EDUCATIONAL CERTIFICATES */}
-          <div className="emp-section" onClick={() => toggleSection("education")}>
-            <h3>Educational Certificates</h3>
-            <span className="arrow">{open.education ? "▲" : "▼"}</span>
-          </div>
-          {open.education && (
-            <div className="emp-doc-grid">
-              {renderCard("educational_certificates", "diploma_certificate", "Diploma")}
-              {renderCard("educational_certificates", "degree_certificate", "UG", true)}
-              {renderCard("educational_certificates", "postgraduate_certificate", "PG")}
-              {renderCard("educational_certificates", "consolidated_marksheet", "Consolidated Marksheet", true)}
-              {renderCard("educational_certificates", "provisional_certificate", "Provisional Certificate", true)}
-              {renderCard("educational_certificates", "transfer_certificate", "Transfer Certificate", true)}
+            <div className="ov-card ov-total-documents">
+              <div className="ov-icon-wrap">
+                <FaFileAlt />
+              </div>
+              <span className="ov-label">Total Documents</span>
+              <span className="ov-value">{totalDocuments}</span>
+              <span className="ov-accent-bar" />
             </div>
-          )}
 
-          {/* ADDITIONAL CERTIFICATES */}
-          <div className="emp-section" onClick={() => toggleSection("additional")}>
-            <h3>Additional Certificates</h3>
-            <span className="arrow">{open.additional ? "▲" : "▼"}</span>
-          </div>
-          {open.additional && (
-            <div className="emp-doc-grid">
-              {renderCard("additional_certificates", "language_certificate", "Language Certificate")}
-              {renderCard("additional_certificates", "other_certificate", "Other Certificate")}
+            <div className="ov-card ov-required">
+              <div className="ov-icon-wrap">
+                <FaClipboardList />
+              </div>
+              <span className="ov-label">Total Required Documents</span>
+              <span className="ov-value">{totalRequiredDocuments}</span>
+              <span className="ov-accent-bar" />
             </div>
-          )}
 
-          {/* EXPERIENCE DOCUMENTS */}
-          <div className="emp-section" onClick={() => toggleSection("experience")}>
-            <h3>Experience Documents</h3>
-            <span className="arrow">{open.experience ? "▲" : "▼"}</span>
-          </div>
-          {open.experience && (
-            <div className="emp-doc-grid">
-              {renderCard("experience_documents", "experience_certificate_1", "Experience Certificate 1", true)}
-              {renderCard("experience_documents", "experience_certificate_2", "Experience Certificate 2", true)}
-              {renderCard("experience_documents", "experience_certificate_3", "Experience Certificate 3")}
-              {renderCard("experience_documents", "relieving_certificate", "Relieving Letter", true)}
+            <div className="ov-card ov-verified">
+              <div className="ov-icon-wrap">
+                <FaShieldAlt />
+              </div>
+              <span className="ov-label">Verified Documents</span>
+              <span className="ov-value">{overallStats.verified}</span>
+              <span className="ov-accent-bar" />
             </div>
-          )}
+
+            <div className="ov-card ov-pending">
+              <div className="ov-icon-wrap">
+                <FaClock />
+              </div>
+              <span className="ov-label">Pending Review Documents</span>
+              <span className="ov-value">{overallStats.pending}</span>
+              <span className="ov-accent-bar" />
+            </div>
+
+            <div className="ov-card ov-rejected">
+              <div className="ov-icon-wrap">
+                <FaTimesCircle />
+              </div>
+              <span className="ov-label">Rejected Documents</span>
+              <span className="ov-value">{overallStats.rejected}</span>
+              <span className="ov-accent-bar" />
+            </div>
+          </div>
+
+          {/* CATEGORIES */}
+          {Object.entries(CATEGORY_META).map(([sectionKey, cat]) => {
+            const stats = computeCategoryStats(cat.key, cat.fields);
+            const isOpen = open[sectionKey];
+            const Icon = cat.icon;
+
+            return (
+              <div className="emp-category-card" key={sectionKey}>
+                <div
+                  className="emp-category-header"
+                  onClick={() => toggleSection(sectionKey)}
+                >
+                  <div className="emp-category-header-left">
+                    <div className="emp-category-icon-wrap">
+                      <Icon />
+                    </div>
+                    <div>
+                      <h3>{cat.title}</h3>
+                      <div className="emp-category-mini-stats">
+                        <span>{stats.total} total</span>
+                        <span className="dot">•</span>
+                        <span className="mini-verified">{stats.verified} verified</span>
+                        <span className="dot">•</span>
+                        <span className="mini-pending">{stats.pending} pending</span>
+                        <span className="dot">•</span>
+                        <span className="mini-rejected">{stats.rejected} rejected</span>
+                      </div>
+                    </div>
+                  </div>
+                  <FaChevronDown
+                    className={`emp-category-arrow ${isOpen ? "open" : ""}`}
+                  />
+                </div>
+
+                <div className={`emp-doc-grid-wrap ${isOpen ? "open" : ""}`}>
+                  <div className="emp-doc-grid">
+                    {cat.fields.map(({ sub, label, required }) =>
+                      renderCard(cat.key, sub, label, required)
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
 
         </div>
       </div>

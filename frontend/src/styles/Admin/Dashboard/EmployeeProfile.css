@@ -112,6 +112,30 @@
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
 }
 
+
+.reject-feedback-box{
+    margin-top:8px;
+    background:#FEF2F2;
+    border-left:4px solid #EF4444;
+    border-radius:8px;
+    padding:10px 14px;
+}
+
+.reject-feedback-box strong{
+    display:block;
+    color:#DC2626;
+    margin-bottom:4px;
+    font-size:13px;
+}
+
+.reject-feedback-box p{
+    margin:0;
+    color:#444;
+    font-size:13px;
+    line-height:1.5;
+}
+
+
 /* ── Avatar ── */
 .profile-left {
   flex-shrink: 0;
@@ -823,22 +847,30 @@
    border: 1px solid #e2e8f0;
 }
 
-.request-change-box {
-   background: #f8f9ff;
-   border: 1px solid #dfe6ff;
-   border-radius: 10px;
-   padding: 12px;
-   margin-bottom: 12px;
+.request-change-box{
+    background:#f8f9ff;
+    border-left:4px solid #6c63ff;
+    border-radius:10px;
+    padding:14px;
+    margin-bottom:15px;
 }
 
-.old-value {
-   color: #d11a2a;
-   font-weight: 500;
+.request-change-box strong{
+    font-size:15px;
 }
 
-.new-value {
-   color: #0b8f4d;
-   font-weight: 600;
+.old-value{
+    color:#666;
+}
+
+.new-value{
+    color:#16a34a;
+    font-weight:600;
+}
+
+.ad-edit-request-details{
+    display:grid;
+    gap:15px;
 }
 
 .ad-edit-request-details p {

@@ -408,7 +408,7 @@ const ProfileCompletion = () => {
               </div>
             </div>
             
-            <h4>Temporary Address</h4>
+            <h4>Communication Address</h4>
             <div className="pro-com-grid">
               {["street", "city_or_town", "district", "state", "country"].map(
                 (field) => (

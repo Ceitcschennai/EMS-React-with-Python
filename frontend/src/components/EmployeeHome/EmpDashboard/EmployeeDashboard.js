@@ -5,6 +5,8 @@ import "../../../styles/EmployeeHome/EmpDashboard/EmployeeDashboard.css";
 import EmployeeLayout from "./EmployeeLayout";
 import NotificationBell from "./NotificationBell";
 
+const API = "http://127.0.0.1:8000";
+
 const EmployeeDashboard = () => {
   const navigate = useNavigate();
 
@@ -95,7 +97,7 @@ const EmployeeDashboard = () => {
   ----------------------------------------------------- */
   const fetchEmployee = useCallback(async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/api/admin/employees/${emp_id}`);
+      const res = await axios.get(`${API}/api/admin/employees/${emp_id}`);
       const data = res.data;
       setEmployee(data);
     } catch (err) {
@@ -104,28 +106,35 @@ const EmployeeDashboard = () => {
     }
   }, [emp_id]);
 
+/* -----------------------------------------------------
+      FETCH PROFILE PHOTO
+  ----------------------------------------------------- */
+  const fetchProfilePhoto = useCallback(async () => {
+    try {
+      const res = await fetch(`${API}/api/employee/profile-photo/${emp_id}`);
+      const data = await res.json();
+      
+      const profile = data.profile_photo;
+      
+      if (profile?.document_url) {
+        setProfileImage(`${API}/${profile.document_url.replace(/\\/g, "/")}`);
+      }
+    } catch (err) {
+      console.error("Profile photo fetch error:", err);
+    }
+  }, [emp_id]);
+
   /* -----------------------------------------------------
-     FETCH DOCUMENTS FROM EMPLOYEE_DOCUMENTS TABLE
+      FETCH DOCUMENTS FROM EMPLOYEE_DOCUMENTS TABLE
   ----------------------------------------------------- */
   const fetchDocuments = useCallback(async () => {
     try {
-      const res = await fetch(`http://localhost:8000/api/admin/all_documents`);
+      const res = await fetch(`${API}/api/admin/all_documents`);
       const data = await res.json();
 
       const rawDocs = (data.documents || []).filter((d) => d.emp_id === emp_id);
 
       setDocuments(rawDocs);
-
-      const profileDoc = rawDocs.find(
-        (d) =>
-          d.document_category === "profile_photo" &&
-          d.document_sub_category === "profile_photo" &&
-          d.document_status === "verified"
-      );
-
-      if (profileDoc?.document_url) {
-        setProfileImage(`http://localhost:8000/${profileDoc.document_url.replace(/\\/g, "/")}`);
-      }
     } catch (err) {
       console.error("Documents fetch error:", err);
     }
@@ -140,12 +149,12 @@ const EmployeeDashboard = () => {
        return;
      }
 
-     const loadAll = async () => {
-       await Promise.all([fetchEmployee(), fetchDocuments()]);
-     };
+const loadAll = async () => {
+        await Promise.all([fetchEmployee(), fetchProfilePhoto(), fetchDocuments()]);
+      };
 
      loadAll();
-   }, [emp_id, fetchEmployee, fetchDocuments]);
+   }, [emp_id, fetchEmployee, fetchDocuments, fetchProfilePhoto]);
 
   /* -----------------------------------------------------
      DOCUMENT STATS

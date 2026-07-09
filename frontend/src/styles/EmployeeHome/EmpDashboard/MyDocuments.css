@@ -1,14 +1,24 @@
 /* ============================================================
-   MyDocuments.css - PURPLE THEME
-   Theme: Purple gradient matching the sidebar design
+   MyDocuments.css — Premium Enterprise HRMS Theme
+   (MNC-style stats overview row: donut completion card,
+   pastel icon tiles, left accent bar + underline accent)
  ============================================================ */
 
-/* CSS Variables */
 :root {
-  --doc-primary: #667eea;
-  --doc-secondary: #764ba2;
-  --doc-bg-dark: #1a1a2e;
-  --doc-glow: rgba(102, 126, 234, 0.5);
+  --doc-primary: #7c5cfc;
+  --doc-secondary: #a78bfa;
+  --doc-success: #22c55e;
+  --doc-warning: #f59e0b;
+  --doc-danger: #ef4444;
+  --doc-bg: #f5f7fb;
+  --doc-text-dark: #1e1b2e;
+  --doc-text-muted: #6b7280;
+  --doc-radius: 20px;
+  --doc-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  font-family: "Inter", "Poppins", sans-serif;
 }
 
 /* ===== WRAPPER + CONTAINER ===== */
@@ -17,7 +27,7 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf3 100%);
+  background: var(--doc-bg);
 }
 
 .emp-doc-container {
@@ -26,13 +36,12 @@
   padding: 40px;
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(102, 126, 234, 0.1);
+  background: rgba(124, 92, 252, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -40,86 +49,307 @@
   border-radius: 8px;
 }
 
-/* ===== PAGE TITLE ===== */
-.emp-doc-title {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 30px;
-  text-align: center;
-  color: var(--doc-bg-dark);
-  letter-spacing: -0.5px;
+/* ===== PAGE HEADING ===== */
+.emp-doc-page-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--doc-text-dark);
+  margin: 0 0 4px 0;
+}
+
+.emp-doc-page-subtitle {
+  font-size: 14px;
+  color: var(--doc-text-muted);
+  margin: 0 0 24px 0;
+}
+
+/* ============================================================
+   STATISTICS OVERVIEW ROW
+   Completion card (donut) + 5 pastel stat tiles
+   ============================================================ */
+
+.emp-doc-overview-row {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(5, 1fr);
+  gap: 18px;
+  align-items: stretch;
+  margin-bottom: 28px;
+}
+
+.ov-card {
   position: relative;
-  display: inline-block;
-  width: 100%;
-}
-
-.emp-doc-title::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
-  background: linear-gradient(90deg, var(--doc-primary), var(--doc-secondary));
-  border-radius: 4px;
-}
-
-/* ===== DROPDOWN SECTION HEADER ===== */
-.emp-section {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  padding: 22px 20px 20px 24px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 40px;
-  cursor: pointer;
-  padding: 8px 4px;
-  position: relative;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+  min-height: 168px;
 }
 
-.emp-section h3 {
-  font-size: 22px;
-  font-weight: 700;
-  margin: 0;
-  color: var(--doc-bg-dark);
-}
-
-.emp-section::after {
+/* left accent bar, color-coded per card */
+.ov-card::before {
   content: "";
   position: absolute;
-  bottom: -8px;
+  top: 0;
   left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, var(--doc-primary), var(--doc-secondary));
-  border-radius: 6px;
+  bottom: 0;
+  width: 4px;
 }
 
-.arrow {
-  font-size: 20px;
+.ov-completion::before { background: var(--doc-primary); }
+.ov-total-documents::before { background: #3b82f6; }
+.ov-required::before { background: #6d5df6; }
+.ov-verified::before { background: var(--doc-success); }
+.ov-pending::before { background: var(--doc-warning); }
+.ov-rejected::before { background: var(--doc-danger); }
+
+/* pastel icon tile shared by the 5 stat cards */
+.ov-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  flex-shrink: 0;
+}
+
+.ov-total-documents .ov-icon-wrap { background: #e0f2fe; color: #0284c7; }
+.ov-required .ov-icon-wrap        { background: #eef2ff; color: #6d5df6; }
+.ov-verified .ov-icon-wrap        { background: #dcfce7; color: #16a34a; }
+.ov-pending .ov-icon-wrap         { background: #fef3c7; color: #d97706; }
+.ov-rejected .ov-icon-wrap        { background: #fee2e2; color: #dc2626; }
+
+.ov-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--doc-text-muted);
+  line-height: 1.35;
+}
+
+.ov-value {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--doc-text-dark);
+  line-height: 1;
+  margin-top: auto;
+}
+
+/* short decorative underline beneath the number */
+.ov-accent-bar {
+  width: 46px;
+  height: 4px;
+  border-radius: 4px;
+  margin-top: 6px;
+}
+
+.ov-total-documents .ov-accent-bar { background: #93c5fd; }
+.ov-required .ov-accent-bar        { background: #c4b5fd; }
+.ov-verified .ov-accent-bar        { background: #86efac; }
+.ov-pending .ov-accent-bar         { background: #fcd34d; }
+.ov-rejected .ov-accent-bar        { background: #fca5a5; }
+
+/* ===== COMPLETION CARD (donut ring version) ===== */
+.ov-completion {
+  gap: 10px;
+}
+
+.ov-completion-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ov-donut {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.4s ease;
+}
+
+.ov-donut-hole {
+  width: 62%;
+  height: 62%;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.ov-completion-value {
+  font-size: 32px;
+  font-weight: 800;
   color: var(--doc-primary);
-  transition: transform 0.3s ease;
+  line-height: 1;
 }
 
-.emp-section:hover .arrow {
-  transform: scale(1.2);
+.ov-completion-track {
+  width: 100%;
+  height: 8px;
+  border-radius: 8px;
+  background: rgba(124, 92, 252, 0.12);
+  overflow: hidden;
+}
+
+.ov-completion-fill {
+  height: 100%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--doc-primary), var(--doc-secondary));
+  transition: width 0.6s ease;
+}
+
+.ov-completion-hint {
+  font-size: 12.5px;
+  color: var(--doc-text-muted);
+}
+
+@media (max-width: 1100px) {
+  .emp-doc-overview-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .emp-doc-overview-row {
+    grid-template-columns: 1fr;
+  }
+
+  .ov-card {
+    min-height: unset;
+  }
+}
+
+/* ===== CATEGORY CARD ===== */
+.emp-category-card {
+  background: #fff;
+  border-radius: var(--doc-radius);
+  box-shadow: var(--doc-shadow);
+  margin-top: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(124, 92, 252, 0.08);
+}
+
+.emp-category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px;
+  cursor: pointer;
+  transition: background 0.25s ease;
+  gap: 16px;
+}
+
+.emp-category-header:hover {
+  background: rgba(124, 92, 252, 0.04);
+}
+
+.emp-category-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.emp-category-icon-wrap {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: var(--doc-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.emp-category-header-left h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  color: var(--doc-text-dark);
+}
+
+.emp-category-mini-stats {
+  font-size: 12.5px;
+  color: var(--doc-text-muted);
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.emp-category-mini-stats .dot {
+  opacity: 0.5;
+}
+
+.mini-verified { color: var(--doc-success); font-weight: 600; }
+.mini-pending { color: var(--doc-warning); font-weight: 600; }
+.mini-rejected { color: var(--doc-danger); font-weight: 600; }
+
+.emp-category-arrow {
+  color: var(--doc-primary);
+  font-size: 16px;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.emp-category-arrow.open {
+  transform: rotate(180deg);
+}
+
+.emp-doc-grid-wrap {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  padding: 0 28px;
+}
+
+.emp-doc-grid-wrap.open {
+  max-height: 3000px;
+  padding: 4px 28px 28px 28px;
 }
 
 /* ===== GRID LAYOUT ===== */
 .emp-doc-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
-  margin-top: 24px;
-  margin-bottom: 32px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
   width: 100%;
+  align-items: stretch;
 }
 
-/* RESPONSIVE */
-@media (max-width: 992px) {
+
+.emp-doc-reviewed-time{
+     display:flex;
+     align-items:center;
+     gap:6px;
+     margin-top:10px;
+     font-size:12px;
+     color:#6B7280;
+     background:#F9FAFB;
+     border-radius:8px;
+     padding:8px 10px;
+}
+
+.review-icon{
+    color:#8B5CF6;
+    font-size:12px;
+}
+
+
+@media (max-width: 1100px) {
   .emp-doc-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
 
+@media (max-width: 992px) {
   .emp-doc-container {
     padding: 20px;
   }
@@ -128,121 +358,41 @@
 @media (max-width: 600px) {
   .emp-doc-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 14px;
   }
-  
+
   .emp-doc-container {
     padding: 12px;
   }
 
-  .emp-doc-title {
-    font-size: 20px;
-    margin-bottom: 20px;
+  .emp-category-header {
+    padding: 16px 18px;
   }
 
-  .emp-doc-card {
-    padding: 16px;
-    border-radius: 14px;
-  }
-
-  .emp-doc-left-row {
-    gap: 8px;
-  }
-
-  .emp-doc-icon {
-    font-size: 18px;
-    padding: 8px;
-    border-radius: 8px;
-  }
-
-  .emp-doc-name {
-    font-size: 14px;
-  }
-
-  .emp-doc-status-text {
-    font-size: 12px;
-  }
-
-  .emp-section h3 {
-    font-size: 16px;
-    margin-bottom: 0;
-  }
-
-  .emp-section {
-    margin-top: 24px;
-  }
-
-  .emp-doc-upload-btn,
-  .emp-doc-reupload-btn,
-  .emp-doc-approved-btn {
-    padding: 9px 14px;
-    font-size: 12px;
-    border-radius: 8px;
-  }
-
-  .salary-add-btn {
-    width: 100%;
-    justify-content: center;
-    padding: 10px 16px;
-    font-size: 13px;
-    border-radius: 10px;
+  .emp-doc-grid-wrap.open {
+    padding: 4px 18px 22px 18px;
   }
 }
 
-@media (max-width: 480px) {
-  .emp-doc-container {
-    padding: 10px 6px;
-  }
-
-  .emp-doc-title {
-    font-size: 18px;
-    margin-bottom: 16px;
-  }
-
-  .emp-doc-card {
-    padding: 14px;
-    border-radius: 12px;
-  }
-
-  .emp-doc-icon {
-    font-size: 16px;
-    padding: 6px;
-  }
-
-  .emp-doc-name {
-    font-size: 13px;
-  }
-
-  .emp-doc-status-text {
-    font-size: 11px;
-  }
-
-  .emp-doc-upload-btn,
-  .emp-doc-reupload-btn,
-  .emp-doc-approved-btn {
-    padding: 8px 12px;
-    font-size: 11px;
-  }
-}
-
-/* ===== CARD DESIGN ===== */
+/* ===== DOCUMENT CARD ===== */
 .emp-doc-card {
   background: #ffffff;
-  padding: 24px;
+  padding: 22px;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  min-height: 140px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 14px;
   transition: all 0.3s ease;
-  border: 1px solid rgba(102, 126, 234, 0.1);
+  border: 1px solid rgba(124, 92, 252, 0.1);
   position: relative;
   overflow: hidden;
 }
 
 .emp-doc-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -255,116 +405,203 @@
 
 .emp-doc-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(102, 126, 234, 0.15);
-  border-color: rgba(102, 126, 234, 0.3);
+  box-shadow: 0 16px 40px rgba(124, 92, 252, 0.16);
+  border-color: rgba(124, 92, 252, 0.3);
 }
 
 .emp-doc-card:hover::before {
   opacity: 1;
 }
 
-/* ===== CARD LEFT SIDE ===== */
-.emp-doc-left {
+.emp-doc-card-top {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.emp-doc-left-row {
-  display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
 }
 
-.emp-doc-icon {
-  font-size: 24px;
-  color: var(--doc-primary);
-  background: rgba(102, 126, 234, 0.1);
-  padding: 10px;
+.emp-doc-icon-wrap {
+  width: 42px;
+  height: 42px;
   border-radius: 10px;
+  background: rgba(124, 92, 252, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+}
+
+.emp-doc-icon {
+  font-size: 18px;
+  color: var(--doc-primary);
+}
+
+/* label + Required badge sit inline on the same row */
+.emp-doc-name-block {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
 }
 
 .emp-doc-name {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--doc-text-dark);
+  line-height: 1.3;
+}
+
+.emp-doc-required-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--doc-danger);
+  background: rgba(239, 68, 68, 0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
+  width: fit-content;
+  letter-spacing: 0.3px;
+}
+
+/* card middle grows to fill space so bottom buttons align across a row */
+.emp-doc-card-middle {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+/* STATUS BADGE */
+.emp-doc-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 7px 12px;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.badge-verified {
+  color: var(--doc-success);
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.badge-rejected {
+  color: var(--doc-danger);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.badge-pending {
+  color: var(--doc-warning);
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.badge-empty {
+  color: var(--doc-text-muted);
+  background: rgba(107, 114, 128, 0.1);
+}
+
+.spin-icon {
+  animation: doc-spin 0.9s linear infinite;
+}
+
+@keyframes doc-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* REJECTION PANEL (labeled "HR Feedback") */
+.emp-doc-rejection-panel {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: #FEF2F2;
+  border-left: 4px solid #EF4444;
+  border-radius: 12px;
+}
+
+.reject-icon {
+  color: #DC2626;
   font-size: 18px;
-  font-weight: 600;
-  color: #1c1c1c;
+  margin-top: 2px;
+  flex-shrink: 0;
 }
 
-/* ===== STATUS COLORS ===== */
-.emp-doc-status-text {
-  font-size: 14px;
-  margin-top: 4px;
-  font-weight: 500;
+.reject-content {
+  display: flex;
+  flex-direction: column;
 }
 
-.status-green {
-  color: #22c55e !important;
-  font-weight: 600;
+.reject-content strong {
+  color: #B91C1C;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
-.status-red {
-  color: #ef4444 !important;
-  font-weight: 600;
+.reject-content p {
+  margin: 0;
+  color: #4B5563;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
-.status-blue {
-  color: var(--doc-primary) !important;
-  font-weight: 600;
-}
-
-.status-gray {
-  color: #6b7280 !important;
-}
-
-/* ===== BUTTONS ===== */
-.emp-doc-right {
-  margin-top: 16px;
+/* BOTTOM ROW — action button stacked above the View button, full width */
+.emp-doc-card-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
 }
 
 .emp-doc-upload-btn,
 .emp-doc-reupload-btn,
-.emp-doc-approved-btn {
+.emp-doc-approved-btn,
+.emp-doc-uploaded-btn {
   border: none;
-  padding: 12px 20px;
-  border-radius: 10px;
-  font-size: 14px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 13px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 600;
+  gap: 7px;
+  font-weight: 700;
   transition: all 0.3s ease;
-  font-family: "Poppins", sans-serif;
+  width: 100%;
+  justify-content: center;
+  white-space: nowrap;
 }
 
-/* Upload button */
 .emp-doc-upload-btn {
   background: linear-gradient(135deg, var(--doc-primary), var(--doc-secondary));
   color: #fff;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 15px rgba(124, 92, 252, 0.3);
 }
 
-.emp-doc-upload-btn:hover {
+.emp-doc-upload-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 25px rgba(124, 92, 252, 0.4);
 }
 
-/* Reupload button */
 .emp-doc-reupload-btn {
-  background: linear-gradient(135deg, #f59e0b, #f97316);
+  background: linear-gradient(135deg, var(--doc-warning), #f97316);
   color: #fff;
   box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
 }
 
-.emp-doc-reupload-btn:hover {
+.emp-doc-reupload-btn:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
 }
 
-/* Uploaded button (grey) */
 .emp-doc-uploaded-btn {
   background: linear-gradient(135deg, #9ca3af, #6b7280);
   color: #fff;
@@ -372,41 +609,56 @@
   box-shadow: 0 4px 15px rgba(156, 163, 175, 0.3);
 }
 
-/* Approved button */
 .emp-doc-approved-btn {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
+  background: linear-gradient(135deg, var(--doc-success), #16a34a);
   color: #fff;
   cursor: default;
   box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
 }
 
-/* ===== SALARY SLIPS SECTION ===== */
-.emp-doc-salary-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.salary-add-btn {
-  width: 200px;
-  margin-top: 12px;
-  padding: 14px 24px;
-  background: linear-gradient(135deg, var(--doc-primary), var(--doc-secondary));
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  font-family: "Poppins", sans-serif;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  display: flex;
+.emp-doc-view-btn {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--doc-primary);
+  background: rgba(124, 92, 252, 0.08);
+  border: 1px solid rgba(124, 92, 252, 0.25);
+  padding: 12px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  width: 100%;
+  justify-content: center;
 }
 
-.salary-add-btn:hover {
+.emp-doc-view-btn:hover {
+  background: rgba(124, 92, 252, 0.15);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+@media (max-width: 480px) {
+  .emp-doc-card {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .emp-doc-name {
+    font-size: 14px;
+  }
+
+  .emp-doc-status-badge {
+    font-size: 11.5px;
+  }
+
+  .emp-doc-upload-btn,
+  .emp-doc-reupload-btn,
+  .emp-doc-approved-btn,
+  .emp-doc-uploaded-btn,
+  .emp-doc-view-btn {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
 }

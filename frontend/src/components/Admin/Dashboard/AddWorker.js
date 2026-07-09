@@ -25,6 +25,52 @@ const AddWorker = () => {
   const [submitError, setSubmitError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [checkingEmail, setCheckingEmail] = useState(false);
+
+
+  const checkEmailExists = async (email) => {
+    if (!email) return false;
+
+    try {
+      setCheckingEmail(true);
+
+      const res = await fetch(
+        `http://localhost:8000/api/admin/check-worker-email?email=${encodeURIComponent(email)}`
+      );
+    
+      if (!res.ok) {
+          throw new Error("Failed to verify email");
+      }
+
+      const data = await res.json();
+
+      if (data.exists) {
+        setErrors((prev) => ({
+          ...prev,
+          email: "Email already exists",
+        }));
+        return true;
+      }
+
+      setErrors((prev) => ({
+        ...prev,
+        email: "",
+      }));
+
+      return false;
+    } catch (err) {
+      console.error(err);
+
+      setErrors((prev) => ({
+        ...prev,
+        email: "Unable to verify email",
+      }));
+
+      return true;
+    } finally {
+      setCheckingEmail(false);
+    }
+  };
 
   const validateField = (name, value) => {
     let error = "";
@@ -61,7 +107,9 @@ const AddWorker = () => {
         break;
 
       case "email":
-        if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        if (!value.trim()) {
+          error = "Email is required";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
           error = "Please enter a valid email address";
         }
         break;
@@ -108,19 +156,23 @@ const AddWorker = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    const processedValue =
+      name === "email"
+        ? value.toLowerCase()
+        : value;
+
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: processedValue,
     });
 
-    // Validate field on change
-    const error = validateField(name, value);
+    const error = validateField(name, processedValue);
+
     setErrors((prev) => ({
       ...prev,
       [name]: error,
     }));
 
-    // Clear submit error when user starts typing
     if (submitError) {
       setSubmitError("");
     }
@@ -166,6 +218,26 @@ const AddWorker = () => {
   const handleConfirmSubmit = async () => {
     setShowConfirmation(false);
     setIsSubmitting(true);
+
+    const emailError = validateField("email", formData.email);
+
+    if (emailError) {
+      setErrors((prev) => ({
+        ...prev,
+        email: emailError,
+      }));
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (checkingEmail) return;
+
+    const exists = await checkEmailExists(formData.email);
+
+    if (exists) {
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       // Format data properly for backend
@@ -321,16 +393,35 @@ const AddWorker = () => {
         </div>
 
         <div className="form-group">
+
+          {checkingEmail && (
+            <span className="checking-message">
+              Checking email...
+            </span>
+          )}
+
           <input
+            type="email"
             name="email"
             placeholder="Enter email address*"
             value={formData.email}
             onChange={handleChange}
+            onBlur={() => {
+              const error = validateField("email", formData.email);
+
+              if (!error && formData.email) {
+                checkEmailExists(formData.email);
+              }
+            }}
             className={errors.email ? "input-error" : ""}
           />
+
           {errors.email && (
-            <span className="error-message">{errors.email}</span>
+            <span className="error-message">
+              {errors.email}
+            </span>
           )}
+
         </div>
 
         {/* WORK DETAILS */}

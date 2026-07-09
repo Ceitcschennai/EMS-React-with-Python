@@ -1,19 +1,92 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function BasicInfo({ formData, setFormData, next, errors, setErrors, validateField }) {
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Convert email to lowercase
-    const processedValue = name === "email" ? value.toLowerCase() : value;
-    setFormData({ ...formData, [name]: processedValue });
 
-    // Validate field on change
+    const processedValue =
+      name === "email" ? value.toLowerCase() : value;
+
+    setFormData({
+      ...formData,
+      [name]: processedValue,
+    });
+
     const error = validateField(name, processedValue);
+
     setErrors((prev) => ({
       ...prev,
       [name]: error,
     }));
   };
+
+  const [checkingEmail, setCheckingEmail] = useState(false);
+
+
+    const checkEmailExists = async (email) => {
+      try {
+        setCheckingEmail(true);
+
+        const res = await fetch(
+          `http://localhost:8000/api/admin/check-email?email=${encodeURIComponent(email)}`
+        );
+
+        if (!res.ok) {
+          throw new Error("Failed to check email");
+        }
+
+        const data = await res.json();
+
+        if (data.exists) {
+          setErrors((prev) => ({
+            ...prev,
+            email: "Email already exists",
+          }));
+          return true;
+        }
+
+        setErrors((prev) => ({
+          ...prev,
+          email: "",
+        }));
+
+        return false;
+      } catch (error) {
+        console.error(error);
+
+        setErrors((prev) => ({
+          ...prev,
+          email: "Unable to verify email. Please try again.",
+        }));
+
+        return true;
+      } finally {
+        setCheckingEmail(false);
+      }
+    };
+
+
+    const handleNext = async () => {
+      // Run frontend validation first
+      const emailError = validateField("email", formData.email);
+
+      if (emailError) {
+        setErrors((prev) => ({
+          ...prev,
+          email: emailError,
+        }));
+        return;
+      }
+
+      if (checkingEmail) return;
+
+      const exists = await checkEmailExists(formData.email);
+
+      if (exists) return;
+
+      next();
+    };
 
   return (
     <>
@@ -49,11 +122,24 @@ export default function BasicInfo({ formData, setFormData, next, errors, setErro
 
       <label>Email Address*</label>
       <div className="form-group">
+
+          {checkingEmail && (
+              <span className="checking-message">
+                  Checking email...
+              </span>
+          )}
         <input
           type="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
+          onBlur={() => {
+            const emailError = validateField("email", formData.email);
+
+            if (!emailError && formData.email) {
+              checkEmailExists(formData.email);
+            }
+          }}
           placeholder="employee@example.com"
           className={errors.email ? "input-error" : ""}
         />
@@ -63,7 +149,12 @@ export default function BasicInfo({ formData, setFormData, next, errors, setErro
       </div>
 
       <div className="form-nav">
-        <button onClick={next}>Next</button>
+        <button
+          onClick={handleNext}
+          disabled={checkingEmail}
+        >
+          {checkingEmail ? "Checking..." : "Next"}
+        </button>
       </div>
     </>
   );

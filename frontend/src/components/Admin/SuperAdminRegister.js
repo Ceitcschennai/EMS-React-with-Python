@@ -74,54 +74,61 @@ const SuperAdminRegister = () => {
       <div className="login-box">
         <h2>Admin Register</h2>
         <form onSubmit={handleRegister}>
-          {/* ✅ Email Input */}
-          <input
-            type="Name"
-            placeholder="Enter your Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-          <input
-            type="email"
-            placeholder="Enter your Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
 
-          {/* ✅ New Password */}
-          <div className="password-wrapper">
+          <div className="form-group">
             <input
-              type={showNewPass ? "text" : "password"}
-              placeholder="Enter New Password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
+              type="text"
+              placeholder="Enter your Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
             />
-            <span
-              className="password-eye-icon"
-              onClick={() => setShowNewPass(!showNewPass)}
-            >
-              {showNewPass ? <FaEyeSlash /> : <FaEye />}
-            </span>
           </div>
 
-          {/* ✅ Confirm Password */}
-          <div className="password-wrapper">
+          <div className="form-group">
             <input
-              type={showConfirmPass ? "text" : "password"}
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              type="email"
+              placeholder="Enter your Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <span
-              className="password-eye-icon"
-              onClick={() => setShowConfirmPass(!showConfirmPass)}
-            >
-              {showConfirmPass ? <FaEyeSlash /> : <FaEye />}
-            </span>
+          </div>
+
+          <div className="form-group">
+            <div className="password-wrapper">
+              <input
+                type={showNewPass ? "text" : "password"}
+                placeholder="Enter New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+              />
+              <span
+                className="password-eye-icon"
+                onClick={() => setShowNewPass(!showNewPass)}
+              >
+                {showNewPass ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <div className="password-wrapper">
+              <input
+                type={showConfirmPass ? "text" : "password"}
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              <span
+                className="password-eye-icon"
+                onClick={() => setShowConfirmPass(!showConfirmPass)}
+              >
+                {showConfirmPass ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
           </div>
 
           {/* ✅ Error + Success Message */}
@@ -131,7 +138,7 @@ const SuperAdminRegister = () => {
           <button type="submit">Register</button>
         </form>
 
-        <button className="back-btn" onClick={() => navigate("/admin-login")}>
+        <button className="back-btn" onClick={() => navigate("/admin-page")}>
           Back to Login
         </button>
       </div>
